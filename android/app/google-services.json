@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "494901573890",
+    "project_id": "bookkeeping-1c097",
+    "storage_bucket": "bookkeeping-1c097.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494901573890:android:70d35fa68c3b38ebb92a1b",
+        "android_client_info": {
+          "package_name": "cz.muni.fi.book_keeping"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0TGp8zppujSpyQKXxK6w6gqjjYUhGUQ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
