@@ -23,7 +23,7 @@ class _BottomMenuState extends State<BottomMenu> {
         ),
         NavigationDestination(
           icon: Icon(Icons.favorite),
-          label: 'Favourites',
+          label: 'My library',
         ),
         NavigationDestination(
           icon: Icon(Icons.menu_book),
