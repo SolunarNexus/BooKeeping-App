@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -12,7 +13,9 @@ class HomePage extends StatelessWidget {
       body: Center(
         child: TextButton(
           child: const Text("Sample text"),
-          onPressed: () {},
+          onPressed: () {
+            FirebaseAuth.instance.signOut();
+          },
         ),
       ),
     );

@@ -1,4 +1,4 @@
-import 'package:book_keeping/home_page.dart';
+import 'package:book_keeping/authentication/widget/auth_check.dart';
 import 'package:flutter/material.dart';
 
 class AppRoot extends StatelessWidget {
@@ -18,7 +18,7 @@ class AppRoot extends StatelessWidget {
         brightness: Brightness.dark,
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: const AuthCheck(),
     );
   }
 }
