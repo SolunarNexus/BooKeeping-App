@@ -1,10 +1,11 @@
 import 'package:book_keeping/authentication/widget/register.dart';
+import 'package:book_keeping/authentication/widget/reset_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validation/form_validation.dart';
 
 class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+  const Login({super.key});
 
   @override
   State<Login> createState() => _LoginState();
@@ -24,7 +25,6 @@ class _LoginState extends State<Login> {
           Form(
             key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextFormField(
                   controller: _emailController,
@@ -65,13 +65,26 @@ class _LoginState extends State<Login> {
               ],
             ),
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const Register(),
-              ));
-            },
-            child: const Text("Register"),
+          Row(
+            children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const ResetPassword(),
+                  ));
+                },
+                child: const Text("Reset password"),
+              ),
+              const Spacer(),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const Register(),
+                  ));
+                },
+                child: const Text("Register"),
+              ),
+            ],
           )
         ],
       ),
