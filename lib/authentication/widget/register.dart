@@ -103,12 +103,12 @@ class _RegisterState extends State<Register> {
         }
       } on FirebaseAuthException catch (e) {
         if (mounted) {
-          if (e.code == 'weak-password') {
+          if (e.code == "weak-password") {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text("The password provided is too weak.")));
-          } else if (e.code == 'email-already-in-use') {
+                content: Text("The password provided is too weak")));
+          } else if (e.code == "email-already-in-use") {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text("The account already exists for that email.")));
+                content: Text("The account already exists for that email")));
           }
         }
       }
