@@ -54,12 +54,8 @@ class _LoginState extends State<Login> {
                 ),
                 const SizedBox(height: 32),
                 MaterialButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      FirebaseAuth.instance.signInWithEmailAndPassword(
-                          email: _emailController.text,
-                          password: _passwordController.text);
-                    }
+                  onPressed: () async {
+                    await _login(context);
                   },
                   color: Theme.of(context).primaryColor,
                   textTheme: ButtonTextTheme.primary,
@@ -81,5 +77,19 @@ class _LoginState extends State<Login> {
       ),
       // child:
     );
+  }
+
+  Future<void> _login(BuildContext context) async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: _emailController.text, password: _passwordController.text);
+      } on FirebaseAuthException catch (e) {
+        if (mounted && e.code == "INVALID_LOGIN_CREDENTIALS") {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Invalid login credentials")));
+        }
+      }
+    }
   }
 }
