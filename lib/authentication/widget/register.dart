@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:form_validation/form_validation.dart';
 
 class Register extends StatefulWidget {
-  const Register({Key? key}) : super(key: key);
+  const Register({super.key});
 
   @override
   State<Register> createState() => _RegisterState();
@@ -77,13 +77,8 @@ class _RegisterState extends State<Register> {
               ),
               const SizedBox(height: 32),
               MaterialButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    FirebaseAuth.instance.createUserWithEmailAndPassword(
-                        email: _emailController.text,
-                        password: _passwordController.text);
-                    Navigator.of(context).pop();
-                  }
+                onPressed: () async {
+                  await _registerUser(context);
                 },
                 color: Theme.of(context).primaryColor,
                 textTheme: ButtonTextTheme.primary,
@@ -96,5 +91,27 @@ class _RegisterState extends State<Register> {
         // child:
       ),
     );
+  }
+
+  Future<void> _registerUser(BuildContext context) async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: _emailController.text, password: _passwordController.text);
+        if (mounted) {
+          Navigator.of(context).pop();
+        }
+      } on FirebaseAuthException catch (e) {
+        if (mounted) {
+          if (e.code == 'weak-password') {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text("The password provided is too weak.")));
+          } else if (e.code == 'email-already-in-use') {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text("The account already exists for that email.")));
+          }
+        }
+      }
+    }
   }
 }
