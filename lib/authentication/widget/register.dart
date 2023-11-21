@@ -50,7 +50,7 @@ class _RegisterState extends State<Register> {
                 validator: (value) {
                   final validator = Validator(validators: [
                     const RequiredValidator(),
-                    const MinLengthValidator(length: 8),
+                    const MinLengthValidator(length: 6),
                   ]);
                   return validator.validate(label: "Password", value: value);
                 },
@@ -65,7 +65,7 @@ class _RegisterState extends State<Register> {
                 validator: (value) {
                   final validator = Validator(validators: [
                     const RequiredValidator(),
-                    const MinLengthValidator(length: 8),
+                    const MinLengthValidator(length: 6),
                   ]);
                   if (_passwordController.text !=
                       _confirmPasswordController.text) {
