@@ -95,11 +95,8 @@ class _RegisterState extends State<Register> {
   Future<void> _registerUser(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       try {
-        var credentials = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(
-                email: _emailController.text,
-                password: _passwordController.text);
-        await credentials.user?.sendEmailVerification();
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: _emailController.text, password: _passwordController.text);
         if (mounted) {
           Navigator.of(context).pop();
         }
