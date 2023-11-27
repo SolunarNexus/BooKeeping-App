@@ -1,5 +1,6 @@
 import 'package:book_keeping/authentication/widget/register.dart';
 import 'package:book_keeping/authentication/widget/reset_password.dart';
+import 'package:book_keeping/common/widget/field_label.dart';
 import 'package:book_keeping/common/widget/top_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -32,12 +33,11 @@ class _LoginState extends State<Login> {
             Form(
               key: _formKey,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const FieldLabel(text: "Email"),
                   TextFormField(
                     controller: _emailController,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                    ),
                     validator: (value) {
                       final validator = Validator(validators: [
                         const RequiredValidator(),
@@ -47,11 +47,9 @@ class _LoginState extends State<Login> {
                     },
                   ),
                   const SizedBox(height: 32),
+                  const FieldLabel(text: "Password"),
                   TextFormField(
                     controller: _passwordController,
-                    decoration: const InputDecoration(
-                      labelText: 'Password',
-                    ),
                     obscureText: true,
                     validator: (value) {
                       final validator =

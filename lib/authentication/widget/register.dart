@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:form_validation/form_validation.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../common/widget/field_label.dart';
+
 class Register extends StatefulWidget {
   const Register({super.key});
 
@@ -29,12 +31,11 @@ class _RegisterState extends State<Register> {
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const FieldLabel(text: "Email"),
               TextFormField(
                 controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                ),
                 validator: (value) {
                   final validator = Validator(validators: [
                     const RequiredValidator(),
@@ -44,11 +45,9 @@ class _RegisterState extends State<Register> {
                 },
               ),
               const SizedBox(height: 32),
+              const FieldLabel(text: "Password"),
               TextFormField(
                 controller: _passwordController,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                ),
                 obscureText: true,
                 validator: (value) {
                   final validator = Validator(validators: [
@@ -59,11 +58,9 @@ class _RegisterState extends State<Register> {
                 },
               ),
               const SizedBox(height: 32),
+              const FieldLabel(text: "Confirm password"),
               TextFormField(
                 controller: _confirmPasswordController,
-                decoration: const InputDecoration(
-                  labelText: 'Confirm password',
-                ),
                 obscureText: true,
                 validator: (value) {
                   final validator = Validator(validators: [
