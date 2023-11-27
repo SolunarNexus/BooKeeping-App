@@ -1,6 +1,8 @@
+import 'package:book_keeping/common/widget/top_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validation/form_validation.dart';
+import 'package:go_router/go_router.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -18,8 +20,9 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Register"),
+      appBar: TopBar(
+        titleText: "Register",
+        includeActions: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(32.0),
@@ -98,7 +101,7 @@ class _RegisterState extends State<Register> {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: _emailController.text, password: _passwordController.text);
         if (mounted) {
-          Navigator.of(context).pop();
+          context.go("/my-library");
         }
       } on FirebaseAuthException catch (e) {
         if (mounted && e.code == "email-already-in-use") {

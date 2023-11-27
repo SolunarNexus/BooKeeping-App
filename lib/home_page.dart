@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +14,11 @@ class HomePage extends StatelessWidget {
       body: Center(
         child: TextButton(
           child: Text(FirebaseAuth.instance.currentUser!.email!),
-          onPressed: () {
-            FirebaseAuth.instance.signOut();
+          onPressed: () async {
+            await FirebaseAuth.instance.signOut();
+            if (context.mounted) {
+              context.go("/auth");
+            }
           },
         ),
       ),
