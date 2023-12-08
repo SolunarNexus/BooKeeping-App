@@ -1,5 +1,6 @@
 import 'package:book_keeping/friends-page/widget/friends_page.dart';
 import 'package:book_keeping/home_page/widget/home_page.dart';
+import 'package:book_keeping/ranking_page/widget/ranking_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -20,13 +21,17 @@ class AppRoot extends StatelessWidget {
       GoRoute(
         path: "/my-friends",
         builder: (context, state) => const FriendsPage(),
-      )
+      ),
+      GoRoute(
+        path: "/ranking",
+        builder: (context, state) => const RankingPage(),
+      ),
     ],
     redirect: (context, state) {
       if (FirebaseAuth.instance.currentUser == null) {
         return "/auth";
       }
-      return "/my-library";
+      return "/ranking";
     },
   );
 
