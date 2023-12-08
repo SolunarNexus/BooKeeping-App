@@ -1,4 +1,4 @@
-import 'package:book_keeping/friends-page/widget/friends_page.dart';
+import 'package:book_keeping/friends_page/widget/friends_page.dart';
 import 'package:book_keeping/home_page/widget/home_page.dart';
 import 'package:book_keeping/ranking_page/widget/ranking_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
