@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class BottomMenu extends StatefulWidget {
   const BottomMenu({super.key});
@@ -16,6 +17,8 @@ class _BottomMenuState extends State<BottomMenu> {
       selectedIndex: _pageIndex,
       onDestinationSelected: (int index) => setState(() {
         _pageIndex = index;
+        // TODO: fix page redirecting
+        context.go("/my-friends");
       }),
       // TODO: set color to transparent in later phase of the project
       // indicatorColor: Colors.transparent,
