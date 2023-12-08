@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 
 class BottomMenu extends StatefulWidget {
-  int _pageIndex = 1;
-  BottomMenu({super.key});
+  const BottomMenu({super.key});
+
   @override
   State<BottomMenu> createState() => _BottomMenuState();
 }
 
 class _BottomMenuState extends State<BottomMenu> {
+  int _pageIndex = 1;
+
   @override
   Widget build(BuildContext context) {
     return NavigationBar(
-      selectedIndex: widget._pageIndex,
+      selectedIndex: _pageIndex,
       onDestinationSelected: (int index) => setState(() {
-        widget._pageIndex = index;
+        _pageIndex = index;
       }),
+      // TODO: set color to transparent in later phase of the project
       // indicatorColor: Colors.transparent,
       destinations: const [
         NavigationDestination(
