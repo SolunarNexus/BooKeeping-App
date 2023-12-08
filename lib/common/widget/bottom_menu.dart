@@ -10,6 +10,12 @@ class BottomMenu extends StatefulWidget {
 
 class _BottomMenuState extends State<BottomMenu> {
   int _pageIndex = 1;
+  final List<String> links = [
+    "/my-friends",
+    "/my-library",
+    "/books",
+    "/ranking"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +24,7 @@ class _BottomMenuState extends State<BottomMenu> {
       onDestinationSelected: (int index) => setState(() {
         _pageIndex = index;
         // TODO: fix page redirecting
-        context.go("/my-friends");
+        context.go(links[index]);
       }),
       // TODO: set color to transparent in later phase of the project
       // indicatorColor: Colors.transparent,
