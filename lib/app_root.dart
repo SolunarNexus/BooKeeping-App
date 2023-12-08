@@ -1,3 +1,4 @@
+import 'package:book_keeping/friends-page/widget/friends_page.dart';
 import 'package:book_keeping/home_page/widget/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,10 @@ class AppRoot extends StatelessWidget {
         path: "/my-library",
         builder: (context, state) => const HomePage(),
       ),
+      GoRoute(
+        path: "/my-friends",
+        builder: (context, state) => const FriendsPage(),
+      )
     ],
     redirect: (context, state) {
       if (FirebaseAuth.instance.currentUser == null) {
