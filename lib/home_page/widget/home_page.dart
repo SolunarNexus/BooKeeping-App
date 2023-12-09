@@ -1,10 +1,12 @@
-import 'package:book_keeping/utils/top_bar.dart';
+import 'package:book_keeping/common/service/open_library_service.dart';
 import 'package:book_keeping/common/widget/book_list.dart';
 import 'package:book_keeping/common/widget/book_search_bar.dart';
 import 'package:book_keeping/common/widget/bottom_menu.dart';
 import 'package:book_keeping/common/widget/filter_buttons.dart';
+import 'package:book_keeping/utils/top_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
 class HomePage extends StatelessWidget {
@@ -31,6 +33,13 @@ class HomePage extends StatelessWidget {
                 }
               },
             ),
+            TextButton(
+                onPressed: () async {
+                  final service = GetIt.instance.get<OpenLibraryService>();
+                  final data = await service.getBooks();
+                  print(data);
+                },
+                child: const Text("test button"))
           ],
         ),
       ),
