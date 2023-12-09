@@ -108,7 +108,9 @@ class _LoginState extends State<Login> {
           context.go("/my-library");
         }
       } on FirebaseAuthException catch (e) {
-        if (mounted && e.code == "INVALID_LOGIN_CREDENTIALS") {
+        if (mounted &&
+            (e.code == "INVALID_LOGIN_CREDENTIALS" ||
+                e.code == "invalid-credential")) {
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Invalid login credentials")));
         }
