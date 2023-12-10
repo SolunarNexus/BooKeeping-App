@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class BottomMenu extends StatefulWidget {
-  const BottomMenu({super.key});
+class BottomMenu extends StatelessWidget {
+  BottomMenu({super.key});
 
-  @override
-  State<BottomMenu> createState() => _BottomMenuState();
-}
-
-class _BottomMenuState extends State<BottomMenu> {
   final List<String> _links = ['friends', 'home', 'books', 'rankings'];
 
   @override

@@ -1,4 +1,4 @@
-import 'package:book_keeping/utils/top_bar.dart';
+import 'package:book_keeping/common/widget/top_bar.dart';
 import 'package:book_keeping/common/widget/general_listview.dart';
 import 'package:book_keeping/common/widget/general_search_bar.dart';
 import 'package:book_keeping/common/widget/bottom_menu.dart';
@@ -43,8 +43,8 @@ class HomePage extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: topBar(title: 'My library'),
-      bottomNavigationBar: const BottomMenu(),
+      appBar: TopBar(titleText: 'My library'),
+      bottomNavigationBar: BottomMenu(),
       body: Center(
         child: Column(
           children: [

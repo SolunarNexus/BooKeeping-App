@@ -2,7 +2,7 @@ import 'package:book_keeping/common/widget/bottom_menu.dart';
 import 'package:book_keeping/common/widget/filter_buttons.dart';
 import 'package:book_keeping/common/widget/general_listview.dart';
 import 'package:book_keeping/common/widget/general_search_bar.dart';
-import 'package:book_keeping/utils/top_bar.dart';
+import 'package:book_keeping/common/widget/top_bar.dart';
 import 'package:flutter/material.dart';
 
 class RankingPage extends StatelessWidget {
@@ -60,8 +60,8 @@ class RankingPage extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: topBar(title: "Ranking"),
-      bottomNavigationBar: const BottomMenu(),
+      appBar: TopBar(titleText: "Ranking"),
+      bottomNavigationBar: BottomMenu(),
       body: Center(
         child: Column(
           children: [
