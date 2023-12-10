@@ -9,25 +9,14 @@ class BottomMenu extends StatefulWidget {
 }
 
 class _BottomMenuState extends State<BottomMenu> {
-  int _pageIndex = 1;
-  final List<String> links = [
-    "/my-friends",
-    "/my-library",
-    "/books",
-    "/ranking"
-  ];
+  final List<String> _links = ['friends', 'home', 'books', 'rankings'];
 
   @override
   Widget build(BuildContext context) {
     return NavigationBar(
-      selectedIndex: _pageIndex,
-      onDestinationSelected: (int index) => setState(() {
-        _pageIndex = index;
-        // TODO: fix page redirecting
-        context.go(links[index]);
-      }),
-      // TODO: set color to transparent in later phase of the project
-      // indicatorColor: Colors.transparent,
+      selectedIndex: 0,
+      onDestinationSelected: (int index) => context.goNamed(_links[index]),
+      indicatorColor: Colors.transparent,
       destinations: const [
         NavigationDestination(
           icon: Icon(Icons.account_box),
