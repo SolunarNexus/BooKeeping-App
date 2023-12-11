@@ -11,7 +11,9 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await FirebaseMessaging.instance.requestPermission(
+
+  final messaging = FirebaseMessaging.instance;
+  await messaging.requestPermission(
     alert: true,
     announcement: false,
     badge: true,
@@ -20,5 +22,8 @@ Future<void> main() async {
     provisional: false,
     sound: true,
   );
+  String? token = await messaging.getToken();
+  print(token);
+
   runApp(AppRoot());
 }
