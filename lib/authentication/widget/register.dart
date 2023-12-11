@@ -25,6 +25,7 @@ class _RegisterState extends State<Register> {
       appBar: TopBar(
         titleText: "Register",
         includeActions: false,
+        context: context,
       ),
       body: Padding(
         padding: const EdgeInsets.all(32.0),

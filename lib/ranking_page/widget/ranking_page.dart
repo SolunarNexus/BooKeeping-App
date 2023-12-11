@@ -28,7 +28,7 @@ class RankingPage extends StatelessWidget {
               width: 20,
             ),
             Text(
-              'Book title',
+              "Book title",
               style: TextStyle(color: Colors.black, fontSize: 19),
             ),
             Spacer(),
@@ -60,7 +60,7 @@ class RankingPage extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: TopBar(titleText: "Ranking"),
+      appBar: TopBar(titleText: "Ranking", context: context),
       bottomNavigationBar: BottomMenu(),
       body: Center(
         child: Column(

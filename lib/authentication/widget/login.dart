@@ -25,6 +25,7 @@ class _LoginState extends State<Login> {
       appBar: TopBar(
         titleText: "Login",
         includeActions: false,
+        context: context,
       ),
       body: Padding(
         padding: const EdgeInsets.all(32.0),

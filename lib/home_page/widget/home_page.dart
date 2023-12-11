@@ -25,7 +25,7 @@ class HomePage extends StatelessWidget {
               color: Colors.black,
             ),
             const Text(
-              'Book title',
+              "Book title",
               style: TextStyle(color: Colors.black, fontSize: 19),
             ),
             const Spacer(),
@@ -43,12 +43,15 @@ class HomePage extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: TopBar(titleText: 'My library'),
+      appBar: TopBar(
+        titleText: "My library",
+        context: context,
+      ),
       bottomNavigationBar: BottomMenu(),
       body: Center(
         child: Column(
           children: [
-            FilterButtons(labels: const ['Reading', 'Finished', 'Wishlist']),
+            FilterButtons(labels: const ["Reading", "Finished", "Wishlist"]),
             const GeneralSearchBar(),
             GeneralListView(items: List<Card>.generate(7, (_) => bookCard)),
             // TODO: Only for testing purposes, remove later

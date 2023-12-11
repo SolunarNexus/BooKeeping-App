@@ -28,7 +28,7 @@ class FriendsPage extends StatelessWidget {
               width: 10,
             ),
             const Text(
-              'Bob Doe',
+              "Bob Doe",
               style: TextStyle(color: Colors.black, fontSize: 19),
             ),
             const Spacer(),
@@ -46,7 +46,7 @@ class FriendsPage extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: TopBar(titleText: "My friends"),
+      appBar: TopBar(titleText: "My friends", context: context),
       bottomNavigationBar: BottomMenu(),
       body: Center(
         child: Column(

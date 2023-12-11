@@ -56,7 +56,10 @@ class BooksPage extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: TopBar(titleText: "Books"),
+      appBar: TopBar(
+        titleText: "Books",
+        context: context,
+      ),
       bottomNavigationBar: BottomMenu(),
       body: Center(
         child: Column(
