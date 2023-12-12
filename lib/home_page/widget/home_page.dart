@@ -1,9 +1,9 @@
-import 'package:book_keeping/common/model/book.dart';
-import 'package:book_keeping/common/service/book_service.dart';
 import 'package:book_keeping/common/widget/book_list.dart';
 import 'package:book_keeping/common/widget/book_search_bar.dart';
 import 'package:book_keeping/common/widget/bottom_menu.dart';
 import 'package:book_keeping/common/widget/filter_buttons.dart';
+import 'package:book_keeping/data_access/model/book.dart';
+import 'package:book_keeping/data_access/service/book_service.dart';
 import 'package:book_keeping/utils/top_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -37,8 +37,17 @@ class HomePage extends StatelessWidget {
               },
             ),
             TextButton(
-                onPressed: () => bookService
-                    .createBook(Book(title: "title", author: "author")),
+                onPressed: () => bookService.createBook(Book(
+                    title: "title",
+                    author: "author",
+                    description: "description",
+                    imgUrl: 'url',
+                    publishDate: DateTime.now(),
+                    categories: ["fantasy", "future"],
+                    isbn: "4354653685438",
+                    language: "EN",
+                    pages: 323,
+                    publisher: "John")),
                 child: Text("Add")),
             StreamBuilder(
               stream: bookService.bookStream,

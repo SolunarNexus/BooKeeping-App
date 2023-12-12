@@ -1,4 +1,4 @@
-import 'package:book_keeping/common/model/book.dart';
+import 'package:book_keeping/data_access/model/book.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BookService {
@@ -22,9 +22,5 @@ class BookService {
 
   Future<void> createBook(Book book) {
     return _bookCollection.add(book);
-  }
-
-  Future<void> deleteBook(String bookId) {
-    return _bookCollection.doc(bookId).delete();
   }
 }
