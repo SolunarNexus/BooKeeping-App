@@ -2,10 +2,12 @@ import 'package:book_keeping/common/widget/book_list.dart';
 import 'package:book_keeping/common/widget/book_search_bar.dart';
 import 'package:book_keeping/common/widget/bottom_menu.dart';
 import 'package:book_keeping/common/widget/filter_buttons.dart';
-import 'package:book_keeping/data_access/model/user.dart' as data_access;
+import 'package:book_keeping/data_access/model/book.dart';
 import 'package:book_keeping/data_access/service/book_service.dart';
+import 'package:book_keeping/data_access/service/my_book_service.dart';
 import 'package:book_keeping/data_access/service/user_service.dart';
 import 'package:book_keeping/utils/top_bar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -18,6 +20,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final bookService = GetIt.instance.get<BookService>();
     final userService = GetIt.instance.get<UserService>();
+    final myBookService = GetIt.instance.get<MyBookService>();
 
     return Scaffold(
       appBar: topBar(title: 'My library'),
@@ -40,10 +43,26 @@ class HomePage extends StatelessWidget {
             ),
             TextButton(
                 onPressed: () async {
-                  await userService
-                      .create(data_access.User(email: "123@me.com"));
-                  final tmp = await userService.exists("1243@me.com");
-                  print("user: 123@me.com: $tmp");
+                  final user = await userService.getByEmail("123@me.com");
+                  final books = (await FirebaseFirestore.instance
+                          .collection('book')
+                          .withConverter(
+                    fromFirestore: (snapshot, options) {
+                      final json = snapshot.data() ?? {};
+                      json['id'] = snapshot.id;
+                      return Book.fromJson(json);
+                    },
+                    toFirestore: (value, options) {
+                      final json = value.toJson();
+                      json.remove('id');
+                      return json;
+                    },
+                  ).get())
+                      .docs
+                      .map((e) => e.data())
+                      .toList();
+                  await myBookService.create(user.id!, books.first.id!);
+                  print("$user#$books");
                 },
                 child: const Text("Add")),
             StreamBuilder(
