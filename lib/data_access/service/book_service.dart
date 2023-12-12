@@ -24,7 +24,7 @@ class BookService {
   Future<void> create(Book book) async {
     if (await exists(book.isbn)) {
       throw DuplicateDataException(
-          "User with email: ${book.isbn} already exists");
+          "Book with ISBN: ${book.isbn} already exists");
     }
     await _bookCollection.add(book);
   }
