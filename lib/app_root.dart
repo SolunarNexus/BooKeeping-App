@@ -1,4 +1,7 @@
+import 'package:book_keeping/books_page/widget/books_page.dart';
+import 'package:book_keeping/friends_page/widget/friends_page.dart';
 import 'package:book_keeping/home_page/widget/home_page.dart';
+import 'package:book_keeping/ranking_page/widget/ranking_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -10,19 +13,40 @@ class AppRoot extends StatelessWidget {
     routes: [
       GoRoute(
         path: "/auth",
+        name: 'login',
         builder: (context, state) => const Login(),
       ),
       GoRoute(
-        path: "/my-library",
+        path: "/",
+        name: 'home',
         builder: (context, state) => const HomePage(),
       ),
+      GoRoute(
+        path: "/my-friends",
+        name: 'friends',
+        builder: (context, state) => const FriendsPage(),
+      ),
+      GoRoute(
+        path: "/ranking",
+        name: 'rankings',
+        builder: (context, state) => const RankingPage(),
+      ),
+      GoRoute(
+        path: "/books",
+        name: 'books',
+        builder: (context, state) => const BooksPage(),
+        routes: [
+          GoRoute(
+              path: ':id',
+              builder: (context, state) {
+                final bookId = state.pathParameters['bookId'];
+                // TODO: return BookDetailPage(id: bookId);
+                return const Scaffold();
+              }),
+        ],
+      ),
     ],
-    redirect: (context, state) {
-      if (FirebaseAuth.instance.currentUser == null) {
-        return "/auth";
-      }
-      return "/my-library";
-    },
+    initialLocation: FirebaseAuth.instance.currentUser == null ? "/auth" : "/",
   );
 
   AppRoot({super.key});

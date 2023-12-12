@@ -105,7 +105,7 @@ class _LoginState extends State<Login> {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: _emailController.text, password: _passwordController.text);
         if (mounted) {
-          context.go("/my-library");
+          context.goNamed("home");
         }
       } on FirebaseAuthException catch (e) {
         if (mounted &&

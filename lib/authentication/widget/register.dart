@@ -98,7 +98,7 @@ class _RegisterState extends State<Register> {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: _emailController.text, password: _passwordController.text);
         if (mounted) {
-          context.go("/my-library");
+          context.goNamed("home");
         }
       } on FirebaseAuthException catch (e) {
         if (mounted && e.code == "email-already-in-use") {
