@@ -25,11 +25,14 @@ class UserService {
     await _userCollection.add(user);
   }
 
-  Future<User> get(String email) async {
+  Future<User> getByEmail(String email) async {
     final snapshot =
         await _userCollection.where("email", isEqualTo: email).get();
     return snapshot.docs.single.data();
   }
+
+  Future<User?> getById(String id) async =>
+      (await _userCollection.doc(id).get()).data();
 
   Future<bool> exists(String email) async {
     final countSnapshot =

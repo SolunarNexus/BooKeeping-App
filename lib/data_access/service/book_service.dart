@@ -29,6 +29,9 @@ class BookService {
     await _bookCollection.add(book);
   }
 
+  Future<Book?> getById(String id) async =>
+      (await _bookCollection.doc(id).get()).data();
+
   Future<bool> exists(String isbn) async {
     final countSnapshot =
         await _bookCollection.where("isbn", isEqualTo: isbn).count().get();
