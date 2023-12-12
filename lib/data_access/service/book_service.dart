@@ -1,3 +1,4 @@
+import 'package:book_keeping/common/utility/duplicate_data_exception.dart';
 import 'package:book_keeping/data_access/model/book.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -20,7 +21,17 @@ class BookService {
       _bookCollection.snapshots().map((querySnapshot) =>
           querySnapshot.docs.map((docSnapshot) => docSnapshot.data()).toList());
 
-  Future<void> create(Book book) {
-    return _bookCollection.add(book);
+  Future<void> create(Book book) async {
+    if (await exists(book.isbn)) {
+      throw DuplicateDataException(
+          "User with email: ${book.isbn} already exists");
+    }
+    await _bookCollection.add(book);
+  }
+
+  Future<bool> exists(String isbn) async {
+    final countSnapshot =
+        await _bookCollection.where("isbn", isEqualTo: isbn).count().get();
+    return countSnapshot.count > 0;
   }
 }
