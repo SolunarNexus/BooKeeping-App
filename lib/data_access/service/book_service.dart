@@ -16,11 +16,11 @@ class BookService {
     },
   );
 
-  Stream<List<Book>> get bookStream =>
+  Stream<List<Book>> get stream =>
       _bookCollection.snapshots().map((querySnapshot) =>
           querySnapshot.docs.map((docSnapshot) => docSnapshot.data()).toList());
 
-  Future<void> createBook(Book book) {
+  Future<void> create(Book book) {
     return _bookCollection.add(book);
   }
 }
