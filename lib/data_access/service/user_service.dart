@@ -1,3 +1,4 @@
+import 'package:book_keeping/common/utility/duplicate_data_exception.dart';
 import 'package:book_keeping/data_access/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -16,8 +17,18 @@ class UserService {
     },
   );
 
-  Future<void> create(User user) {
-    return _userCollection.add(user);
+  Future<void> create(String email) async {
+    final user = User(email: email);
+    if (await exists(email)) {
+      throw DuplicateDataException("User with email: $email already exists");
+    }
+    await _userCollection.add(user);
+  }
+
+  Future<User> get(String email) async {
+    final snapshot =
+        await _userCollection.where("email", isEqualTo: email).get();
+    return snapshot.docs.single.data();
   }
 
   Future<bool> exists(String email) async {
