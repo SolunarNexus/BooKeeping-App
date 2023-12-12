@@ -1,4 +1,4 @@
-import 'package:book_keeping/utils/top_bar.dart';
+import 'package:book_keeping/common/widget/top_bar.dart';
 import 'package:book_keeping/common/widget/general_listview.dart';
 import 'package:book_keeping/common/widget/general_search_bar.dart';
 import 'package:book_keeping/common/widget/bottom_menu.dart';
@@ -25,7 +25,7 @@ class HomePage extends StatelessWidget {
               color: Colors.black,
             ),
             const Text(
-              'Book title',
+              "Book title",
               style: TextStyle(color: Colors.black, fontSize: 19),
             ),
             const Spacer(),
@@ -43,12 +43,15 @@ class HomePage extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: topBar(title: 'My library'),
-      bottomNavigationBar: const BottomMenu(),
+      appBar: TopBar(
+        titleText: "My library",
+        context: context,
+      ),
+      bottomNavigationBar: BottomMenu(),
       body: Center(
         child: Column(
           children: [
-            FilterButtons(labels: const ['Reading', 'Finished', 'Wishlist']),
+            FilterButtons(labels: const ["Reading", "Finished", "Wishlist"]),
             const GeneralSearchBar(),
             GeneralListView(items: List<Card>.generate(7, (_) => bookCard)),
             // TODO: Only for testing purposes, remove later

@@ -1,7 +1,7 @@
 import 'package:book_keeping/common/widget/general_listview.dart';
 import 'package:book_keeping/common/widget/general_search_bar.dart';
 import 'package:book_keeping/common/widget/bottom_menu.dart';
-import 'package:book_keeping/utils/top_bar.dart';
+import 'package:book_keeping/common/widget/top_bar.dart';
 import 'package:flutter/material.dart';
 
 class FriendsPage extends StatelessWidget {
@@ -28,7 +28,7 @@ class FriendsPage extends StatelessWidget {
               width: 10,
             ),
             const Text(
-              'Bob Doe',
+              "Bob Doe",
               style: TextStyle(color: Colors.black, fontSize: 19),
             ),
             const Spacer(),
@@ -46,8 +46,8 @@ class FriendsPage extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: topBar(title: "My friends"),
-      bottomNavigationBar: const BottomMenu(),
+      appBar: TopBar(titleText: "My friends", context: context),
+      bottomNavigationBar: BottomMenu(),
       body: Center(
         child: Column(
           children: [
