@@ -10,24 +10,26 @@ class NotificationsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notificationCard = Card(
-      color: Colors.red[300],
+      color: Theme.of(context).cardColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Flexible(
             fit: FlexFit.tight,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
               child: Text.rich(
                 TextSpan(
                   text: "Bob ",
                   style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.red[100]),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                      color: Theme.of(context).primaryColor),
                   children: const <TextSpan>[
                     TextSpan(
                       text: "recommends ",
                       style: TextStyle(
-                          fontWeight: FontWeight.normal, color: Colors.black),
+                          fontWeight: FontWeight.normal, fontSize: 14),
                     ),
                     TextSpan(text: "Book title")
                   ],
@@ -54,7 +56,6 @@ class NotificationsPage extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            const GeneralSearchBar(),
             GeneralListView(
               items: List<Card>.generate(7, (_) => notificationCard),
             )
