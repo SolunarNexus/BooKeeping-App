@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-class FilterButtons extends StatefulWidget {
+class ThreeButtonGroup extends StatefulWidget {
   final List<bool> _filterSelection;
   final List<String> _labels;
 
-  FilterButtons({super.key, required List<String> labels})
+  ThreeButtonGroup({super.key, required List<String> labels})
       : _labels = labels,
         _filterSelection = List<bool>.generate(labels.length, (_) => false);
 
   @override
-  State<FilterButtons> createState() => _FilterButtonsState();
+  State<ThreeButtonGroup> createState() => _ThreeButtonGroupState();
 }
 
-class _FilterButtonsState extends State<FilterButtons> {
+class _ThreeButtonGroupState extends State<ThreeButtonGroup> {
   @override
   Widget build(BuildContext context) {
     return ToggleButtons(
