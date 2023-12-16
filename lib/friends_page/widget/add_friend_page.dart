@@ -10,44 +10,6 @@ class AddFriendPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final friendCard = Card(
-      color: Theme.of(context).cardColor,
-      child: Row(
-        children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            // Will be replaced by real avatar image
-            child: Icon(
-              Icons.account_circle,
-              size: 80,
-              color: Colors.black,
-            ),
-          ),
-          Flexible(
-            fit: FlexFit.tight,
-            child: Text(
-              "Bob Doe",
-              style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontSize: 19,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.more_horiz,
-                color: Colors.black,
-                size: 30.0,
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-
     return Scaffold(
       appBar: TopBar(
         titleText: "Add friend",
