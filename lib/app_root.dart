@@ -1,4 +1,5 @@
 import 'package:book_keeping/books_page/widget/books_page.dart';
+import 'package:book_keeping/friends_page/widget/add_friend_page.dart';
 import 'package:book_keeping/friends_page/widget/friends_page.dart';
 import 'package:book_keeping/home_page/widget/home_page.dart';
 import 'package:book_keeping/notifications_page/widget/notifications_page.dart';
@@ -26,6 +27,11 @@ class AppRoot extends StatelessWidget {
         path: "/my-friends",
         name: "friends",
         builder: (context, state) => const FriendsPage(),
+      ),
+      GoRoute(
+        path: "/add-friend",
+        name: "addFriend",
+        builder: (context, state) => const AddFriendPage(),
       ),
       GoRoute(
         path: "/ranking",
@@ -70,6 +76,7 @@ class AppRoot extends StatelessWidget {
         colorSchemeSeed: Colors.brown,
         brightness: Brightness.dark,
         useMaterial3: true,
+        cardColor: Colors.brown[900],
       ),
       routerConfig: _router,
     );
