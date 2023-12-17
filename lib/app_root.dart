@@ -1,3 +1,4 @@
+import 'package:book_keeping/book_detail_page/widget/book_detail_page.dart';
 import 'package:book_keeping/books_page/widget/books_page.dart';
 import 'package:book_keeping/friends_page/widget/friends_page.dart';
 import 'package:book_keeping/home_page/widget/home_page.dart';
@@ -50,9 +51,15 @@ class AppRoot extends StatelessWidget {
         path: "/notifications",
         name: "notifications",
         builder: (context, state) => const NotificationsPage(),
+      ),
+      GoRoute(
+        path: "/book-detail",
+        name: "book-detail",
+        builder: (context, state) => const BookDetailPage(title: "Book Title"),
       )
     ],
-    initialLocation: FirebaseAuth.instance.currentUser == null ? "/auth" : "/",
+    initialLocation:
+        FirebaseAuth.instance.currentUser == null ? "/auth" : "/book-detail",
   );
 
   AppRoot({super.key});
