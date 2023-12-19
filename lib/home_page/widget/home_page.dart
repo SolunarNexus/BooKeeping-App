@@ -3,6 +3,7 @@ import 'package:book_keeping/common/widget/book_search_bar.dart';
 import 'package:book_keeping/common/widget/bottom_menu.dart';
 import 'package:book_keeping/common/widget/filter_buttons.dart';
 import 'package:book_keeping/data_access/model/book.dart';
+import 'package:book_keeping/data_access/service/book_rating_service.dart';
 import 'package:book_keeping/data_access/service/book_service.dart';
 import 'package:book_keeping/data_access/service/my_book_service.dart';
 import 'package:book_keeping/data_access/service/user_service.dart';
@@ -21,6 +22,7 @@ class HomePage extends StatelessWidget {
     final bookService = GetIt.instance.get<BookService>();
     final userService = GetIt.instance.get<UserService>();
     final myBookService = GetIt.instance.get<MyBookService>();
+    final bookRatingService = GetIt.instance.get<BookRatingService>();
 
     return Scaffold(
       appBar: topBar(title: 'My library'),
@@ -41,6 +43,7 @@ class HomePage extends StatelessWidget {
                 }
               },
             ),
+            // TODO: Only for testing purposes, remove later
             TextButton(
                 onPressed: () async {
                   final user = await userService.getByEmail("123@me.com");
@@ -61,8 +64,7 @@ class HomePage extends StatelessWidget {
                       .docs
                       .map((e) => e.data())
                       .toList();
-                  await myBookService.create(user.id!, books.first.id!);
-                  print("$user#$books");
+                  await bookRatingService.create(user.id!, books.first.id!, 5);
                 },
                 child: const Text("Add")),
             StreamBuilder(
