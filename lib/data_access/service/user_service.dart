@@ -4,8 +4,10 @@ import 'package:book_keeping/data_access/utility/collection_type.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserService {
+  static const CollectionType collectionType = CollectionType.user;
+
   final _userCollection = FirebaseFirestore.instance
-      .collection(CollectionType.user.collectionPath)
+      .collection(collectionType.collectionPath)
       .withConverter(
     fromFirestore: (snapshot, options) {
       final json = snapshot.data() ?? {};
@@ -22,7 +24,8 @@ class UserService {
   Future<void> create(String email) async {
     final user = User(email: email);
     if (await exists(email)) {
-      throw DuplicateDataException("User with email: $email already exists");
+      throw DuplicateDataException(
+          "${collectionType.collectionPath} with email: $email already exists");
     }
     await _userCollection.add(user);
   }

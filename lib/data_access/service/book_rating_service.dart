@@ -4,8 +4,10 @@ import 'package:book_keeping/data_access/utility/collection_type.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BookRatingService {
+  static const CollectionType collectionType = CollectionType.bookRating;
+
   final _bookRatingCollection = FirebaseFirestore.instance
-      .collection(CollectionType.bookRating.collectionPath)
+      .collection(collectionType.collectionPath)
       .withConverter(
     fromFirestore: (snapshot, options) {
       final json = snapshot.data() ?? {};
@@ -28,7 +30,7 @@ class BookRatingService {
   Future<void> create(String userId, String bookId, int rating) async {
     if (await exists(userId, bookId)) {
       throw DuplicateDataException(
-          "BookRating with userId: $userId and bookId: $bookId already exists");
+          "${collectionType.collectionPath} with userId: $userId and bookId: $bookId already exists");
     }
     final myBook = BookRating(rating: rating, userId: userId, bookId: bookId);
     await _bookRatingCollection.add(myBook);
