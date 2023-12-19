@@ -31,8 +31,7 @@ class _RegisterState extends State<Register> {
         padding: const EdgeInsets.all(32.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: [
               const FieldLabel(text: "Email"),
               TextFormField(
