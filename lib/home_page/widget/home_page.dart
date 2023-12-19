@@ -5,6 +5,7 @@ import 'package:book_keeping/common/widget/filter_buttons.dart';
 import 'package:book_keeping/data_access/model/book.dart';
 import 'package:book_keeping/data_access/service/book_rating_service.dart';
 import 'package:book_keeping/data_access/service/book_service.dart';
+import 'package:book_keeping/data_access/service/friend_request_service.dart';
 import 'package:book_keeping/data_access/service/friend_service.dart';
 import 'package:book_keeping/data_access/service/my_book_service.dart';
 import 'package:book_keeping/data_access/service/user_service.dart';
@@ -25,6 +26,7 @@ class HomePage extends StatelessWidget {
     final myBookService = GetIt.instance.get<MyBookService>();
     final bookRatingService = GetIt.instance.get<BookRatingService>();
     final friendService = GetIt.instance.get<FriendService>();
+    final friendRequestService = GetIt.instance.get<FriendRequestService>();
 
     return Scaffold(
       appBar: topBar(title: 'My library'),
@@ -67,7 +69,7 @@ class HomePage extends StatelessWidget {
                       .docs
                       .map((e) => e.data())
                       .toList();
-                  await friendService.create(user.id!, otherUser.id!);
+                  await friendRequestService.create(user.id!, otherUser.id!);
                 },
                 child: const Text("Add")),
           ],

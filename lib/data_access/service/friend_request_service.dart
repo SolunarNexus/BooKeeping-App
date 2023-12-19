@@ -2,8 +2,8 @@ import 'package:book_keeping/data_access/model/friend.dart';
 import 'package:book_keeping/data_access/service/friend_base_service.dart';
 import 'package:book_keeping/data_access/utility/collection_type.dart';
 
-class FriendService extends FriendBaseService {
-  static const CollectionType collectionType = CollectionType.friend;
+class FriendRequestService extends FriendBaseService {
+  static const CollectionType collectionType = CollectionType.friendRequest;
 
   Stream<List<Friend>> getStream(String userId) =>
       super.baseGetStream(collectionType, userId);
