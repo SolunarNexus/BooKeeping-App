@@ -1,5 +1,5 @@
+import 'package:book_keeping/common/model/read_state.dart';
 import 'package:book_keeping/data_access/model/book.dart';
-import 'package:book_keeping/data_access/model/read_state.dart';
 import 'package:book_keeping/data_access/model/user.dart';
 
 class MyBookComplete {

@@ -1,10 +1,12 @@
 import 'package:book_keeping/common/utility/duplicate_data_exception.dart';
 import 'package:book_keeping/data_access/model/book_rating.dart';
+import 'package:book_keeping/data_access/utility/collection_type.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BookRatingService {
-  final _bookRatingCollection =
-      FirebaseFirestore.instance.collection('book_rating').withConverter(
+  final _bookRatingCollection = FirebaseFirestore.instance
+      .collection(CollectionType.bookRating.collectionPath)
+      .withConverter(
     fromFirestore: (snapshot, options) {
       final json = snapshot.data() ?? {};
       json['id'] = snapshot.id;

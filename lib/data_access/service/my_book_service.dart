@@ -1,11 +1,13 @@
+import 'package:book_keeping/common/model/read_state.dart';
 import 'package:book_keeping/common/utility/duplicate_data_exception.dart';
 import 'package:book_keeping/data_access/model/my_book.dart';
-import 'package:book_keeping/data_access/model/read_state.dart';
+import 'package:book_keeping/data_access/utility/collection_type.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyBookService {
-  final _myBookCollection =
-      FirebaseFirestore.instance.collection('my_book').withConverter(
+  final _myBookCollection = FirebaseFirestore.instance
+      .collection(CollectionType.myBook.collectionPath)
+      .withConverter(
     fromFirestore: (snapshot, options) {
       final json = snapshot.data() ?? {};
       json['id'] = snapshot.id;

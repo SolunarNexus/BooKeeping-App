@@ -1,4 +1,4 @@
-import 'package:book_keeping/data_access/model/read_state.dart';
+import 'package:book_keeping/common/model/read_state.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'my_book.g.dart';

@@ -1,10 +1,12 @@
 import 'package:book_keeping/common/utility/duplicate_data_exception.dart';
 import 'package:book_keeping/data_access/model/user.dart';
+import 'package:book_keeping/data_access/utility/collection_type.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserService {
-  final _userCollection =
-      FirebaseFirestore.instance.collection('user').withConverter(
+  final _userCollection = FirebaseFirestore.instance
+      .collection(CollectionType.user.collectionPath)
+      .withConverter(
     fromFirestore: (snapshot, options) {
       final json = snapshot.data() ?? {};
       json['id'] = snapshot.id;
