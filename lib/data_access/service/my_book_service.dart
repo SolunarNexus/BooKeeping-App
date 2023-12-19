@@ -36,8 +36,8 @@ class MyBookService {
 
   Future<bool> exists(String userId, String bookId) async {
     final countSnapshot = await _myBookCollection
-        .where("userRef", isEqualTo: "/user/$userId")
-        .where("bookRef", isEqualTo: "/book/$bookId")
+        .where("userId", isEqualTo: userId)
+        .where("bookId", isEqualTo: bookId)
         .count()
         .get();
     return countSnapshot.count > 0;
