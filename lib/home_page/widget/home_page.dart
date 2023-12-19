@@ -5,6 +5,7 @@ import 'package:book_keeping/common/widget/filter_buttons.dart';
 import 'package:book_keeping/data_access/model/book.dart';
 import 'package:book_keeping/data_access/service/book_rating_service.dart';
 import 'package:book_keeping/data_access/service/book_service.dart';
+import 'package:book_keeping/data_access/service/friend_service.dart';
 import 'package:book_keeping/data_access/service/my_book_service.dart';
 import 'package:book_keeping/data_access/service/user_service.dart';
 import 'package:book_keeping/utils/top_bar.dart';
@@ -23,6 +24,7 @@ class HomePage extends StatelessWidget {
     final userService = GetIt.instance.get<UserService>();
     final myBookService = GetIt.instance.get<MyBookService>();
     final bookRatingService = GetIt.instance.get<BookRatingService>();
+    final friendService = GetIt.instance.get<FriendService>();
 
     return Scaffold(
       appBar: topBar(title: 'My library'),
@@ -46,7 +48,8 @@ class HomePage extends StatelessWidget {
             // TODO: Only for testing purposes, remove later
             TextButton(
                 onPressed: () async {
-                  final user = await userService.getByEmail("123@me.com");
+                  final user = await userService.getByEmail("123456@mail.com");
+                  final otherUser = await userService.getByEmail("123@me.com");
                   final books = (await FirebaseFirestore.instance
                           .collection('book')
                           .withConverter(
@@ -64,31 +67,9 @@ class HomePage extends StatelessWidget {
                       .docs
                       .map((e) => e.data())
                       .toList();
-                  await bookRatingService.create(user.id!, books.first.id!, 5);
+                  await friendService.create(user.id!, otherUser.id!);
                 },
                 child: const Text("Add")),
-            StreamBuilder(
-              stream: bookService.stream,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Expanded(
-                    child: ListView.separated(
-                      separatorBuilder: (context, index) => const Divider(),
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        return Row(
-                          children: [
-                            Text(snapshot.data![index].title),
-                            Text(snapshot.data![index].author)
-                          ],
-                        );
-                      },
-                    ),
-                  );
-                }
-                return Text("Error");
-              },
-            )
           ],
         ),
       ),
