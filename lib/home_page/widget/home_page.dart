@@ -3,11 +3,13 @@ import 'package:book_keeping/common/widget/book_search_bar.dart';
 import 'package:book_keeping/common/widget/bottom_menu.dart';
 import 'package:book_keeping/common/widget/filter_buttons.dart';
 import 'package:book_keeping/data_access/model/book.dart';
+import 'package:book_keeping/data_access/model/friend.dart';
 import 'package:book_keeping/data_access/service/book_rating_service.dart';
 import 'package:book_keeping/data_access/service/book_service.dart';
 import 'package:book_keeping/data_access/service/friend_request_service.dart';
 import 'package:book_keeping/data_access/service/friend_service.dart';
 import 'package:book_keeping/data_access/service/my_book_service.dart';
+import 'package:book_keeping/data_access/service/recommendation_service.dart';
 import 'package:book_keeping/data_access/service/user_service.dart';
 import 'package:book_keeping/utils/top_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,6 +29,7 @@ class HomePage extends StatelessWidget {
     final bookRatingService = GetIt.instance.get<BookRatingService>();
     final friendService = GetIt.instance.get<FriendService>();
     final friendRequestService = GetIt.instance.get<FriendRequestService>();
+    final recommendationService = GetIt.instance.get<RecommendationService>();
 
     return Scaffold(
       appBar: topBar(title: 'My library'),
@@ -69,7 +72,26 @@ class HomePage extends StatelessWidget {
                       .docs
                       .map((e) => e.data())
                       .toList();
-                  await friendRequestService.create(user.id!, otherUser.id!);
+                  final friends = (await FirebaseFirestore.instance
+                          .collection('friend')
+                          .withConverter(
+                    fromFirestore: (snapshot, options) {
+                      final json = snapshot.data() ?? {};
+                      json['id'] = snapshot.id;
+                      return Friend.fromJson(json);
+                    },
+                    toFirestore: (value, options) {
+                      final json = value.toJson();
+                      json.remove('id');
+                      return json;
+                    },
+                  ).get())
+                      .docs
+                      .map((e) => e.data())
+                      .toList();
+
+                  await recommendationService.create(
+                      friends.first.id!, books.first.id!);
                 },
                 child: const Text("Add")),
           ],
