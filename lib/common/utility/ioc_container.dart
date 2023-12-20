@@ -1,4 +1,6 @@
 import 'package:book_keeping/common/service/converter_service.dart';
+import 'package:book_keeping/data_access/facade/my_book_facade.dart';
+import 'package:book_keeping/data_access/facade/recommendation_facade.dart';
 import 'package:book_keeping/data_access/service/book_rating_service.dart';
 import 'package:book_keeping/data_access/service/book_service.dart';
 import 'package:book_keeping/data_access/service/friend_request_service.dart';
@@ -19,5 +21,7 @@ class IocContainer {
     getIt.registerSingleton(FriendRequestService());
     getIt.registerSingleton(RecommendationService());
     getIt.registerSingleton(ConverterService());
+    getIt.registerSingleton(MyBookFacade());
+    getIt.registerSingleton(RecommendationFacade());
   }
 }
