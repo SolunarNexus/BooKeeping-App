@@ -9,14 +9,14 @@ class NotificationCard extends Card {
       required BuildContext context})
       : super(
           color: Theme.of(context).cardColor,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Flexible(
-                fit: FlexFit.tight,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+          child: Padding(
+            padding:
+                const EdgeInsets.only(left: 15, right: 10, top: 10, bottom: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Flexible(
+                  fit: FlexFit.tight,
                   child: Text.rich(
                     TextSpan(
                       text: '$userName ',
@@ -33,20 +33,22 @@ class NotificationCard extends Card {
                     ),
                   ),
                 ),
-              ),
-              Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.check),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () {},
-                  )
-                ],
-              ),
-            ],
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.check),
+                      // TODO: update DB
+                      onPressed: () {},
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      // TODO: update DB
+                      onPressed: () {},
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
         );
 }
