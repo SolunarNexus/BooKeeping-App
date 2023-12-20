@@ -45,12 +45,12 @@ class AppRoot extends StatelessWidget {
         builder: (context, state) => const BooksPage(),
         routes: [
           GoRoute(
-              path: ":id",
-              builder: (context, state) {
-                final bookId = state.pathParameters["bookId"];
-                // TODO: return BookDetailPage(id: bookId);
-                return const Scaffold();
-              }),
+            path: ":title",
+            builder: (context, state) {
+              final bookTitle = state.pathParameters["title"];
+              return BookDetailPage(title: bookTitle!);
+            },
+          ),
         ],
       ),
       GoRoute(
@@ -58,11 +58,6 @@ class AppRoot extends StatelessWidget {
         name: "notifications",
         builder: (context, state) => const NotificationsPage(),
       ),
-      GoRoute(
-        path: "/book-detail",
-        name: "book-detail",
-        builder: (context, state) => const BookDetailPage(title: "Book Title"),
-      )
     ],
     initialLocation: FirebaseAuth.instance.currentUser == null ? "/auth" : "/",
   );
