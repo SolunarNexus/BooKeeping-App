@@ -45,6 +45,9 @@ class FriendBaseService {
     await _getCollection(collectionType).add(myBook);
   }
 
+  Future<Friend?> baseGetById(CollectionType collectionType, String id) async =>
+      (await _getCollection(collectionType).doc(id).get()).data();
+
   Future<Friend> baseGetByIds(
       CollectionType collectionType, String userId, String otherUserId) async {
     final snapshot = await _getCollection(collectionType)

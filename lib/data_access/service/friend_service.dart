@@ -11,6 +11,8 @@ class FriendService extends FriendBaseService {
   Future<void> create(String userId, String otherUserId) =>
       super.baseCreate(collectionType, userId, otherUserId);
 
+  Future<Friend?> getById(String id) => super.baseGetById(collectionType, id);
+
   Future<Friend> getByIds(String userId, String otherUserId) =>
       super.baseGetByIds(collectionType, userId, otherUserId);
 
