@@ -46,7 +46,7 @@ class RecommendationService {
     return snapshot.docs.single.data();
   }
 
-  Future<void> baseDelete(String friendId, String bookId) async {
+  Future<void> delete(String friendId, String bookId) async {
     final recommendation = await getByIds(friendId, bookId);
     _recommendationCollection.doc(recommendation.id).delete();
   }
