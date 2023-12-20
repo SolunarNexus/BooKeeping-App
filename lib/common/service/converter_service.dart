@@ -1,5 +1,6 @@
 import 'package:book_keeping/common/model/my_book_complete.dart';
 import 'package:book_keeping/common/model/recommendation_complete.dart';
+import 'package:book_keeping/common/utility/not_found_exception.dart';
 import 'package:book_keeping/data_access/model/my_book.dart';
 import 'package:book_keeping/data_access/model/recommendation.dart';
 import 'package:book_keeping/data_access/service/book_service.dart';
@@ -15,11 +16,11 @@ class ConverterService {
   Future<MyBookComplete> fromMyBook(MyBook myBook) async {
     final user = await _userService.getById(myBook.userId);
     if (user == null) {
-      throw Exception("User with id: ${myBook.userId} does not exist");
+      throw NotFoundException("User with id: ${myBook.userId} does not exist");
     }
     final book = await _bookService.getById(myBook.userId);
     if (book == null) {
-      throw Exception("Book with id: ${myBook.bookId} does not exist");
+      throw NotFoundException("Book with id: ${myBook.bookId} does not exist");
     }
     return MyBookComplete(
         id: myBook.id, readState: myBook.readState, user: user, book: book);
@@ -40,7 +41,7 @@ class ConverterService {
       Recommendation recommendation) async {
     final friend = await _friendService.getById(recommendation.friendId);
     if (friend == null) {
-      throw Exception(
+      throw NotFoundException(
           "Friend with id: ${recommendation.friendId} does not exist");
     }
     return RecommendationComplete(
