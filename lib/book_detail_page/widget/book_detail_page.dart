@@ -2,16 +2,41 @@ import 'package:book_keeping/common/widget/bottom_menu.dart';
 import 'package:book_keeping/common/widget/top_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:go_router/go_router.dart';
 
-class BookDetailPage extends StatelessWidget {
+class BookDetailPage extends StatefulWidget {
   final String _title;
+  // TODO: fetch from DB
+  bool _favourite;
+  // TODO: fetch from DB
+  bool _done;
+  // TODO: fetch from DB
+  bool _reading;
 
-  const BookDetailPage({super.key, required String title}) : _title = title;
+  BookDetailPage(
+      {super.key,
+      required String title,
+      bool favourite = false,
+      bool done = false,
+      bool reading = false})
+      : _title = title,
+        _favourite = favourite,
+        _done = done,
+        _reading = reading;
+
+  @override
+  State<BookDetailPage> createState() => _BookDetailPageState();
+}
+
+class _BookDetailPageState extends State<BookDetailPage> {
+  void _updateFavProperty() => widget._favourite = !widget._favourite;
+  void _updateDoneProperty() => widget._done = !widget._done;
+  void _updateReadingProperty() => widget._reading = !widget._reading;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopBar(titleText: _title, context: context),
+      appBar: TopBar(titleText: widget._title, context: context),
       bottomNavigationBar: BottomMenu(),
       body: SingleChildScrollView(
         child: Column(
@@ -20,12 +45,12 @@ class BookDetailPage extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Column(
+                Column(
                   children: [
-                    Icon(Icons.image, size: 150),
-                    Icon(Icons.favorite_border, size: 40),
-                    Icon(Icons.beenhere_outlined, size: 40),
-                    Icon(Icons.bookmark_border, size: 40),
+                    const Icon(Icons.image, size: 150),
+                    _buildFavouriteButton(),
+                    _buildDoneButton(),
+                    _buildReadingButton(),
                   ],
                 ),
                 Flexible(
@@ -45,28 +70,34 @@ class BookDetailPage extends StatelessWidget {
                                 height: 25,
                                 width: 80,
                                 child: ElevatedButton(
-                                    onPressed: () {}, child: Text("Rate")),
+                                  onPressed: () {},
+                                  child: Text("Rate"),
+                                ),
                               ),
                               RatingBar.builder(
-                                  initialRating: 0,
-                                  itemCount: 5,
-                                  // ignoreGestures: true,
-                                  allowHalfRating: true,
-                                  itemSize: 30,
-                                  updateOnDrag: true,
-                                  itemBuilder: (context, index) =>
-                                      const Icon(Icons.star),
-                                  onRatingUpdate: (_) {}),
+                                initialRating: 0,
+                                itemCount: 5,
+                                // TODO: set to TRUE before production
+                                // ignoreGestures: true,
+                                allowHalfRating: true,
+                                itemSize: 30,
+                                updateOnDrag: true,
+                                itemBuilder: (context, index) =>
+                                    const Icon(Icons.star),
+                                onRatingUpdate: (rating) {},
+                              ),
                             ],
                           ),
                         ),
-                        const Text("Some interesting description of the book"),
+                        const Text(
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam facilisis mi eget ex condimentum elementum. Nam malesuada euismod est, a pellentesque orci. Donec pellentesque, lectus non consectetur rhoncus, sapien purus vulputate est, eget lobortis elit diam vitae nisi. Nulla quis neque sed neque congue vehicula id non ipsum. In sed condimentum velit. Fusce viverra nunc at sollicitudin tempor. Integer semper malesuada eleifend."),
                       ],
                     ),
                   ),
                 ),
               ],
             ),
+            // TODO: extract to standalone widget that fetches data from DB (or accepts model object)
             Container(
               width: 370,
               padding: const EdgeInsets.symmetric(vertical: 20),
@@ -110,17 +141,21 @@ class BookDetailPage extends StatelessWidget {
               children: [
                 const Text("You may also like"),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: List<Flexible>.generate(
                     3,
                     (index) => Flexible(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Column(
-                          children: [
-                            const Icon(Icons.image, size: 100),
-                            Text(
-                                "Book title Book title Book title Book title Book title Book title Book title ${index + 1}"),
-                          ],
+                        child: InkWell(
+                          onTap: () =>
+                              context.push('/books/Book title ${index + 1}'),
+                          child: Column(
+                            children: [
+                              const Icon(Icons.image, size: 100),
+                              Text("Book title ${index + 1}"),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -132,5 +167,49 @@ class BookDetailPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  IconButton _buildSwitchButton(
+      {required bool isOn,
+      required Icon onIcon,
+      required Icon offIcon,
+      required void Function() update}) {
+    return isOn
+        ? IconButton(
+            onPressed: () => setState(() => update()),
+            icon: onIcon,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+          )
+        : IconButton(
+            onPressed: () => setState(() => update()),
+            icon: offIcon,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+          );
+  }
+
+  IconButton _buildFavouriteButton() {
+    return _buildSwitchButton(
+        isOn: widget._favourite,
+        onIcon: const Icon(Icons.favorite, size: 40.0),
+        offIcon: const Icon(Icons.favorite_border, size: 40.0),
+        update: _updateFavProperty);
+  }
+
+  IconButton _buildDoneButton() {
+    return _buildSwitchButton(
+        isOn: widget._done,
+        onIcon: const Icon(Icons.beenhere, size: 40.0),
+        offIcon: const Icon(Icons.beenhere_outlined, size: 40.0),
+        update: _updateDoneProperty);
+  }
+
+  IconButton _buildReadingButton() {
+    return _buildSwitchButton(
+        isOn: widget._reading,
+        onIcon: const Icon(Icons.bookmark, size: 40.0),
+        offIcon: const Icon(Icons.bookmark_border, size: 40.0),
+        update: _updateReadingProperty);
   }
 }
