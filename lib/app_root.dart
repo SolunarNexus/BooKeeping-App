@@ -58,8 +58,7 @@ class AppRoot extends StatelessWidget {
         builder: (context, state) => const BookDetailPage(title: "Book Title"),
       )
     ],
-    initialLocation:
-        FirebaseAuth.instance.currentUser == null ? "/auth" : "/book-detail",
+    initialLocation: FirebaseAuth.instance.currentUser == null ? "/auth" : "/",
   );
 
   AppRoot({super.key});
