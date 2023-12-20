@@ -63,8 +63,10 @@ abstract class FriendBaseService {
 
   Future<void> delete(String userId, String otherUserId) async {
     final friend = await getByIds(userId, otherUserId);
-    _getCollection().doc(friend.id).delete();
+    await deleteById(friend.id!);
   }
+
+  Future<void> deleteById(String id) => _getCollection().doc(id).delete();
 
   Future<bool> exists(String userId, String otherUserId) async {
     final countSnapshot = await _getCollection()
