@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class GeneralListView extends StatelessWidget {
-  final List<Card> _items;
+  final List<Widget> _items;
 
   const GeneralListView({super.key, required items}) : _items = items;
 
