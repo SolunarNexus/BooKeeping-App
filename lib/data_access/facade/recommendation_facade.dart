@@ -20,7 +20,7 @@ class RecommendationFacade {
             .toList());
   }
 
-  Future<void> create(String friendId, String bookId) async =>
+  Future<void> create(String friendId, String bookId) =>
       _recommendationService.create(friendId, bookId);
 
   Future<RecommendationComplete> getByIds(
@@ -28,9 +28,9 @@ class RecommendationFacade {
       _converterService.fromRecommendation(
           await _recommendationService.getByIds(friendId, bookId));
 
-  Future<void> delete(String friendId, String bookId) async =>
+  Future<void> delete(String friendId, String bookId) =>
       _recommendationService.delete(friendId, bookId);
 
-  Future<bool> exists(String friendId, String bookId) async =>
+  Future<bool> exists(String friendId, String bookId) =>
       _recommendationService.exists(friendId, bookId);
 }
