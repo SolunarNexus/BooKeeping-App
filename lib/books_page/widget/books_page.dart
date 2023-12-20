@@ -21,7 +21,7 @@ class BooksPage extends StatelessWidget {
           children: [
             const GeneralSearchBar(),
             GeneralListView(
-              items: List<Card>.generate(
+              items: List<BookCard>.generate(
                 7,
                 (_) => BookCard(
                     bookTitle: "Book Title",
