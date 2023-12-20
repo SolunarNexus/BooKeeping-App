@@ -39,7 +39,7 @@ class FriendBaseService {
       CollectionType collectionType, String userId, String otherUserId) async {
     if (await baseExists(collectionType, userId, otherUserId)) {
       throw DuplicateDataException(
-          "${collectionType.collectionPath} with userId: $userId and friendId: $otherUserId already exists");
+          "${collectionType.collectionPath} with userId: $userId and otherUserId: $otherUserId already exists");
     }
     final myBook = Friend(userId: userId, otherUserId: otherUserId);
     await _getCollection(collectionType).add(myBook);
