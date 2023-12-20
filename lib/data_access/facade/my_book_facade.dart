@@ -7,12 +7,11 @@ class MyBookFacade {
   final _myBookService = GetIt.instance.get<MyBookService>();
   final _converterService = GetIt.instance.get<ConverterService>();
 
-  Stream<List<MyBookComplete>> getStream(String userId) =>
-      _myBookService.getStream(userId).asyncMap((books) {
-        final convertedBooks =
-            books.map((book) => _converterService.fromMyBook(book));
-        return Future.wait(convertedBooks);
-      });
+  Stream<List<MyBookComplete>> getStream(String userId) => _myBookService
+      .getStream(userId)
+      .asyncMap((books) => Stream.fromIterable(books)
+          .asyncMap((book) => _converterService.fromMyBook(book))
+          .toList());
 
   Future<void> create(String userId, String bookId) =>
       _myBookService.create(userId, bookId);
