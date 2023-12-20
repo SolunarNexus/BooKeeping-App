@@ -29,7 +29,8 @@ class _LoginState extends State<Login> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(32.0),
-        child: Column(
+        child: ListView(
+          scrollDirection: Axis.vertical,
           children: [
             Form(
               key: _formKey,
