@@ -40,8 +40,8 @@ abstract class FriendBaseService {
       throw DuplicateDataException(
           "${getCollectionType().collectionPath} with userId: $userId and otherUserId: $otherUserId already exists");
     }
-    final myBook = Friend(userId: userId, otherUserId: otherUserId);
-    await _getCollection().add(myBook);
+    final friend = Friend(userId: userId, otherUserId: otherUserId);
+    await _getCollection().add(friend);
   }
 
   Future<Friend?> getById(String id) async =>
