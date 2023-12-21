@@ -16,6 +16,8 @@ class MyBookFacade {
   Future<void> create(String userId, String bookId) =>
       _myBookService.create(userId, bookId);
 
+  Future<void> deleteById(String id) => _myBookService.deleteById(id);
+
   Future<bool> exists(String userId, String bookId) =>
       _myBookService.exists(userId, bookId);
 }

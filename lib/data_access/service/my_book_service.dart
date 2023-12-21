@@ -38,6 +38,8 @@ class MyBookService {
     await _myBookCollection.add(myBook);
   }
 
+  Future<void> deleteById(String id) => _myBookCollection.doc(id).delete();
+
   Future<bool> exists(String userId, String bookId) async {
     final countSnapshot = await _myBookCollection
         .where("userId", isEqualTo: userId)
