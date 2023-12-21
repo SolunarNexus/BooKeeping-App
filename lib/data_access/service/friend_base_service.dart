@@ -11,7 +11,7 @@ abstract class FriendBaseService {
     if (collectionType != CollectionType.friend &&
         collectionType != CollectionType.friendRequest) {
       throw Exception(
-          "This method only supports friend of friend request collections");
+          "This method only supports friend or friend request collections");
     }
     return FirebaseFirestore.instance
         .collection(collectionType.collectionPath)
