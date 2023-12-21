@@ -19,8 +19,8 @@ class FriendsPage extends StatelessWidget {
           children: [
             const GeneralSearchBar(),
             GeneralListView(
-                items: List<Card>.generate(
-                    7, (_) => UserCard(userName: "Bob Doe", context: context))),
+                items: List<UserCard>.generate(
+                    7, (_) => UserCard(userName: "Bob Doe"))),
           ],
         ),
       ),

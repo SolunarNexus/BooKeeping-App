@@ -16,18 +16,16 @@ class AddFriendPage extends StatelessWidget {
         context: context,
       ),
       bottomNavigationBar: BottomMenu(),
-      body: Center(
+      body: const Center(
         child: Column(
           children: [
-            const GeneralSearchBar(),
-            GeneralListView(
-              items: [
-                UserCard(
-                  userName: "Bob Doe",
-                  context: context,
-                )
-              ],
-            )
+            GeneralSearchBar(),
+            GeneralListView(items: [
+              UserCard(
+                userName: "Bob Doe",
+                addFriend: true,
+              )
+            ])
           ],
         ),
       ),

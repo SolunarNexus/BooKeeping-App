@@ -23,8 +23,8 @@ class HomePage extends StatelessWidget {
             ThreeButtonGroup(labels: const ["Reading", "Finished", "Wishlist"]),
             const GeneralSearchBar(),
             GeneralListView(
-              items: List<Card>.generate(
-                  7, (_) => BookCard(title: "Book title", context: context)),
+              items: List<BookCard>.generate(
+                  7, (_) => BookCard(bookTitle: "Book title")),
             ),
           ],
         ),
