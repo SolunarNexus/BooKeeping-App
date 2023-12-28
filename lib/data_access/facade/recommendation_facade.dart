@@ -11,12 +11,13 @@ class RecommendationFacade extends BaseFacade {
   /// returns stream of recommendations where current user has friendship with sender
   Future<Stream<List<Recommendation>>> getStream() async {
     final currentUser = await getCurrentUser();
-    final friendUserIds = (await _friendshipService.getMany(currentUser.id!))
-        .map((friend) => friend.userId != currentUser.id
-            ? friend.userId
-            : friend.otherUserId)
-        .toList();
-    return _recommendationService.getStream(friendUserIds);
+    final friendUserIds = _friendshipService.getStream(currentUser.id!).map(
+        (friendships) => friendships
+            .map((friend) => friend.userId != currentUser.id
+                ? friend.userId
+                : friend.otherUserId)
+            .toList());
+    return _recommendationService.getStream(await friendUserIds.last);
   }
 
   /// sends recommendation to friend

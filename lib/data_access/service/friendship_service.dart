@@ -41,16 +41,6 @@ class FriendshipService {
     await _friendshipCollection.add(friendship);
   }
 
-  Future<List<Friendship>> getMany(String userId) async {
-    final snapshot = await _friendshipCollection
-        .where(Filter.or(
-          Filter("userId", isEqualTo: userId),
-          Filter("otherUserId", isEqualTo: userId),
-        ))
-        .get();
-    return snapshot.docs.map((doc) => doc.data()).toList();
-  }
-
   Future<void> updateState(String id, FriendshipState newState) async {
     final document = await _friendshipCollection.doc(id).get();
     if (!document.exists) {
