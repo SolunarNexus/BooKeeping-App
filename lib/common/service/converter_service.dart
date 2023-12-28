@@ -1,8 +1,6 @@
 import 'package:book_keeping/common/exception/not_found_exception.dart';
 import 'package:book_keeping/common/model/my_book_complete.dart';
-import 'package:book_keeping/common/model/recommendation_complete.dart';
 import 'package:book_keeping/data_access/model/my_book.dart';
-import 'package:book_keeping/data_access/model/recommendation.dart';
 import 'package:book_keeping/data_access/service/book_service.dart';
 import 'package:book_keeping/data_access/service/friendship_service.dart';
 import 'package:book_keeping/data_access/service/user_service.dart';
@@ -35,30 +33,5 @@ class ConverterService {
         readState: myBook.readState,
         userId: myBook.user.id!,
         bookId: myBook.book.id!);
-  }
-
-  Future<RecommendationComplete> fromRecommendation(
-      Recommendation recommendation) async {
-    final friend =
-        await _friendshipService.getById(recommendation.friendshipId);
-    if (friend == null) {
-      throw NotFoundException(
-          "Friend with id: ${recommendation.friendshipId} does not exist");
-    }
-    return RecommendationComplete(
-        id: recommendation.id,
-        friendship: friend,
-        bookId: recommendation.bookId);
-  }
-
-  Future<Recommendation> toMyRecommendation(
-      RecommendationComplete recommendation) async {
-    if (recommendation.friendship.id == null) {
-      throw Exception("Missing reference id");
-    }
-    return Recommendation(
-        id: recommendation.id,
-        friendshipId: recommendation.friendship.id!,
-        bookId: recommendation.bookId);
   }
 }
