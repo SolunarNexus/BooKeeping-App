@@ -1,16 +1,16 @@
 import 'package:book_keeping/common/model/recommendation_complete.dart';
 import 'package:book_keeping/common/service/converter_service.dart';
-import 'package:book_keeping/data_access/service/friend_service.dart';
+import 'package:book_keeping/data_access/service/friendship_service.dart';
 import 'package:book_keeping/data_access/service/recommendation_service.dart';
 import 'package:get_it/get_it.dart';
 
 class RecommendationFacade {
   final _recommendationService = GetIt.instance.get<RecommendationService>();
-  final _friendService = GetIt.instance.get<FriendService>();
+  final _friendshipService = GetIt.instance.get<FriendshipService>();
   final _converterService = GetIt.instance.get<ConverterService>();
 
   Future<Stream<List<RecommendationComplete>>> getStream(String userId) async {
-    final friendIds = (await _friendService.getMany(userId))
+    final friendIds = (await _friendshipService.getMany(userId))
         .map((friend) => friend.id!)
         .toList();
     return _recommendationService.getStream(friendIds).asyncMap(
