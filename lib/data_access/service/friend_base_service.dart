@@ -1,17 +1,17 @@
 import 'package:book_keeping/common/exception/duplicate_data_exception.dart';
-import 'package:book_keeping/data_access/model/friend.dart';
+import 'package:book_keeping/data_access/model/friendship.dart';
 import 'package:book_keeping/data_access/utility/collection_type.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class FriendBaseService {
   CollectionType getCollectionType();
 
-  CollectionReference<Friend> _getCollection() {
+  CollectionReference<Friendship> _getCollection() {
     final collectionType = getCollectionType();
-    if (collectionType != CollectionType.friend &&
+    if (collectionType != CollectionType.friendship &&
         collectionType != CollectionType.friendRequest) {
       throw Exception(
-          "This method only supports friend or friend request collections");
+          "This method only supports friendship or friend request collections");
     }
     return FirebaseFirestore.instance
         .collection(collectionType.collectionPath)
@@ -19,7 +19,7 @@ abstract class FriendBaseService {
       fromFirestore: (snapshot, options) {
         final json = snapshot.data() ?? {};
         json['id'] = snapshot.id;
-        return Friend.fromJson(json);
+        return Friendship.fromJson(json);
       },
       toFirestore: (value, options) {
         final json = value.toJson();
@@ -29,7 +29,7 @@ abstract class FriendBaseService {
     );
   }
 
-  Stream<List<Friend>> getStream(String userId) => _getCollection()
+  Stream<List<Friendship>> getStream(String userId) => _getCollection()
       .where("userId", isEqualTo: userId)
       .snapshots()
       .map((querySnapshot) =>
@@ -40,14 +40,14 @@ abstract class FriendBaseService {
       throw DuplicateDataException(
           "${getCollectionType().collectionPath} with userId: $userId and otherUserId: $otherUserId already exists");
     }
-    final friend = Friend(userId: userId, otherUserId: otherUserId);
-    await _getCollection().add(friend);
+    final friendship = Friendship(userId: userId, otherUserId: otherUserId);
+    await _getCollection().add(friendship);
   }
 
-  Future<Friend?> getById(String id) async =>
+  Future<Friendship?> getById(String id) async =>
       (await _getCollection().doc(id).get()).data();
 
-  Future<Friend> getByIds(String userId, String otherUserId) async {
+  Future<Friendship> getByIds(String userId, String otherUserId) async {
     final snapshot = await _getCollection()
         .where("userId", isEqualTo: userId)
         .where("otherUserId", isEqualTo: otherUserId)
@@ -55,15 +55,15 @@ abstract class FriendBaseService {
     return snapshot.docs.single.data();
   }
 
-  Future<List<Friend>> getMany(String userId) async {
+  Future<List<Friendship>> getMany(String userId) async {
     final snapshot =
         await _getCollection().where("userId", isEqualTo: userId).get();
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
 
   Future<void> delete(String userId, String otherUserId) async {
-    final friend = await getByIds(userId, otherUserId);
-    await deleteById(friend.id!);
+    final friendship = await getByIds(userId, otherUserId);
+    await deleteById(friendship.id!);
   }
 
   Future<void> deleteById(String id) => _getCollection().doc(id).delete();

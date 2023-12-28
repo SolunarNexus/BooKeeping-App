@@ -4,6 +4,6 @@ import 'package:book_keeping/data_access/utility/collection_type.dart';
 class FriendService extends FriendBaseService {
   @override
   CollectionType getCollectionType() {
-    return CollectionType.friend;
+    return CollectionType.friendship;
   }
 }

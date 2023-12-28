@@ -1,4 +1,4 @@
-import 'package:book_keeping/data_access/model/friend.dart';
+import 'package:book_keeping/data_access/model/friendship.dart';
 import 'package:book_keeping/data_access/service/friend_request_service.dart';
 import 'package:book_keeping/data_access/service/friend_service.dart';
 import 'package:get_it/get_it.dart';
@@ -7,10 +7,10 @@ class FriendFacade {
   final _friendService = GetIt.instance.get<FriendService>();
   final _friendRequestService = GetIt.instance.get<FriendRequestService>();
 
-  Stream<List<Friend>> getFriendStream(String userId) =>
+  Stream<List<Friendship>> getFriendStream(String userId) =>
       _friendService.getStream(userId);
 
-  Stream<List<Friend>> getFriendRequestStream(String userId) =>
+  Stream<List<Friendship>> getFriendRequestStream(String userId) =>
       _friendRequestService.getStream(userId);
 
   Future<void> sendRequest(String myUserId, String otherUserId) =>
