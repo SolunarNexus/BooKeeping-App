@@ -42,16 +42,6 @@ class RecommendationService {
     await _recommendationCollection.add(recommendation);
   }
 
-  Future<Recommendation> getByIds(
-      String senderUserId, String receiverUserId, String bookId) async {
-    final snapshot = await _recommendationCollection
-        .where("senderUserId", isEqualTo: senderUserId)
-        .where("receiverUserId", isEqualTo: receiverUserId)
-        .where("bookId", isEqualTo: bookId)
-        .get();
-    return snapshot.docs.single.data();
-  }
-
   Future<void> deleteById(String id) =>
       _recommendationCollection.doc(id).delete();
 

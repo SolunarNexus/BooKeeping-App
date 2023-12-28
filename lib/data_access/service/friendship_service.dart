@@ -41,17 +41,6 @@ class FriendshipService {
     await _friendshipCollection.add(friendship);
   }
 
-  Future<Friendship?> getById(String id) async =>
-      (await _friendshipCollection.doc(id).get()).data();
-
-  Future<Friendship> getByIds(String userId, String otherUserId) async {
-    final snapshot = await _friendshipCollection
-        .where("userId", isEqualTo: userId)
-        .where("otherUserId", isEqualTo: otherUserId)
-        .get();
-    return snapshot.docs.single.data();
-  }
-
   Future<List<Friendship>> getMany(String userId) async {
     final snapshot = await _friendshipCollection
         .where(Filter.or(
@@ -69,11 +58,6 @@ class FriendshipService {
           "${collectionType.collectionPath} with id: $id does not exist");
     }
     await _friendshipCollection.doc(id).update({"state": newState});
-  }
-
-  Future<void> delete(String userId, String otherUserId) async {
-    final friendship = await getByIds(userId, otherUserId);
-    await deleteById(friendship.id!);
   }
 
   Future<void> deleteById(String id) => _friendshipCollection.doc(id).delete();
