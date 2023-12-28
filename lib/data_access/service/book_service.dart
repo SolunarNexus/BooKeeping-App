@@ -21,10 +21,6 @@ class BookService {
     },
   );
 
-  Stream<List<Book>> get stream =>
-      _bookCollection.snapshots().map((querySnapshot) =>
-          querySnapshot.docs.map((docSnapshot) => docSnapshot.data()).toList());
-
   Future<void> create(Book book) async {
     if (await exists(book.isbn)) {
       throw DuplicateDataException(
@@ -41,4 +37,6 @@ class BookService {
         await _bookCollection.where("isbn", isEqualTo: isbn).count().get();
     return countSnapshot.count > 0;
   }
+
+  Future<void> deleteById(String id) => _bookCollection.doc(id).delete();
 }
