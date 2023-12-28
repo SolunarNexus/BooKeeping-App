@@ -2,14 +2,12 @@ import 'package:book_keeping/common/exception/not_found_exception.dart';
 import 'package:book_keeping/common/model/my_book_complete.dart';
 import 'package:book_keeping/data_access/model/my_book.dart';
 import 'package:book_keeping/data_access/service/book_service.dart';
-import 'package:book_keeping/data_access/service/friendship_service.dart';
 import 'package:book_keeping/data_access/service/user_service.dart';
 import 'package:get_it/get_it.dart';
 
 class ConverterService {
   final _userService = GetIt.instance.get<UserService>();
   final _bookService = GetIt.instance.get<BookService>();
-  final _friendshipService = GetIt.instance.get<FriendshipService>();
 
   Future<MyBookComplete> fromMyBook(MyBook myBook) async {
     final user = await _userService.getById(myBook.userId);
