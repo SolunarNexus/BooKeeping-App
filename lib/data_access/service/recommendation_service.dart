@@ -25,22 +25,23 @@ class RecommendationService {
       _recommendationCollection.snapshots().map((querySnapshot) => querySnapshot
           .docs
           .map((docSnapshot) => docSnapshot.data())
-          .where(
-              (recommendation) => friendIds.contains(recommendation.friendId))
+          .where((recommendation) =>
+              friendIds.contains(recommendation.friendshipId))
           .toList());
 
   Future<void> create(String friendId, String bookId) async {
     if (await exists(friendId, bookId)) {
       throw DuplicateDataException(
-          "${collectionType.collectionPath} with friendId: $friendId and bookId: $bookId already exists");
+          "${collectionType.collectionPath} with friendshipId: $friendId and bookId: $bookId already exists");
     }
-    final recommendation = Recommendation(friendId: friendId, bookId: bookId);
+    final recommendation =
+        Recommendation(friendshipId: friendId, bookId: bookId);
     await _recommendationCollection.add(recommendation);
   }
 
   Future<Recommendation> getByIds(String friendId, String bookId) async {
     final snapshot = await _recommendationCollection
-        .where("friendId", isEqualTo: friendId)
+        .where("friendshipId", isEqualTo: friendId)
         .where("bookId", isEqualTo: bookId)
         .get();
     return snapshot.docs.single.data();
@@ -53,7 +54,7 @@ class RecommendationService {
 
   Future<bool> exists(String friendId, String bookId) async {
     final countSnapshot = await _recommendationCollection
-        .where("friendId", isEqualTo: friendId)
+        .where("friendshipId", isEqualTo: friendId)
         .where("bookId", isEqualTo: bookId)
         .count()
         .get();

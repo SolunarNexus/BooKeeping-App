@@ -9,13 +9,13 @@ part of 'recommendation.dart';
 Recommendation _$RecommendationFromJson(Map<String, dynamic> json) =>
     Recommendation(
       id: json['id'] as String?,
-      friendId: json['friendId'] as String,
+      friendshipId: json['friendshipId'] as String,
       bookId: json['bookId'] as String,
     );
 
 Map<String, dynamic> _$RecommendationToJson(Recommendation instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'friendId': instance.friendId,
+      'friendshipId': instance.friendshipId,
       'bookId': instance.bookId,
     };

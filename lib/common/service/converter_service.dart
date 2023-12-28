@@ -39,23 +39,26 @@ class ConverterService {
 
   Future<RecommendationComplete> fromRecommendation(
       Recommendation recommendation) async {
-    final friend = await _friendshipService.getById(recommendation.friendId);
+    final friend =
+        await _friendshipService.getById(recommendation.friendshipId);
     if (friend == null) {
       throw NotFoundException(
-          "Friend with id: ${recommendation.friendId} does not exist");
+          "Friend with id: ${recommendation.friendshipId} does not exist");
     }
     return RecommendationComplete(
-        id: recommendation.id, friend: friend, bookId: recommendation.bookId);
+        id: recommendation.id,
+        friendship: friend,
+        bookId: recommendation.bookId);
   }
 
   Future<Recommendation> toMyRecommendation(
       RecommendationComplete recommendation) async {
-    if (recommendation.friend.id == null) {
+    if (recommendation.friendship.id == null) {
       throw Exception("Missing reference id");
     }
     return Recommendation(
         id: recommendation.id,
-        friendId: recommendation.friend.id!,
+        friendshipId: recommendation.friendship.id!,
         bookId: recommendation.bookId);
   }
 }
