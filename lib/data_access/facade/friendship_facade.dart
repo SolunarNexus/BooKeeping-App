@@ -19,9 +19,9 @@ class FriendshipFacade extends BaseFacade {
     _friendshipService.create(currentUser.id!, otherUserId);
   }
 
-  /// updates friendship specified by friendshipId, with the new state
-  Future<void> acceptRequest(String friendshipId, FriendshipState newState) =>
-      _friendshipService.updateState(friendshipId, newState);
+  /// accepts friendship specified by friendshipId
+  Future<void> acceptRequest(String friendshipId) =>
+      _friendshipService.updateState(friendshipId, FriendshipState.accepted);
 
   /// deletes friendship
   Future<void> deleteFriend(String friendshipId) async {
