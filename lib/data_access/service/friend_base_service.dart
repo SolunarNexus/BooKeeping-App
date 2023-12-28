@@ -1,4 +1,5 @@
 import 'package:book_keeping/common/exception/duplicate_data_exception.dart';
+import 'package:book_keeping/common/model/friendship_state.dart';
 import 'package:book_keeping/data_access/model/friendship.dart';
 import 'package:book_keeping/data_access/utility/collection_type.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -40,7 +41,8 @@ abstract class FriendBaseService {
       throw DuplicateDataException(
           "${getCollectionType().collectionPath} with userId: $userId and otherUserId: $otherUserId already exists");
     }
-    final friendship = Friendship(userId: userId, otherUserId: otherUserId);
+    final friendship = Friendship(
+        userId: userId, otherUserId: otherUserId, state: FriendshipState.sent);
     await _getCollection().add(friendship);
   }
 
