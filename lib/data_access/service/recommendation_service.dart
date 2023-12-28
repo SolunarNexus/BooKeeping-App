@@ -21,40 +21,45 @@ class RecommendationService {
     },
   );
 
-  Stream<List<Recommendation>> getStream(List<String> friendIds) =>
+  Stream<List<Recommendation>> getStream(List<String> friendUserIds) =>
       _recommendationCollection.snapshots().map((querySnapshot) => querySnapshot
           .docs
           .map((docSnapshot) => docSnapshot.data())
           .where((recommendation) =>
-              friendIds.contains(recommendation.friendshipId))
+              friendUserIds.contains(recommendation.senderUserId))
           .toList());
 
-  Future<void> create(String friendId, String bookId) async {
-    if (await exists(friendId, bookId)) {
+  Future<void> create(
+      String senderUserId, String receiverUserId, String bookId) async {
+    if (await exists(senderUserId, receiverUserId, bookId)) {
       throw DuplicateDataException(
-          "${collectionType.collectionPath} with friendshipId: $friendId and bookId: $bookId already exists");
+          "${collectionType.collectionPath} with senderUserId: $senderUserId, receiverUserId: $receiverUserId and bookId: $bookId already exists");
     }
-    final recommendation =
-        Recommendation(friendshipId: friendId, bookId: bookId);
+    final recommendation = Recommendation(
+        senderUserId: senderUserId,
+        receiverUserId: receiverUserId,
+        bookId: bookId);
     await _recommendationCollection.add(recommendation);
   }
 
-  Future<Recommendation> getByIds(String friendId, String bookId) async {
+  Future<Recommendation> getByIds(
+      String senderUserId, String receiverUserId, String bookId) async {
     final snapshot = await _recommendationCollection
-        .where("friendshipId", isEqualTo: friendId)
+        .where("senderUserId", isEqualTo: senderUserId)
+        .where("receiverUserId", isEqualTo: receiverUserId)
         .where("bookId", isEqualTo: bookId)
         .get();
     return snapshot.docs.single.data();
   }
 
-  Future<void> delete(String friendId, String bookId) async {
-    final recommendation = await getByIds(friendId, bookId);
-    _recommendationCollection.doc(recommendation.id).delete();
-  }
+  Future<void> deleteById(String id) =>
+      _recommendationCollection.doc(id).delete();
 
-  Future<bool> exists(String friendId, String bookId) async {
+  Future<bool> exists(
+      String senderUserId, String receiverUserId, String bookId) async {
     final countSnapshot = await _recommendationCollection
-        .where("friendshipId", isEqualTo: friendId)
+        .where("senderUserId", isEqualTo: senderUserId)
+        .where("receiverUserId", isEqualTo: receiverUserId)
         .where("bookId", isEqualTo: bookId)
         .count()
         .get();

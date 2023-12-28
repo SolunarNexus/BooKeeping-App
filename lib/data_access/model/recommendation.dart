@@ -5,10 +5,15 @@ part 'recommendation.g.dart';
 @JsonSerializable()
 class Recommendation {
   final String? id;
-  final String friendshipId;
+  final String senderUserId;
+  final String receiverUserId;
   final String bookId;
 
-  Recommendation({this.id, required this.friendshipId, required this.bookId});
+  Recommendation(
+      {this.id,
+      required this.senderUserId,
+      required this.receiverUserId,
+      required this.bookId});
 
   factory Recommendation.fromJson(Map<String, dynamic> json) =>
       _$RecommendationFromJson(json);
