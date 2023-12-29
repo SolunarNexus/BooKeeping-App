@@ -1,3 +1,4 @@
+import 'package:book_keeping/common/model/friendship_state.dart';
 import 'package:book_keeping/data_access/facade/base_facade.dart';
 import 'package:book_keeping/data_access/model/recommendation.dart';
 import 'package:book_keeping/data_access/service/friendship_service.dart';
@@ -23,6 +24,11 @@ class RecommendationFacade extends BaseFacade {
   /// sends recommendation to friend
   Future<void> send(String friendUserId, String bookId) async {
     final currentUser = await getCurrentUser();
+    final friendship =
+        await _friendshipService.find(currentUser.id!, friendUserId);
+    if (friendship == null || friendship.state == FriendshipState.sent) {
+      throw Exception("Not friends with target user");
+    }
     _recommendationService.create(currentUser.id!, friendUserId, bookId);
   }
 

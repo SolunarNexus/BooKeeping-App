@@ -50,6 +50,14 @@ class FriendshipService {
     await _friendshipCollection.doc(id).update({"state": newState});
   }
 
+  Future<Friendship> getByIds(String userId, String otherUserId) async {
+    final snapshot = await _friendshipCollection
+        .where("userId", isEqualTo: userId)
+        .where("otherUserId", isEqualTo: otherUserId)
+        .get();
+    return snapshot.docs.single.data();
+  }
+
   Future<void> deleteById(String id) => _friendshipCollection.doc(id).delete();
 
   Future<bool> exists(String userId, String otherUserId) async {
@@ -59,5 +67,14 @@ class FriendshipService {
         .count()
         .get();
     return countSnapshot.count > 0;
+  }
+
+  Future<Friendship?> find(String firstUserId, String secondUserId) async {
+    if (await exists(firstUserId, secondUserId)) {
+      return await getByIds(firstUserId, secondUserId);
+    } else if (await exists(secondUserId, firstUserId)) {
+      return await getByIds(secondUserId, firstUserId);
+    }
+    return null;
   }
 }
