@@ -3,8 +3,7 @@ enum CollectionType {
   user(collectionPath: "user"),
   myBook(collectionPath: "my_book"),
   bookRating(collectionPath: "book_rating"),
-  friend(collectionPath: "friend"),
-  friendRequest(collectionPath: "friend_request"),
+  friendship(collectionPath: "friendship"),
   recommendation(collectionPath: "recommendation");
 
   final String collectionPath;
