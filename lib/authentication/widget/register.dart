@@ -1,5 +1,5 @@
 import 'package:book_keeping/common/widget/top_bar.dart';
-import 'package:book_keeping/data_access/service/user_service.dart';
+import 'package:book_keeping/data_access/facade/user_facade.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validation/form_validation.dart';
@@ -20,7 +20,7 @@ class _RegisterState extends State<Register> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  final _userService = GetIt.instance.get<UserService>();
+  final _userFacade = GetIt.instance.get<UserFacade>();
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +103,7 @@ class _RegisterState extends State<Register> {
                 email: _emailController.text,
                 password: _passwordController.text);
         if (credential.user?.email != null) {
-          _userService.create(credential.user!.email!);
+          _userFacade.create(credential.user!.email!);
         }
         if (mounted) {
           context.goNamed("home");
