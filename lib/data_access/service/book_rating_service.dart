@@ -21,10 +21,8 @@ class BookRatingService {
     },
   );
 
-  Stream<List<BookRating>> getStream(String bookId) => _bookRatingCollection
-      .where("bookId", isEqualTo: bookId)
-      .snapshots()
-      .map((querySnapshot) =>
+  Stream<List<BookRating>> getStream() =>
+      _bookRatingCollection.snapshots().map((querySnapshot) =>
           querySnapshot.docs.map((docSnapshot) => docSnapshot.data()).toList());
 
   Future<void> create(String userId, String bookId, int rating) async {
@@ -34,6 +32,19 @@ class BookRatingService {
     }
     final myRating = BookRating(rating: rating, userId: userId, bookId: bookId);
     await _bookRatingCollection.add(myRating);
+  }
+
+  Future<BookRating?> getById(String id) async {
+    return (await _bookRatingCollection.doc(id).get()).data();
+  }
+
+  Future<void> updateRating(String id, int newValue) async {
+    final document = await _bookRatingCollection.doc(id).get();
+    if (!document.exists) {
+      throw Exception(
+          "${collectionType.collectionPath} with id: $id does not exist");
+    }
+    await _bookRatingCollection.doc(id).update({"rating": newValue});
   }
 
   Future<bool> exists(String userId, String bookId) async {

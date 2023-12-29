@@ -21,6 +21,10 @@ class BookService {
     },
   );
 
+  Stream<List<Book>> getStream() =>
+      _bookCollection.snapshots().map((querySnapshot) =>
+          querySnapshot.docs.map((docSnapshot) => docSnapshot.data()).toList());
+
   Future<void> create(Book book) async {
     if (await exists(book.isbn)) {
       throw DuplicateDataException(
