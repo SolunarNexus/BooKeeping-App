@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class BookSearchBar extends StatefulWidget {
-  const BookSearchBar({super.key});
+class GeneralSearchBar extends StatefulWidget {
+  const GeneralSearchBar({super.key});
 
   @override
-  State<BookSearchBar> createState() => _BookSearchBarState();
+  State<GeneralSearchBar> createState() => _GeneralSearchBarState();
 }
 
-class _BookSearchBarState extends State<BookSearchBar> {
+class _GeneralSearchBarState extends State<GeneralSearchBar> {
   final TextEditingController _searchController = TextEditingController();
 
   @override

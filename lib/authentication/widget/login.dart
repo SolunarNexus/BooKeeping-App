@@ -25,10 +25,12 @@ class _LoginState extends State<Login> {
       appBar: TopBar(
         titleText: "Login",
         includeActions: false,
+        context: context,
       ),
       body: Padding(
         padding: const EdgeInsets.all(32.0),
-        child: Column(
+        child: ListView(
+          scrollDirection: Axis.vertical,
           children: [
             Form(
               key: _formKey,
@@ -105,10 +107,12 @@ class _LoginState extends State<Login> {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: _emailController.text, password: _passwordController.text);
         if (mounted) {
-          context.go("/my-library");
+          context.goNamed("home");
         }
       } on FirebaseAuthException catch (e) {
-        if (mounted && e.code == "INVALID_LOGIN_CREDENTIALS") {
+        if (mounted &&
+            (e.code == "INVALID_LOGIN_CREDENTIALS" ||
+                e.code == "invalid-credential")) {
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Invalid login credentials")));
         }

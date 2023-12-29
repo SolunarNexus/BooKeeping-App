@@ -1,7 +1,9 @@
 import 'package:book_keeping/common/widget/top_bar.dart';
+import 'package:book_keeping/data_access/service/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validation/form_validation.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../common/widget/field_label.dart';
@@ -18,6 +20,7 @@ class _RegisterState extends State<Register> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _userService = GetIt.instance.get<UserService>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +28,13 @@ class _RegisterState extends State<Register> {
       appBar: TopBar(
         titleText: "Register",
         includeActions: false,
+        context: context,
       ),
       body: Padding(
         padding: const EdgeInsets.all(32.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: [
               const FieldLabel(text: "Email"),
               TextFormField(
@@ -95,10 +98,15 @@ class _RegisterState extends State<Register> {
   Future<void> _registerUser(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       try {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: _emailController.text, password: _passwordController.text);
+        final credential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+                email: _emailController.text,
+                password: _passwordController.text);
+        if (credential.user?.email != null) {
+          _userService.create(credential.user!.email!);
+        }
         if (mounted) {
-          context.go("/my-library");
+          context.goNamed("home");
         }
       } on FirebaseAuthException catch (e) {
         if (mounted && e.code == "email-already-in-use") {
