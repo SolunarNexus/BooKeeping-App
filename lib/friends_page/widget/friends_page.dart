@@ -11,8 +11,8 @@ class FriendsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopBar(
-          titleText: "My friends", includeLeading: true, context: context),
+      appBar:
+          TopBar(titleText: "My friends", isFriendPage: true, context: context),
       bottomNavigationBar: BottomMenu(),
       body: Center(
         child: Column(

@@ -15,6 +15,7 @@ class HomePage extends StatelessWidget {
       appBar: TopBar(
         titleText: "My library",
         context: context,
+        isHomePage: true,
       ),
       bottomNavigationBar: BottomMenu(),
       body: Center(
