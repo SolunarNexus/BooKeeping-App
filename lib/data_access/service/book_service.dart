@@ -21,7 +21,7 @@ class BookService {
     },
   );
 
-  Stream<List<Book>> get stream =>
+  Stream<List<Book>> getStream() =>
       _bookCollection.snapshots().map((querySnapshot) =>
           querySnapshot.docs.map((docSnapshot) => docSnapshot.data()).toList());
 
@@ -41,4 +41,6 @@ class BookService {
         await _bookCollection.where("isbn", isEqualTo: isbn).count().get();
     return countSnapshot.count > 0;
   }
+
+  Future<void> deleteById(String id) => _bookCollection.doc(id).delete();
 }

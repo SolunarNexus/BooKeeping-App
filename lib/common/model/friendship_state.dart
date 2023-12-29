@@ -1,0 +1,1 @@
+enum FriendshipState { sent, accepted }

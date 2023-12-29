@@ -45,6 +45,7 @@ dependencies:
   cloud_firestore: ^4.13.5
   json_annotation: ^4.8.1
   rxdart: ^0.27.7
+  collection: ^1.18.0
   http: ^1.1.2
 
 dev_dependencies:

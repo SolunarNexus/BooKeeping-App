@@ -38,6 +38,15 @@ class MyBookService {
     await _myBookCollection.add(myBook);
   }
 
+  Future<void> updateState(String id, ReadState newState) async {
+    final document = await _myBookCollection.doc(id).get();
+    if (!document.exists) {
+      throw Exception(
+          "${collectionType.collectionPath} with id: $id does not exist");
+    }
+    await _myBookCollection.doc(id).update({"readState": newState});
+  }
+
   Future<void> deleteById(String id) => _myBookCollection.doc(id).delete();
 
   Future<bool> exists(String userId, String bookId) async {
