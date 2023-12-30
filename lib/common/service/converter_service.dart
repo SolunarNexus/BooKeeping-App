@@ -67,11 +67,13 @@ class ConverterService {
   }
 
   List<FoundBook> fromSearchResult(SearchResult searchResult) {
-    return searchResult.docs.map((work) {
+    return searchResult.docs
+        .where((work) => work.editions.docs.length == 1)
+        .map((work) {
       final editionOLID =
           work.editions.docs.single.key.replaceAll(RegExp(r'/books/'), "");
       final coverUrl =
-          "https://covers.openlibrary.org/b/olid/$editionOLID-S.jpg";
+          "https://covers.openlibrary.org/b/olid/$editionOLID-M.jpg";
       return FoundBook(
           editionOLID: editionOLID,
           title: work.title,
