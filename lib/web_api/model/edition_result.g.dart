@@ -1,16 +1,17 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'book_result.dart';
+part of 'edition_result.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-BookResult _$BookResultFromJson(Map<String, dynamic> json) => BookResult(
-      title: json['title'] as String,
+EditionResult _$EditionResultFromJson(Map<String, dynamic> json) =>
+    EditionResult(
+      key: json['key'] as String,
     );
 
-Map<String, dynamic> _$BookResultToJson(BookResult instance) =>
+Map<String, dynamic> _$EditionResultToJson(EditionResult instance) =>
     <String, dynamic>{
-      'title': instance.title,
+      'key': instance.key,
     };

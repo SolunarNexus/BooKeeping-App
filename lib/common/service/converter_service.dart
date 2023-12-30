@@ -1,10 +1,12 @@
 import 'package:book_keeping/common/exception/not_found_exception.dart';
+import 'package:book_keeping/common/model/found_book.dart';
 import 'package:book_keeping/common/model/friendship_complete.dart';
 import 'package:book_keeping/common/model/my_book_complete.dart';
 import 'package:book_keeping/data_access/model/friendship.dart';
 import 'package:book_keeping/data_access/model/my_book.dart';
 import 'package:book_keeping/data_access/service/book_service.dart';
 import 'package:book_keeping/data_access/service/user_service.dart';
+import 'package:book_keeping/web_api/model/search_result.dart';
 import 'package:get_it/get_it.dart';
 
 class ConverterService {
@@ -62,5 +64,19 @@ class ConverterService {
         state: friendship.state,
         userId: friendship.user.id!,
         otherUserId: friendship.otherUser.id!);
+  }
+
+  List<FoundBook> fromSearchResult(SearchResult searchResult) {
+    return searchResult.docs.map((work) {
+      final editionOLID =
+          work.editions.docs.single.key.replaceAll(RegExp(r'/books/'), "");
+      final coverUrl =
+          "https://covers.openlibrary.org/b/olid/$editionOLID-S.jpg";
+      return FoundBook(
+          editionOLID: editionOLID,
+          title: work.title,
+          authors: work.authorName ?? [],
+          coverUrl: coverUrl);
+    }).toList();
   }
 }

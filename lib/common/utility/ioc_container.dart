@@ -1,5 +1,4 @@
 import 'package:book_keeping/common/service/converter_service.dart';
-import 'package:book_keeping/common/service/open_library_service.dart';
 import 'package:book_keeping/data_access/facade/book_facade.dart';
 import 'package:book_keeping/data_access/facade/book_rating_facade.dart';
 import 'package:book_keeping/data_access/facade/my_book_facade.dart';
@@ -11,6 +10,7 @@ import 'package:book_keeping/data_access/service/friendship_service.dart';
 import 'package:book_keeping/data_access/service/my_book_service.dart';
 import 'package:book_keeping/data_access/service/recommendation_service.dart';
 import 'package:book_keeping/data_access/service/user_service.dart';
+import 'package:book_keeping/web_api/service/open_library_service.dart';
 import 'package:get_it/get_it.dart';
 
 class IocContainer {

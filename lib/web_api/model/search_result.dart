@@ -1,14 +1,13 @@
-import 'package:book_keeping/common/model/book_result.dart';
+import 'package:book_keeping/web_api/model/work_result.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'search_result.g.dart';
 
 @JsonSerializable()
 class SearchResult {
-  final List<BookResult> docs;
-  final int numFound;
+  final List<WorkResult> docs;
 
-  SearchResult({required this.docs, required this.numFound});
+  SearchResult({required this.docs});
 
   factory SearchResult.fromJson(Map<String, dynamic> json) =>
       _$SearchResultFromJson(json);
