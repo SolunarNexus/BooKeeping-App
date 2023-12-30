@@ -16,7 +16,6 @@ import 'package:get_it/get_it.dart';
 class IocContainer {
   static void setup() {
     var getIt = GetIt.instance;
-    getIt.registerSingleton(OpenLibraryService());
     getIt.registerSingleton(BookService());
     getIt.registerSingleton(UserService());
     getIt.registerSingleton(MyBookService());
@@ -24,6 +23,7 @@ class IocContainer {
     getIt.registerSingleton(FriendshipService());
     getIt.registerSingleton(RecommendationService());
     getIt.registerSingleton(ConverterService());
+    getIt.registerSingleton(OpenLibraryService());
     getIt.registerSingleton(MyBookFacade());
     getIt.registerSingleton(RecommendationFacade());
     getIt.registerSingleton(BookFacade());
