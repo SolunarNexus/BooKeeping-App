@@ -47,7 +47,7 @@ class OpenLibraryService {
       return AuthorResult.fromJson(
           jsonDecode(response.body) as Map<String, dynamic>);
     } else {
-      throw Exception('Failed to load books');
+      throw Exception('Failed to fetch author');
     }
   }
 
