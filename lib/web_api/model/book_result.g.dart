@@ -12,12 +12,12 @@ BookResult _$BookResultFromJson(Map<String, dynamic> json) => BookResult(
           .toList(),
       description: json['description'] as String?,
       authors: (json['authors'] as List<dynamic>)
-          .map((e) => AuthorKeyResult.fromJson(e as Map<String, dynamic>))
+          .map((e) => KeyResult.fromJson(e as Map<String, dynamic>))
           .toList(),
       publishDate: json['publish_date'] as String,
       numberOfPages: json['number_of_pages'] as int?,
       languages: (json['languages'] as List<dynamic>)
-          .map((e) => LanguageResult.fromJson(e as Map<String, dynamic>))
+          .map((e) => KeyResult.fromJson(e as Map<String, dynamic>))
           .toList(),
       subjects:
           (json['subjects'] as List<dynamic>).map((e) => e as String).toList(),

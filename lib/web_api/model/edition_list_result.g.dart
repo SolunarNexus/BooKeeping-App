@@ -9,7 +9,7 @@ part of 'edition_list_result.dart';
 EditionListResult _$EditionListResultFromJson(Map<String, dynamic> json) =>
     EditionListResult(
       docs: (json['docs'] as List<dynamic>)
-          .map((e) => EditionResult.fromJson(e as Map<String, dynamic>))
+          .map((e) => KeyResult.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

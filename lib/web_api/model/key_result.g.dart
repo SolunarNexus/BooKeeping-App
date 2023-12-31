@@ -1,17 +1,15 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'author_key_result.dart';
+part of 'key_result.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-AuthorKeyResult _$AuthorKeyResultFromJson(Map<String, dynamic> json) =>
-    AuthorKeyResult(
+KeyResult _$KeyResultFromJson(Map<String, dynamic> json) => KeyResult(
       key: json['key'] as String,
     );
 
-Map<String, dynamic> _$AuthorKeyResultToJson(AuthorKeyResult instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$KeyResultToJson(KeyResult instance) => <String, dynamic>{
       'key': instance.key,
     };
