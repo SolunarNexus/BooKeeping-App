@@ -1,4 +1,3 @@
-import 'package:book_keeping/data_access/model/author.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'book.g.dart';
@@ -8,7 +7,7 @@ class Book {
   final String? id;
   final String title;
   final String? description;
-  final List<Author> authors;
+  final List<String> authors;
   final String imgUrl;
   final String publishDate;
   final List<String> publishers;

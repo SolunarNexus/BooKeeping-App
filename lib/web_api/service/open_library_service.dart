@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:book_keeping/common/model/found_book.dart';
-import 'package:book_keeping/data_access/model/author.dart';
 import 'package:book_keeping/data_access/model/book.dart';
 import 'package:book_keeping/web_api/model/author_result.dart';
 import 'package:book_keeping/web_api/model/book_result.dart';
@@ -82,10 +81,6 @@ class OpenLibraryService {
         categories: bookResult.subjects,
         isbn: bookResult.isbn.first,
         title: foundBook.title,
-        authors: authorResultList
-            .map((author) => Author(
-                name: author.name,
-                authorOLID: author.key.replaceAll(RegExp(r'/authors/'), "")))
-            .toList());
+        authors: authorResultList.map((author) => author.name).toList());
   }
 }
