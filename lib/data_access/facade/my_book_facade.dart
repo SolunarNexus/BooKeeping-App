@@ -29,7 +29,7 @@ class MyBookFacade extends BaseFacade {
 
   /// adds book to current users library
   Future<void> create(Book book) async {
-    if (!(await _bookService.exists(book.isbn))) {
+    if (!(await _bookService.exists(book))) {
       await _bookService.create(book);
     }
     final createdBook = await _bookService.getByISBN(book.isbn);

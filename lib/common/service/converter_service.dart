@@ -16,7 +16,7 @@ class ConverterService {
     if (user == null) {
       throw NotFoundException("User with id: ${myBook.userId} does not exist");
     }
-    final book = await _bookService.getById(myBook.bookId);
+    final book = await _bookService.getSingle(myBook.bookId).last;
     if (book == null) {
       throw NotFoundException("Book with id: ${myBook.bookId} does not exist");
     }

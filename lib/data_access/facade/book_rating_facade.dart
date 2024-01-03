@@ -14,7 +14,7 @@ class BookRatingFacade extends BaseFacade {
   /// returns stream of book_rating_aggregate, not ordered
   Stream<List<BookRatingAggregate>> getAggregateStream() {
     final ratingStream = _bookRatingService.getAll();
-    final bookStream = _bookService.getStream();
+    final bookStream = _bookService.getAll();
     return Rx.combineLatest2(ratingStream, bookStream, (ratings, books) {
       final bookGroups = ratings.groupListsBy((element) => element.bookId);
       return books

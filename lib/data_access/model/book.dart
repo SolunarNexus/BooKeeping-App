@@ -1,10 +1,10 @@
+import 'package:book_keeping/data_access/model/entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'book.g.dart';
 
 @JsonSerializable()
-class Book {
-  final String? id;
+class Book extends Entity {
   final String title;
   final String description;
   final String author;
@@ -17,7 +17,7 @@ class Book {
   final String isbn;
 
   Book(
-      {this.id,
+      {super.id,
       required this.description,
       required this.imgUrl,
       required this.publishDate,
@@ -32,4 +32,12 @@ class Book {
   factory Book.fromJson(Map<String, dynamic> json) => _$BookFromJson(json);
 
   Map<String, dynamic> toJson() => _$BookToJson(this);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Book && runtimeType == other.runtimeType && isbn == other.isbn;
+
+  @override
+  int get hashCode => isbn.hashCode;
 }
