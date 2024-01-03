@@ -1,58 +1,29 @@
 import 'package:book_keeping/common/exception/duplicate_data_exception.dart';
 import 'package:book_keeping/data_access/model/book_rating.dart';
+import 'package:book_keeping/data_access/service/base_service.dart';
 import 'package:book_keeping/data_access/utility/collection_type.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class BookRatingService {
-  static const CollectionType collectionType = CollectionType.bookRating;
-
-  final _bookRatingCollection = FirebaseFirestore.instance
-      .collection(collectionType.collectionPath)
-      .withConverter(
-    fromFirestore: (snapshot, options) {
-      final json = snapshot.data() ?? {};
-      json['id'] = snapshot.id;
-      return BookRating.fromJson(json);
-    },
-    toFirestore: (value, options) {
-      final json = value.toJson();
-      json.remove('id');
-      return json;
-    },
-  );
-
-  Stream<List<BookRating>> getStream() =>
-      _bookRatingCollection.snapshots().map((querySnapshot) =>
-          querySnapshot.docs.map((docSnapshot) => docSnapshot.data()).toList());
-
-  Future<void> create(String userId, String bookId, int rating) async {
-    if (await exists(userId, bookId)) {
-      throw DuplicateDataException(
-          "${collectionType.collectionPath} with userId: $userId and bookId: $bookId already exists");
-    }
-    final myRating = BookRating(rating: rating, userId: userId, bookId: bookId);
-    await _bookRatingCollection.add(myRating);
-  }
-
-  Future<BookRating?> getById(String id) async {
-    return (await _bookRatingCollection.doc(id).get()).data();
-  }
+class BookRatingService extends BaseService<BookRating> {
+  BookRatingService()
+      : super(
+      collectionType: CollectionType.bookRating,
+      fromJson: BookRating.fromJson,
+      toJson: _toJson,
+      equals: _equals);
 
   Future<void> updateRating(String id, int newValue) async {
-    final document = await _bookRatingCollection.doc(id).get();
-    if (!document.exists) {
+    final rating = await getSingle(id).last;
+    if (rating == null) {
       throw Exception(
-          "${collectionType.collectionPath} with id: $id does not exist");
+          "${CollectionType.bookRating} with id: $id does not exist");
     }
+    rating
     await _bookRatingCollection.doc(id).update({"rating": newValue});
   }
 
-  Future<bool> exists(String userId, String bookId) async {
-    final countSnapshot = await _bookRatingCollection
-        .where("userId", isEqualTo: userId)
-        .where("bookId", isEqualTo: bookId)
-        .count()
-        .get();
-    return countSnapshot.count > 0;
-  }
+  static Map<String, dynamic> _toJson(BookRating bookRating) =>
+      bookRating.toJson();
+
+  static bool _equals(BookRating first, BookRating second) => first == second;
 }
