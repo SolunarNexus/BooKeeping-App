@@ -12,8 +12,9 @@ class RecommendationFacade extends BaseFacade {
   /// returns stream of recommendations where current user has friendship with sender
   Future<Stream<List<Recommendation>>> getStream() async {
     final currentUser = await getCurrentUser();
-    final friendUserIds = _friendshipService.getStream(currentUser.id!).map(
-        (friendships) => friendships
+    final friendUserIds = _friendshipService
+        .getAllByUserId(currentUser.id!)
+        .map((friendships) => friendships
             .map((friend) => friend.userId != currentUser.id
                 ? friend.userId
                 : friend.otherUserId)

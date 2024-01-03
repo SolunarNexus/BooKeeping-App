@@ -14,7 +14,7 @@ class BookRatingService extends BaseService<BookRating> {
     final rating = await getSingle(id).last;
     if (rating == null) {
       throw Exception(
-          "${CollectionType.bookRating} with id: $id does not exist");
+          "${CollectionType.bookRating.collectionPath} with id: $id does not exist");
     }
     await update(rating.copyWith(rating: newValue));
   }
