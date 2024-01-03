@@ -8,30 +8,34 @@ part of 'book.dart';
 
 Book _$BookFromJson(Map<String, dynamic> json) => Book(
       id: json['id'] as String?,
-      description: json['description'] as String,
+      description: json['description'] as String?,
       imgUrl: json['imgUrl'] as String,
-      publishDate: DateTime.parse(json['publishDate'] as String),
-      publisher: json['publisher'] as String,
-      pages: json['pages'] as int,
-      language: json['language'] as String,
+      publishDate: json['publishDate'] as String,
+      publishers: (json['publishers'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      pages: json['pages'] as int?,
+      languages:
+          (json['languages'] as List<dynamic>).map((e) => e as String).toList(),
       categories: (json['categories'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
       isbn: json['isbn'] as String,
       title: json['title'] as String,
-      author: json['author'] as String,
+      authors:
+          (json['authors'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$BookToJson(Book instance) => <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
       'description': instance.description,
-      'author': instance.author,
+      'authors': instance.authors,
       'imgUrl': instance.imgUrl,
-      'publishDate': instance.publishDate.toIso8601String(),
-      'publisher': instance.publisher,
+      'publishDate': instance.publishDate,
+      'publishers': instance.publishers,
       'pages': instance.pages,
-      'language': instance.language,
+      'languages': instance.languages,
       'categories': instance.categories,
       'isbn': instance.isbn,
     };

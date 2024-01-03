@@ -6,13 +6,13 @@ part 'book.g.dart';
 class Book {
   final String? id;
   final String title;
-  final String description;
-  final String author;
+  final String? description;
+  final List<String> authors;
   final String imgUrl;
-  final DateTime publishDate;
-  final String publisher;
-  final int pages;
-  final String language;
+  final String publishDate;
+  final List<String> publishers;
+  final int? pages;
+  final List<String> languages;
   final List<String> categories;
   final String isbn;
 
@@ -21,13 +21,13 @@ class Book {
       required this.description,
       required this.imgUrl,
       required this.publishDate,
-      required this.publisher,
+      required this.publishers,
       required this.pages,
-      required this.language,
+      required this.languages,
       required this.categories,
       required this.isbn,
       required this.title,
-      required this.author});
+      required this.authors});
 
   factory Book.fromJson(Map<String, dynamic> json) => _$BookFromJson(json);
 

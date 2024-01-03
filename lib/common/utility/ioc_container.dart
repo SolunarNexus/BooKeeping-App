@@ -10,6 +10,7 @@ import 'package:book_keeping/data_access/service/friendship_service.dart';
 import 'package:book_keeping/data_access/service/my_book_service.dart';
 import 'package:book_keeping/data_access/service/recommendation_service.dart';
 import 'package:book_keeping/data_access/service/user_service.dart';
+import 'package:book_keeping/web_api/service/open_library_service.dart';
 import 'package:get_it/get_it.dart';
 
 class IocContainer {
@@ -22,6 +23,7 @@ class IocContainer {
     getIt.registerSingleton(FriendshipService());
     getIt.registerSingleton(RecommendationService());
     getIt.registerSingleton(ConverterService());
+    getIt.registerSingleton(OpenLibraryService());
     getIt.registerSingleton(MyBookFacade());
     getIt.registerSingleton(RecommendationFacade());
     getIt.registerSingleton(BookFacade());

@@ -6,10 +6,13 @@ import 'package:go_router/go_router.dart';
 
 class BookDetailPage extends StatefulWidget {
   final String _title;
+
   // TODO: fetch from DB
   bool _favourite;
+
   // TODO: fetch from DB
   bool _done;
+
   // TODO: fetch from DB
   bool _reading;
 
@@ -30,7 +33,9 @@ class BookDetailPage extends StatefulWidget {
 
 class _BookDetailPageState extends State<BookDetailPage> {
   void _updateFavProperty() => widget._favourite = !widget._favourite;
+
   void _updateDoneProperty() => widget._done = !widget._done;
+
   void _updateReadingProperty() => widget._reading = !widget._reading;
 
   @override
