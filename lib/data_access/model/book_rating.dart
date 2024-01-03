@@ -30,4 +30,16 @@ class BookRating extends Entity {
 
   @override
   int get hashCode => userId.hashCode ^ bookId.hashCode;
+
+  BookRating copyWith({
+    int? rating,
+    String? userId,
+    String? bookId,
+  }) {
+    return BookRating(
+      rating: rating ?? this.rating,
+      userId: userId ?? this.userId,
+      bookId: bookId ?? this.bookId,
+    );
+  }
 }

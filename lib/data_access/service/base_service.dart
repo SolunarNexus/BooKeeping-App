@@ -1,8 +1,9 @@
 import 'package:book_keeping/common/exception/duplicate_data_exception.dart';
+import 'package:book_keeping/data_access/model/entity.dart';
 import 'package:book_keeping/data_access/utility/collection_type.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-abstract class BaseService<T> {
+abstract class BaseService<T extends Entity> {
   final CollectionType _collectionType;
   final T Function(Map<String, dynamic>) _fromJson;
   final Map<String, dynamic> Function(T) _toJson;
@@ -55,8 +56,8 @@ abstract class BaseService<T> {
     await _getCollection().add(item);
   }
 
-  Future<void> update(T item, String id) async {
-    return _getCollection().doc(id).update(_toJson(item));
+  Future<void> update(T item) async {
+    return _getCollection().doc(item.id).update(_toJson(item));
   }
 
   Future<void> remove(String id) {
