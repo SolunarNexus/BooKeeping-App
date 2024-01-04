@@ -45,5 +45,5 @@ class MyBookFacade extends BaseFacade {
       _myBookService.updateState(myBookId, newState);
 
   /// deletes my_book
-  Future<void> deleteById(String id) => _myBookService.remove(id);
+  Future<void> deleteById(String id) => _myBookService.delete(id);
 }

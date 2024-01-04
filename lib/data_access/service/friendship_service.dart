@@ -1,9 +1,9 @@
 import 'package:book_keeping/common/model/friendship_state.dart';
 import 'package:book_keeping/data_access/model/friendship.dart';
-import 'package:book_keeping/data_access/service/base_service.dart';
+import 'package:book_keeping/data_access/service/base_firestore_service.dart';
 import 'package:book_keeping/data_access/utility/collection_type.dart';
 
-class FriendshipService extends BaseService<Friendship> {
+class FriendshipService extends BaseFirestoreService<Friendship> {
   FriendshipService()
       : super(
             collectionType: CollectionType.friendship,

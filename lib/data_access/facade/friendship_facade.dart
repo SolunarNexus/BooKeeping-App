@@ -35,6 +35,6 @@ class FriendshipFacade extends BaseFacade {
 
   /// deletes friendship
   Future<void> deleteFriend(String friendshipId) async {
-    await _friendshipService.remove(friendshipId);
+    await _friendshipService.delete(friendshipId);
   }
 }

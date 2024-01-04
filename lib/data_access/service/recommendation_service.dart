@@ -1,8 +1,8 @@
 import 'package:book_keeping/data_access/model/recommendation.dart';
-import 'package:book_keeping/data_access/service/base_service.dart';
+import 'package:book_keeping/data_access/service/base_firestore_service.dart';
 import 'package:book_keeping/data_access/utility/collection_type.dart';
 
-class RecommendationService extends BaseService<Recommendation> {
+class RecommendationService extends BaseFirestoreService<Recommendation> {
   RecommendationService()
       : super(
             collectionType: CollectionType.recommendation,

@@ -13,5 +13,5 @@ class BookFacade {
       await _bookService.getSingle(bookId).last;
 
   /// deletes book
-  Future<void> deleteById(String bookId) => _bookService.remove(bookId);
+  Future<void> deleteById(String bookId) => _bookService.delete(bookId);
 }

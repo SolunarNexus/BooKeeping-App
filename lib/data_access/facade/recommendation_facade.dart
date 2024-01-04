@@ -38,5 +38,5 @@ class RecommendationFacade extends BaseFacade {
 
   /// removes recommendation
   Future<void> delete(String recommendationId) =>
-      _recommendationService.remove(recommendationId);
+      _recommendationService.delete(recommendationId);
 }

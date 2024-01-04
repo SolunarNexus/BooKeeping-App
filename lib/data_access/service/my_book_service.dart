@@ -1,9 +1,9 @@
 import 'package:book_keeping/common/model/read_state.dart';
 import 'package:book_keeping/data_access/model/my_book.dart';
-import 'package:book_keeping/data_access/service/base_service.dart';
+import 'package:book_keeping/data_access/service/base_firestore_service.dart';
 import 'package:book_keeping/data_access/utility/collection_type.dart';
 
-class MyBookService extends BaseService<MyBook> {
+class MyBookService extends BaseFirestoreService<MyBook> {
   MyBookService()
       : super(
             collectionType: CollectionType.myBook,

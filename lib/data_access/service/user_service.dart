@@ -1,8 +1,8 @@
 import 'package:book_keeping/data_access/model/user.dart';
-import 'package:book_keeping/data_access/service/base_service.dart';
+import 'package:book_keeping/data_access/service/base_firestore_service.dart';
 import 'package:book_keeping/data_access/utility/collection_type.dart';
 
-class UserService extends BaseService<User> {
+class UserService extends BaseFirestoreService<User> {
   UserService()
       : super(
             collectionType: CollectionType.user,

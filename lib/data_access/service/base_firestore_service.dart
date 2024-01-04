@@ -3,13 +3,13 @@ import 'package:book_keeping/data_access/model/entity.dart';
 import 'package:book_keeping/data_access/utility/collection_type.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-abstract class BaseService<T extends Entity> {
+abstract class BaseFirestoreService<T extends Entity> {
   final CollectionType _collectionType;
   final T Function(Map<String, dynamic>) _fromJson;
   final Map<String, dynamic> Function(T) _toJson;
   final bool Function(T, T) _equals;
 
-  BaseService(
+  BaseFirestoreService(
       {required CollectionType collectionType,
       required T Function(Map<String, dynamic>) fromJson,
       required Map<String, dynamic> Function(T) toJson,
@@ -60,7 +60,7 @@ abstract class BaseService<T extends Entity> {
     return _getCollection().doc(item.id).update(_toJson(item));
   }
 
-  Future<void> remove(String id) {
+  Future<void> delete(String id) {
     return _getCollection().doc(id).delete();
   }
 }
