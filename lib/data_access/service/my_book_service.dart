@@ -11,7 +11,7 @@ class MyBookService extends BaseFirestoreService<MyBook> {
             toJson: _toJson,
             equals: _equals);
 
-  Stream<List<MyBook>> getStream(String userId) => getAll().map(
+  Stream<List<MyBook>> getAllByUserId(String userId) => getAll().map(
       (myBooks) => myBooks.where((myBook) => myBook.userId == userId).toList());
 
   Future<void> updateState(String id, ReadState newState) async {

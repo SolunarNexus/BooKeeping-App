@@ -10,7 +10,7 @@ class RecommendationService extends BaseFirestoreService<Recommendation> {
             toJson: _toJson,
             equals: _equals);
 
-  Stream<List<Recommendation>> getStream(List<String> friendUserIds) =>
+  Stream<List<Recommendation>> getAllByFriendIds(List<String> friendUserIds) =>
       getAll().map((recommendations) => recommendations
           .where((recommendation) =>
               friendUserIds.contains(recommendation.senderUserId))
