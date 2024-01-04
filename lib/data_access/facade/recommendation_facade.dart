@@ -30,10 +30,13 @@ class RecommendationFacade extends BaseFacade {
     if (friendship == null || friendship.state == FriendshipState.sent) {
       throw Exception("Not friends with target user");
     }
-    _recommendationService.create(currentUser.id!, friendUserId, bookId);
+    _recommendationService.create(Recommendation(
+        senderUserId: currentUser.id!,
+        receiverUserId: friendUserId,
+        bookId: bookId));
   }
 
   /// removes recommendation
   Future<void> delete(String recommendationId) =>
-      _recommendationService.deleteById(recommendationId);
+      _recommendationService.remove(recommendationId);
 }
