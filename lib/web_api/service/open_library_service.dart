@@ -8,10 +8,16 @@ import 'package:book_keeping/web_api/model/search_result.dart';
 import 'package:http/http.dart' as http;
 
 class OpenLibraryService {
+  static String baseUrl = "openlibrary.org";
+
   Future<List<FoundBook>> searchBooks(String query) async {
     final noWhitespaceQuery = query.replaceAll(RegExp(r'\s'), "+");
-    final response = await http.get(Uri.parse(
-        'https://openlibrary.org/search.json?q=$noWhitespaceQuery&fields=key,title,author_name,editions,editions.key'));
+    final queryParms = {
+      "q": noWhitespaceQuery,
+      "fields": "key,title,author_name,editions,editions.key"
+    };
+    final response =
+        await http.get(Uri.https(baseUrl, "/search.json", queryParms));
     if (response.statusCode == 200) {
       final result = SearchResult.fromJson(
           jsonDecode(response.body) as Map<String, dynamic>);
@@ -22,8 +28,8 @@ class OpenLibraryService {
   }
 
   Future<Book> fetchBook(FoundBook foundBook) async {
-    final response = await http.get(Uri.parse(
-        'https://openlibrary.org/books/${foundBook.editionOLID}.json'));
+    final response = await http
+        .get(Uri.https(baseUrl, "/books/${foundBook.editionOLID}.json"));
     if (response.statusCode == 200) {
       final bookResult = BookResult.fromJson(
           jsonDecode(response.body) as Map<String, dynamic>);
@@ -40,8 +46,8 @@ class OpenLibraryService {
   }
 
   Future<AuthorResult> _fetchAuthor(String authorOLID) async {
-    final response = await http
-        .get(Uri.parse('https://openlibrary.org/authors/$authorOLID.json'));
+    final response =
+        await http.get(Uri.https(baseUrl, "/authors/$authorOLID.json"));
     if (response.statusCode == 200) {
       return AuthorResult.fromJson(
           jsonDecode(response.body) as Map<String, dynamic>);
