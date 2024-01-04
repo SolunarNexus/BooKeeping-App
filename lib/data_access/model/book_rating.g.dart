@@ -11,6 +11,7 @@ BookRating _$BookRatingFromJson(Map<String, dynamic> json) => BookRating(
       rating: json['rating'] as int,
       userId: json['userId'] as String,
       bookId: json['bookId'] as String,
+      text: json['text'] as String,
     );
 
 Map<String, dynamic> _$BookRatingToJson(BookRating instance) =>
@@ -19,4 +20,5 @@ Map<String, dynamic> _$BookRatingToJson(BookRating instance) =>
       'rating': instance.rating,
       'userId': instance.userId,
       'bookId': instance.bookId,
+      'text': instance.text,
     };

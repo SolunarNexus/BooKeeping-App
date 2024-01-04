@@ -30,11 +30,15 @@ class BookRatingFacade extends BaseFacade {
     });
   }
 
+  /// return stream of ratings belonging to specified book
+  Stream<List<BookRating>> getRatingStream(String bookId) =>
+      _bookRatingService.getAllByBookId(bookId);
+
   /// creates new rating
-  Future<void> create(String bookId, int rating) async {
+  Future<void> create(String bookId, int rating, String text) async {
     final currentUser = await getCurrentUser().last;
-    final newRating =
-        BookRating(rating: rating, userId: currentUser.id!, bookId: bookId);
+    final newRating = BookRating(
+        rating: rating, userId: currentUser.id!, bookId: bookId, text: text);
     await _bookRatingService.create(newRating);
   }
 

@@ -10,6 +10,11 @@ class BookRatingService extends BaseFirestoreService<BookRating> {
             toJson: _toJson,
             equals: _equals);
 
+  Stream<List<BookRating>> getAllByBookId(String bookId) =>
+      getAll().map((bookRatings) => bookRatings
+          .where((bookRating) => bookRating.bookId == bookId)
+          .toList());
+
   Future<void> updateRating(String id, int newValue) async {
     final rating = await getSingle(id).last;
     if (rating == null) {

@@ -8,12 +8,14 @@ class BookRating extends Entity {
   final int rating;
   final String userId;
   final String bookId;
+  final String text;
 
   BookRating(
       {super.id,
       required this.rating,
       required this.userId,
-      required this.bookId});
+      required this.bookId,
+      required this.text});
 
   factory BookRating.fromJson(Map<String, dynamic> json) =>
       _$BookRatingFromJson(json);
@@ -35,11 +37,13 @@ class BookRating extends Entity {
     int? rating,
     String? userId,
     String? bookId,
+    String? text,
   }) {
     return BookRating(
       rating: rating ?? this.rating,
       userId: userId ?? this.userId,
       bookId: bookId ?? this.bookId,
+      text: text ?? this.text,
     );
   }
 }
