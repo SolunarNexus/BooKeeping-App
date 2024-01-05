@@ -22,8 +22,11 @@ class IocContainer {
     getIt.registerSingleton(BookRatingService());
     getIt.registerSingleton(FriendshipService());
     getIt.registerSingleton(RecommendationService());
+
     getIt.registerSingleton(ConverterService());
+
     getIt.registerSingleton(OpenLibraryService());
+
     getIt.registerSingleton(MyBookFacade());
     getIt.registerSingleton(RecommendationFacade());
     getIt.registerSingleton(BookFacade());

@@ -1,60 +1,29 @@
-import 'package:book_keeping/common/exception/duplicate_data_exception.dart';
 import 'package:book_keeping/common/model/read_state.dart';
 import 'package:book_keeping/data_access/model/my_book.dart';
+import 'package:book_keeping/data_access/service/base_firestore_service.dart';
 import 'package:book_keeping/data_access/utility/collection_type.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-class MyBookService {
-  static const CollectionType collectionType = CollectionType.myBook;
+class MyBookService extends BaseFirestoreService<MyBook> {
+  MyBookService()
+      : super(
+            collectionType: CollectionType.myBook,
+            fromJson: MyBook.fromJson,
+            toJson: _toJson,
+            equals: _equals);
 
-  final _myBookCollection = FirebaseFirestore.instance
-      .collection(collectionType.collectionPath)
-      .withConverter(
-    fromFirestore: (snapshot, options) {
-      final json = snapshot.data() ?? {};
-      json['id'] = snapshot.id;
-      return MyBook.fromJson(json);
-    },
-    toFirestore: (value, options) {
-      final json = value.toJson();
-      json.remove('id');
-      return json;
-    },
-  );
-
-  Stream<List<MyBook>> getStream(String userId) => _myBookCollection
-      .where("userId", isEqualTo: userId)
-      .snapshots()
-      .map((querySnapshot) =>
-          querySnapshot.docs.map((docSnapshot) => docSnapshot.data()).toList());
-
-  Future<void> create(String userId, String bookId) async {
-    if (await exists(userId, bookId)) {
-      throw DuplicateDataException(
-          "${collectionType.collectionPath} with userId: $userId and bookId: $bookId already exists");
-    }
-    final myBook =
-        MyBook(readState: ReadState.planToRead, userId: userId, bookId: bookId);
-    await _myBookCollection.add(myBook);
-  }
+  Stream<List<MyBook>> getAllByUserId(String userId) => getAll().map(
+      (myBooks) => myBooks.where((myBook) => myBook.userId == userId).toList());
 
   Future<void> updateState(String id, ReadState newState) async {
-    final document = await _myBookCollection.doc(id).get();
-    if (!document.exists) {
+    final myBook = await getSingle(id).last;
+    if (myBook == null) {
       throw Exception(
-          "${collectionType.collectionPath} with id: $id does not exist");
+          "${CollectionType.myBook.collectionPath} with id: $id does not exist");
     }
-    await _myBookCollection.doc(id).update({"readState": newState});
+    await update(myBook.copyWith(readState: newState));
   }
 
-  Future<void> deleteById(String id) => _myBookCollection.doc(id).delete();
+  static Map<String, dynamic> _toJson(MyBook myBook) => myBook.toJson();
 
-  Future<bool> exists(String userId, String bookId) async {
-    final countSnapshot = await _myBookCollection
-        .where("userId", isEqualTo: userId)
-        .where("bookId", isEqualTo: bookId)
-        .count()
-        .get();
-    return countSnapshot.count > 0;
-  }
+  static bool _equals(MyBook first, MyBook second) => first == second;
 }

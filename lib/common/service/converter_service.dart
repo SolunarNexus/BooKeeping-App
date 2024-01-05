@@ -12,11 +12,11 @@ class ConverterService {
   final _bookService = GetIt.instance.get<BookService>();
 
   Future<MyBookComplete> fromMyBook(MyBook myBook) async {
-    final user = await _userService.getById(myBook.userId);
+    final user = await _userService.getSingle(myBook.userId).last;
     if (user == null) {
       throw NotFoundException("User with id: ${myBook.userId} does not exist");
     }
-    final book = await _bookService.getById(myBook.bookId);
+    final book = await _bookService.getSingle(myBook.bookId).last;
     if (book == null) {
       throw NotFoundException("Book with id: ${myBook.bookId} does not exist");
     }
@@ -36,12 +36,12 @@ class ConverterService {
   }
 
   Future<FriendshipComplete> fromFriendship(Friendship friendship) async {
-    final user = await _userService.getById(friendship.userId);
+    final user = await _userService.getSingle(friendship.userId).last;
     if (user == null) {
       throw NotFoundException(
           "User with id: ${friendship.userId} does not exist");
     }
-    final otherUser = await _userService.getById(friendship.otherUserId);
+    final otherUser = await _userService.getSingle(friendship.otherUserId).last;
     if (otherUser == null) {
       throw NotFoundException(
           "User with id: ${friendship.otherUserId} does not exist");

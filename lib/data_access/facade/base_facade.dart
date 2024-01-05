@@ -7,11 +7,13 @@ abstract class BaseFacade {
   final _userService = GetIt.instance.get<UserService>();
 
   /// gets user from db based on current logged in user
-  Future<db_user.User> getCurrentUser() async {
+  Stream<db_user.User> getCurrentUser() {
     final email = FirebaseAuth.instance.currentUser?.email;
     if (email == null) {
       throw Exception("User not logged in");
     }
-    return await _userService.getByEmail(email);
+    return _userService
+        .getAll()
+        .map((users) => users.where((user) => user.email == email).single);
   }
 }

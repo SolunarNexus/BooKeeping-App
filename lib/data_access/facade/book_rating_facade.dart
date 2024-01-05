@@ -1,5 +1,6 @@
 import 'package:book_keeping/common/model/book_rating_aggregate.dart';
 import 'package:book_keeping/data_access/facade/base_facade.dart';
+import 'package:book_keeping/data_access/model/book_rating.dart';
 import 'package:book_keeping/data_access/service/book_rating_service.dart';
 import 'package:book_keeping/data_access/service/book_service.dart';
 import 'package:collection/collection.dart';
@@ -11,9 +12,9 @@ class BookRatingFacade extends BaseFacade {
   final _bookService = GetIt.instance.get<BookService>();
 
   /// returns stream of book_rating_aggregate, not ordered
-  Future<Stream<List<BookRatingAggregate>>> getAggregateStream() async {
-    final ratingStream = _bookRatingService.getStream();
-    final bookStream = _bookService.getStream();
+  Stream<List<BookRatingAggregate>> getAggregateStream() {
+    final ratingStream = _bookRatingService.getAll();
+    final bookStream = _bookService.getAll();
     return Rx.combineLatest2(ratingStream, bookStream, (ratings, books) {
       final bookGroups = ratings.groupListsBy((element) => element.bookId);
       return books
@@ -29,16 +30,22 @@ class BookRatingFacade extends BaseFacade {
     });
   }
 
+  /// return stream of ratings belonging to specified book
+  Stream<List<BookRating>> getRatingStream(String bookId) =>
+      _bookRatingService.getAllByBookId(bookId);
+
   /// creates new rating
-  Future<void> create(String bookId, int rating) async {
-    final currentUser = await getCurrentUser();
-    await _bookRatingService.create(currentUser.id!, bookId, rating);
+  Future<void> create(String bookId, int rating, String text) async {
+    final currentUser = await getCurrentUser().last;
+    final newRating = BookRating(
+        rating: rating, userId: currentUser.id!, bookId: bookId, text: text);
+    await _bookRatingService.create(newRating);
   }
 
   /// updates existing rating, verifies ownership of rating
   Future<void> update(String ratingId, int newValue) async {
-    final currentUser = await getCurrentUser();
-    final rating = await _bookRatingService.getById(ratingId);
+    final currentUser = await getCurrentUser().last;
+    final rating = await _bookRatingService.getSingle(ratingId).last;
     if (rating == null || rating.userId != currentUser.id) {
       throw Exception("Unable to modify rating");
     }
