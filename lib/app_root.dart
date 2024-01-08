@@ -32,7 +32,7 @@ class AppRoot extends StatelessWidget {
       GoRoute(
         path: "/add-friend",
         name: "addFriend",
-        builder: (context, state) => const AddFriendPage(),
+        builder: (context, state) => AddFriendPage(),
       ),
       GoRoute(
         path: "/ranking",
