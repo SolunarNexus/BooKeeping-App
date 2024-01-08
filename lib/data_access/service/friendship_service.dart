@@ -18,7 +18,7 @@ class FriendshipService extends BaseFirestoreService<Friendship> {
           .toList());
 
   Future<void> updateState(String id, FriendshipState newState) async {
-    final friendship = await getSingle(id).last;
+    final friendship = await getSingle(id).first;
     if (friendship == null) {
       throw Exception(
           "${CollectionType.friendship.collectionPath} with id: $id does not exist");
@@ -27,7 +27,7 @@ class FriendshipService extends BaseFirestoreService<Friendship> {
   }
 
   Future<Friendship> getByIds(String userId, String otherUserId) async {
-    final friendships = await getAll().last;
+    final friendships = await getAll().first;
     return friendships
         .where((friendship) =>
             friendship.userId == userId &&

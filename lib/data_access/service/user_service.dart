@@ -11,7 +11,7 @@ class UserService extends BaseFirestoreService<User> {
             equals: _equals);
 
   Future<User> getByEmail(String email) async {
-    final users = await getAll().last;
+    final users = await getAll().first;
     return users.where((user) => user.email == email).single;
   }
 
