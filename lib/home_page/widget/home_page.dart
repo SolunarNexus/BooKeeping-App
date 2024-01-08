@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           children: [
             ThreeButtonGroup(labels: const ["Reading", "Finished", "Wishlist"]),
-            const GeneralSearchBar(),
+            GeneralSearchBar(submit: (data) {}),
             GeneralListView(
               items: List<BookCard>.generate(
                   7, (_) => BookCard(bookTitle: "Book title")),

@@ -2,8 +2,10 @@ import 'package:book_keeping/common/widget/bottom_menu.dart';
 import 'package:book_keeping/common/widget/general_listview.dart';
 import 'package:book_keeping/common/widget/general_search_bar.dart';
 import 'package:book_keeping/common/widget/top_bar.dart';
+import 'package:book_keeping/data_access/facade/friendship_facade.dart';
 import 'package:book_keeping/friends_page/widget/user_card.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 class AddFriendPage extends StatelessWidget {
   const AddFriendPage({super.key});
@@ -16,11 +18,13 @@ class AddFriendPage extends StatelessWidget {
         context: context,
       ),
       bottomNavigationBar: BottomMenu(),
-      body: const Center(
+      body: Center(
         child: Column(
           children: [
-            GeneralSearchBar(),
-            GeneralListView(items: [
+            GeneralSearchBar(
+              submit: _onSubmit,
+            ),
+            const GeneralListView(items: [
               UserCard(
                 userName: "Bob Doe",
                 addFriend: true,
@@ -30,5 +34,9 @@ class AddFriendPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _onSubmit(String data) {
+    final friendshipFacade = GetIt.instance.get<FriendshipFacade>();
   }
 }
