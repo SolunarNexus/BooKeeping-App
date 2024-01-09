@@ -6,17 +6,22 @@ import 'package:rxdart/rxdart.dart';
 
 class SearchFriendStateService {
   final _friendshipFacade = GetIt.instance.get<FriendshipFacade>();
-  final _filteredUsers = BehaviorSubject<List<User>>.seeded([]);
+  final _filterStream = BehaviorSubject<String>.seeded("");
 
-  Stream<List<User>> get stream => _filteredUsers.stream;
+  Stream<List<User>> get stream {
+    return Rx.combineLatest3(
+        _friendshipFacade.getFriendshipStream(),
+        _friendshipFacade.getCurrentUser(),
+        _filterStream, (friends, currentUser, filter) {
+      return friends
+          .where((friendship) => friendship.state == FriendshipState.accepted)
+          .map((friendship) => friendship.getOtherUser(currentUser.email))
+          .where((user) => user.email.contains(filter))
+          .toList();
+    });
+  }
 
   Future<void> searchFriends(String text) async {
-    final currentUser = await _friendshipFacade.getCurrentUser().first;
-    final friends = (await _friendshipFacade.getFriendshipStream().first)
-        .where((friendship) => friendship.state == FriendshipState.accepted)
-        .map((friendship) => friendship.getOtherUser(currentUser.email));
-    final filteredFriends =
-        friends.where((user) => user.email.contains(text)).toList();
-    _filteredUsers.add(filteredFriends);
+    _filterStream.add(text);
   }
 }
