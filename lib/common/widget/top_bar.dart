@@ -36,7 +36,12 @@ class TopBar extends AppBar {
                         menuChildren: [
                           MenuItemButton(
                             child: const Text("Log out"),
-                            onPressed: () => context.goNamed("login"),
+                            onPressed: () async {
+                              await FirebaseAuth.instance.signOut();
+                              if (context.mounted) {
+                                context.goNamed("login");
+                              }
+                            },
                           ),
                         ],
                         builder: (context, controller, child) => ClipOval(
