@@ -6,14 +6,14 @@ part 'friendship.g.dart';
 
 @JsonSerializable()
 class Friendship extends Entity {
-  final String userId;
-  final String otherUserId;
+  final String senderId;
+  final String receiverId;
   final FriendshipState state;
 
   Friendship(
       {super.id,
-      required this.userId,
-      required this.otherUserId,
+      required this.senderId,
+      required this.receiverId,
       required this.state});
 
   factory Friendship.fromJson(Map<String, dynamic> json) =>
@@ -26,11 +26,11 @@ class Friendship extends Entity {
       identical(this, other) ||
       other is Friendship &&
           runtimeType == other.runtimeType &&
-          userId == other.userId &&
-          otherUserId == other.otherUserId;
+          senderId == other.senderId &&
+          receiverId == other.receiverId;
 
   @override
-  int get hashCode => userId.hashCode ^ otherUserId.hashCode;
+  int get hashCode => senderId.hashCode ^ receiverId.hashCode;
 
   Friendship copyWith({
     String? userId,
@@ -38,8 +38,8 @@ class Friendship extends Entity {
     FriendshipState? state,
   }) {
     return Friendship(
-      userId: userId ?? this.userId,
-      otherUserId: otherUserId ?? this.otherUserId,
+      senderId: userId ?? this.senderId,
+      receiverId: otherUserId ?? this.receiverId,
       state: state ?? this.state,
     );
   }

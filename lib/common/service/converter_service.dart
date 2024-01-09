@@ -36,32 +36,31 @@ class ConverterService {
   }
 
   Future<FriendshipComplete> fromFriendship(Friendship friendship) async {
-    final user = await _userService.getSingle(friendship.userId).first;
-    if (user == null) {
+    final sender = await _userService.getSingle(friendship.senderId).first;
+    if (sender == null) {
       throw NotFoundException(
-          "User with id: ${friendship.userId} does not exist");
+          "User with id: ${friendship.senderId} does not exist");
     }
-    final otherUser =
-        await _userService.getSingle(friendship.otherUserId).first;
-    if (otherUser == null) {
+    final receiver = await _userService.getSingle(friendship.receiverId).first;
+    if (receiver == null) {
       throw NotFoundException(
-          "User with id: ${friendship.otherUserId} does not exist");
+          "User with id: ${friendship.receiverId} does not exist");
     }
     return FriendshipComplete(
         id: friendship.id,
-        user: user,
-        otherUser: otherUser,
+        sender: sender,
+        receiver: receiver,
         state: friendship.state);
   }
 
   Future<Friendship> toFriendship(FriendshipComplete friendship) async {
-    if (friendship.user.id == null || friendship.otherUser.id == null) {
+    if (friendship.sender.id == null || friendship.receiver.id == null) {
       throw Exception("Missing reference id");
     }
     return Friendship(
         id: friendship.id,
         state: friendship.state,
-        userId: friendship.user.id!,
-        otherUserId: friendship.otherUser.id!);
+        senderId: friendship.sender.id!,
+        receiverId: friendship.receiver.id!);
   }
 }

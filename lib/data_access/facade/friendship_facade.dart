@@ -26,8 +26,8 @@ class FriendshipFacade extends BaseFacade {
   Future<void> sendRequest(String otherUserId) async {
     final currentUser = await getCurrentUser().first;
     _friendshipService.create(Friendship(
-        userId: currentUser.id!,
-        otherUserId: otherUserId,
+        senderId: currentUser.id!,
+        receiverId: otherUserId,
         state: FriendshipState.sent));
   }
 
@@ -49,10 +49,10 @@ class FriendshipFacade extends BaseFacade {
         .toList();
     return completeFriendships
         .where((friendship) =>
-            (friendship.user.email == firstUserEmail &&
-                friendship.otherUser.email == secondUserEmail) ||
-            (friendship.user.email == secondUserEmail &&
-                friendship.otherUser.email == firstUserEmail))
+            (friendship.sender.email == firstUserEmail &&
+                friendship.receiver.email == secondUserEmail) ||
+            (friendship.sender.email == secondUserEmail &&
+                friendship.receiver.email == firstUserEmail))
         .singleOrNull;
   }
 }

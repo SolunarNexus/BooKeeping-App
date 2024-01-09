@@ -3,17 +3,17 @@ import 'package:book_keeping/data_access/model/user.dart';
 
 class FriendshipComplete {
   final String? id;
-  final User user;
-  final User otherUser;
+  final User sender;
+  final User receiver;
   final FriendshipState state;
 
   FriendshipComplete(
       {this.id,
-      required this.user,
-      required this.otherUser,
+      required this.sender,
+      required this.receiver,
       required this.state});
 
   User getOtherUser(String email) {
-    return user.email == email ? otherUser : user;
+    return sender.email == email ? receiver : sender;
   }
 }

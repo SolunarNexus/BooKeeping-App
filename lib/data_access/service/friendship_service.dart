@@ -14,7 +14,7 @@ class FriendshipService extends BaseFirestoreService<Friendship> {
   Stream<List<Friendship>> getAllByUserId(String userId) =>
       getAll().map((friendshipList) => friendshipList
           .where((friendship) =>
-              friendship.userId == userId || friendship.otherUserId == userId)
+              friendship.senderId == userId || friendship.receiverId == userId)
           .toList());
 
   Future<void> updateState(String id, FriendshipState newState) async {
@@ -30,20 +30,20 @@ class FriendshipService extends BaseFirestoreService<Friendship> {
     final friendships = await getAll().first;
     return friendships
         .where((friendship) =>
-            friendship.userId == userId &&
-            friendship.otherUserId == otherUserId)
+            friendship.senderId == userId &&
+            friendship.receiverId == otherUserId)
         .single;
   }
 
   Future<Friendship?> find(String firstUserId, String secondUserId) async {
     if (await exists(Friendship(
-        userId: firstUserId,
-        otherUserId: secondUserId,
+        senderId: firstUserId,
+        receiverId: secondUserId,
         state: FriendshipState.sent))) {
       return await getByIds(firstUserId, secondUserId);
     } else if (await exists(Friendship(
-        userId: secondUserId,
-        otherUserId: firstUserId,
+        senderId: secondUserId,
+        receiverId: firstUserId,
         state: FriendshipState.sent))) {
       return await getByIds(secondUserId, firstUserId);
     }

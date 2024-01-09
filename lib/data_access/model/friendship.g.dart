@@ -8,16 +8,16 @@ part of 'friendship.dart';
 
 Friendship _$FriendshipFromJson(Map<String, dynamic> json) => Friendship(
       id: json['id'] as String?,
-      userId: json['userId'] as String,
-      otherUserId: json['otherUserId'] as String,
+      senderId: json['senderId'] as String,
+      receiverId: json['receiverId'] as String,
       state: $enumDecode(_$FriendshipStateEnumMap, json['state']),
     );
 
 Map<String, dynamic> _$FriendshipToJson(Friendship instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'userId': instance.userId,
-      'otherUserId': instance.otherUserId,
+      'senderId': instance.senderId,
+      'receiverId': instance.receiverId,
       'state': _$FriendshipStateEnumMap[instance.state]!,
     };
 
