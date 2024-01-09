@@ -12,4 +12,8 @@ class FriendshipComplete {
       required this.user,
       required this.otherUser,
       required this.state});
+
+  User getOtherUser(String email) {
+    return user.email == email ? user : otherUser;
+  }
 }

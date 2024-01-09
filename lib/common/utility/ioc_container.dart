@@ -1,5 +1,5 @@
 import 'package:book_keeping/common/service/converter_service.dart';
-import 'package:book_keeping/common/service/search_friend_service.dart';
+import 'package:book_keeping/common/service/search_friend_state_service.dart';
 import 'package:book_keeping/data_access/facade/book_facade.dart';
 import 'package:book_keeping/data_access/facade/book_rating_facade.dart';
 import 'package:book_keeping/data_access/facade/friendship_facade.dart';
@@ -28,8 +28,6 @@ class IocContainer {
     getIt.registerSingleton(RecommendationService());
 
     getIt.registerSingleton(ConverterService());
-    getIt.registerSingleton(AddFriendStateService());
-    getIt.registerSingleton(SearchFriendService());
 
     getIt.registerSingleton(OpenLibraryService());
 
@@ -39,5 +37,8 @@ class IocContainer {
     getIt.registerSingleton(UserFacade());
     getIt.registerSingleton(BookRatingFacade());
     getIt.registerSingleton(FriendshipFacade());
+
+    getIt.registerSingleton(AddFriendStateService());
+    getIt.registerSingleton(SearchFriendStateService());
   }
 }

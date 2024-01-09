@@ -1,25 +1,21 @@
-import 'package:book_keeping/common/service/search_friend_service.dart';
+import 'package:book_keeping/common/service/search_friend_state_service.dart';
+import 'package:book_keeping/common/widget/bottom_menu.dart';
 import 'package:book_keeping/common/widget/general_listview.dart';
 import 'package:book_keeping/common/widget/general_search_bar.dart';
-import 'package:book_keeping/common/widget/bottom_menu.dart';
 import 'package:book_keeping/common/widget/top_bar.dart';
-import 'package:book_keeping/data_access/facade/friendship_facade.dart';
+import 'package:book_keeping/data_access/model/user.dart';
 import 'package:book_keeping/friends_page/widget/user_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../common/service/converter_service.dart';
-
 class FriendsPage extends StatelessWidget {
-  final _searchFriendService = GetIt.instance.get<SearchFriendService>();
-  final _converterService = GetIt.instance.get<ConverterService>();
+  final _searchFriendStateService =
+      GetIt.instance.get<SearchFriendStateService>();
 
   FriendsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final friendsFacade = GetIt.instance.get<FriendshipFacade>();
-
     return Scaffold(
       appBar:
           TopBar(titleText: "My friends", isFriendPage: true, context: context),
@@ -28,10 +24,11 @@ class FriendsPage extends StatelessWidget {
         child: Column(
           children: [
             GeneralSearchBar(
-              onSubmitted: (email) => _searchFriendService.searchFriend(email),
+              onSubmitted: (email) =>
+                  _searchFriendStateService.searchFriends(email),
             ),
-            StreamBuilder(
-              stream: _searchFriendService.stream,
+            StreamBuilder<List<User>>(
+              stream: _searchFriendStateService.stream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const CircularProgressIndicator();
@@ -42,11 +39,9 @@ class FriendsPage extends StatelessWidget {
                   );
                 }
                 return GeneralListView(
-                    items: snapshot.data?.map((friendship) async {
-                  final friendshipComplete =
-                      await _converterService.fromFriendship(friendship!);
-                  return UserCard(userName: friendshipComplete.otherUser.email);
-                }).toList());
+                    items: snapshot.data
+                        ?.map((user) async => UserCard(userName: user.email))
+                        .toList());
               },
             ),
           ],
