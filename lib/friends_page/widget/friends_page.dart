@@ -40,7 +40,7 @@ class FriendsPage extends StatelessWidget {
                 }
                 return GeneralListView(
                     items: snapshot.data
-                        ?.map((user) async => UserCard(userName: user.email))
+                        ?.map((user) => UserCard(userName: user.email))
                         .toList());
               },
             ),

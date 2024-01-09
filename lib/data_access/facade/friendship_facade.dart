@@ -40,18 +40,19 @@ class FriendshipFacade extends BaseFacade {
     await _friendshipService.delete(friendshipId);
   }
 
-  /// finds single friendship matching email, excluding current user
-  Future<FriendshipComplete?> getByEmail(String email) async {
-    final user = await _userService.getByEmail(email);
-    if (user == null) return null;
-    final currentUser = await getCurrentUser().first;
-    final friendship =
-        (await _friendshipService.getAll().first).where((friendship) {
-      return user.id != currentUser.id &&
-          (friendship.userId == user.id || friendship.otherUserId == user.id);
-    }).firstOrNull;
-    return friendship == null
-        ? null
-        : await _converterService.fromFriendship(friendship);
+  /// finds single friendship matching email of both users
+  Future<FriendshipComplete?> findByEmail(
+      String firstUserEmail, String secondUserEmail) async {
+    final friendships = await _friendshipService.getAll().first;
+    final completeFriendships = await Stream.fromIterable(friendships)
+        .asyncMap((friendship) => _converterService.fromFriendship(friendship))
+        .toList();
+    return completeFriendships
+        .where((friendship) =>
+            (friendship.user.email == firstUserEmail &&
+                friendship.otherUser.email == secondUserEmail) ||
+            (friendship.user.email == secondUserEmail &&
+                friendship.otherUser.email == firstUserEmail))
+        .singleOrNull;
   }
 }
