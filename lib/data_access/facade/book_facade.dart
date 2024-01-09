@@ -10,7 +10,7 @@ class BookFacade {
 
   /// gets book by id
   Future<Book?> getById(String bookId) async =>
-      await _bookService.getSingle(bookId).last;
+      await _bookService.getSingle(bookId).first;
 
   /// deletes book
   Future<void> deleteById(String bookId) => _bookService.delete(bookId);

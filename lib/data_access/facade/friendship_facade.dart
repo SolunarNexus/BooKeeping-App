@@ -22,7 +22,7 @@ class FriendshipFacade extends BaseFacade {
 
   /// creates friendship with sent state with specified otherUserId
   Future<void> sendRequest(String otherUserId) async {
-    final currentUser = await getCurrentUser().last;
+    final currentUser = await getCurrentUser().first;
     _friendshipService.create(Friendship(
         userId: currentUser.id!,
         otherUserId: otherUserId,

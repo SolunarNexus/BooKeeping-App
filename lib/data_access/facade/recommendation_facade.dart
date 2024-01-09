@@ -25,7 +25,7 @@ class RecommendationFacade extends BaseFacade {
 
   /// sends recommendation to friend
   Future<void> send(String friendUserId, String bookId) async {
-    final currentUser = await getCurrentUser().last;
+    final currentUser = await getCurrentUser().first;
     final friendship =
         await _friendshipService.find(currentUser.id!, friendUserId);
     if (friendship == null || friendship.state == FriendshipState.sent) {

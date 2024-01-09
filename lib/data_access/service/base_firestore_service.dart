@@ -4,31 +4,27 @@ import 'package:book_keeping/data_access/utility/collection_type.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class BaseFirestoreService<T extends Entity> {
-  final CollectionType _collectionType;
-  final T Function(Map<String, dynamic>) _fromJson;
-  final Map<String, dynamic> Function(T) _toJson;
-  final bool Function(T, T) _equals;
+  final CollectionType collectionType;
+  final T Function(Map<String, dynamic>) fromJson;
+  final Map<String, dynamic> Function(T) toJson;
+  final bool Function(T, T) equals;
 
   BaseFirestoreService(
-      {required CollectionType collectionType,
-      required T Function(Map<String, dynamic>) fromJson,
-      required Map<String, dynamic> Function(T) toJson,
-      required bool Function(T, T) equals})
-      : _collectionType = collectionType,
-        _fromJson = fromJson,
-        _toJson = toJson,
-        _equals = equals;
+      {required this.collectionType,
+      required this.fromJson,
+      required this.toJson,
+      required this.equals});
 
   CollectionReference<T> _getCollection() => FirebaseFirestore.instance
-          .collection(_collectionType.collectionPath)
+          .collection(collectionType.collectionPath)
           .withConverter(
         fromFirestore: (snapshot, options) {
           final json = snapshot.data() ?? {};
           json['id'] = snapshot.id;
-          return _fromJson(json);
+          return fromJson(json);
         },
         toFirestore: (value, options) {
-          final json = _toJson(value);
+          final json = toJson(value);
           json.remove('id');
           return json;
         },
@@ -47,7 +43,7 @@ abstract class BaseFirestoreService<T extends Entity> {
   }
 
   Future<bool> exists(T item) async =>
-      (await getAll().last).any((element) => _equals(item, element));
+      (await getAll().first).any((element) => equals(item, element));
 
   Future<void> create(T item) async {
     if (await exists(item)) {
@@ -57,7 +53,7 @@ abstract class BaseFirestoreService<T extends Entity> {
   }
 
   Future<void> update(T item) async {
-    return _getCollection().doc(item.id).update(_toJson(item));
+    return _getCollection().doc(item.id).update(toJson(item));
   }
 
   Future<void> delete(String id) {
