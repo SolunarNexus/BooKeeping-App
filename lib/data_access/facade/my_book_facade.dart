@@ -24,7 +24,7 @@ class MyBookFacade extends BaseFacade {
 
   /// adds book by id to current users library
   Future<void> createById(String bookId) async {
-    final currentUser = await getCurrentUser().last;
+    final currentUser = await getCurrentUser().first;
     _myBookService.create(MyBook(
         readState: ReadState.planToRead,
         userId: currentUser.id!,

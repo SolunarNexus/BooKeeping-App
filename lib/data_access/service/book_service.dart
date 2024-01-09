@@ -11,7 +11,7 @@ class BookService extends BaseFirestoreService<Book> {
             equals: _equals);
 
   Future<Book> getByISBN(String isbn) async =>
-      (await getAll().last).where((book) => book.isbn == isbn).single;
+      (await getAll().first).where((book) => book.isbn == isbn).single;
 
   static Map<String, dynamic> _toJson(Book book) => book.toJson();
 

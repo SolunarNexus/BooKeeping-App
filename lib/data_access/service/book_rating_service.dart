@@ -16,7 +16,7 @@ class BookRatingService extends BaseFirestoreService<BookRating> {
           .toList());
 
   Future<void> updateRating(String id, int newValue) async {
-    final rating = await getSingle(id).last;
+    final rating = await getSingle(id).first;
     if (rating == null) {
       throw Exception(
           "${CollectionType.bookRating.collectionPath} with id: $id does not exist");

@@ -15,7 +15,7 @@ class MyBookService extends BaseFirestoreService<MyBook> {
       (myBooks) => myBooks.where((myBook) => myBook.userId == userId).toList());
 
   Future<void> updateState(String id, ReadState newState) async {
-    final myBook = await getSingle(id).last;
+    final myBook = await getSingle(id).first;
     if (myBook == null) {
       throw Exception(
           "${CollectionType.myBook.collectionPath} with id: $id does not exist");
