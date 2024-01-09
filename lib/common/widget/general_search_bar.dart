@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class GeneralSearchBar extends StatefulWidget {
-  void Function(String) _submit;
+  final ValueSetter<String>? onSubmitted;
 
-  GeneralSearchBar({super.key, required submit}) : _submit = submit;
+  const GeneralSearchBar({super.key, this.onSubmitted});
 
   @override
   State<GeneralSearchBar> createState() => _GeneralSearchBarState();
@@ -32,7 +32,7 @@ class _GeneralSearchBarState extends State<GeneralSearchBar> {
               icon: const Icon(Icons.clear),
             ),
           ),
-          onSubmitted: (data) => widget._submit(data),
+          onSubmitted: widget.onSubmitted,
         ),
       ),
     );
