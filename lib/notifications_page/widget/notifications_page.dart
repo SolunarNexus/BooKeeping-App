@@ -30,6 +30,9 @@ class NotificationsPage extends StatelessWidget {
                   (friendships) => friendships
                       .where((friendship) =>
                           friendship.state == FriendshipState.sent)
+                      .where((friendship) =>
+                          friendship.sender.email !=
+                          FirebaseAuth.instance.currentUser!.email)
                       .toList()),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
