@@ -39,7 +39,6 @@ class AddFriendPage extends StatelessWidget {
                         )
                       ]
                     : [];
-
                 return GeneralListView(
                   items: items,
                 );

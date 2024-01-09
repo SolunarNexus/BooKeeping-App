@@ -27,7 +27,7 @@ class AppRoot extends StatelessWidget {
       GoRoute(
         path: "/my-friends",
         name: "friends",
-        builder: (context, state) => const FriendsPage(),
+        builder: (context, state) => FriendsPage(),
       ),
       GoRoute(
         path: "/add-friend",

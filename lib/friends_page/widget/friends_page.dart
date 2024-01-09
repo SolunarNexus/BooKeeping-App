@@ -1,3 +1,4 @@
+import 'package:book_keeping/common/service/search_friend_service.dart';
 import 'package:book_keeping/common/widget/general_listview.dart';
 import 'package:book_keeping/common/widget/general_search_bar.dart';
 import 'package:book_keeping/common/widget/bottom_menu.dart';
@@ -7,8 +8,13 @@ import 'package:book_keeping/friends_page/widget/user_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../common/service/converter_service.dart';
+
 class FriendsPage extends StatelessWidget {
-  const FriendsPage({super.key});
+  final _searchFriendService = GetIt.instance.get<SearchFriendService>();
+  final _converterService = GetIt.instance.get<ConverterService>();
+
+  FriendsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +28,10 @@ class FriendsPage extends StatelessWidget {
         child: Column(
           children: [
             GeneralSearchBar(
-              onSubmitted: (email) => {},
+              onSubmitted: (email) => _searchFriendService.searchFriend(email),
             ),
             StreamBuilder(
-              stream: friendsFacade.getFriendshipStream(),
+              stream: _searchFriendService.stream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const CircularProgressIndicator();
@@ -36,10 +42,11 @@ class FriendsPage extends StatelessWidget {
                   );
                 }
                 return GeneralListView(
-                    items: snapshot.data
-                        ?.map((friendship) =>
-                            UserCard(userName: friendship.otherUser.email))
-                        .toList());
+                    items: snapshot.data?.map((friendship) async {
+                  final friendshipComplete =
+                      await _converterService.fromFriendship(friendship!);
+                  return UserCard(userName: friendshipComplete.otherUser.email);
+                }).toList());
               },
             ),
           ],

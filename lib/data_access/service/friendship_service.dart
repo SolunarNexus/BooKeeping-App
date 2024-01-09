@@ -1,7 +1,10 @@
 import 'package:book_keeping/common/model/friendship_state.dart';
+import 'package:book_keeping/data_access/facade/friendship_facade.dart';
 import 'package:book_keeping/data_access/model/friendship.dart';
 import 'package:book_keeping/data_access/service/base_firestore_service.dart';
+import 'package:book_keeping/data_access/service/user_service.dart';
 import 'package:book_keeping/data_access/utility/collection_type.dart';
+import 'package:get_it/get_it.dart';
 
 class FriendshipService extends BaseFirestoreService<Friendship> {
   FriendshipService()
@@ -10,6 +13,17 @@ class FriendshipService extends BaseFirestoreService<Friendship> {
             fromJson: Friendship.fromJson,
             toJson: _toJson,
             equals: _equals);
+
+  Future<Friendship?> getByEmail(String email) async {
+    final user = await GetIt.instance.get<UserService>().getByEmail(email);
+    final currentUser =
+        await GetIt.instance.get<FriendshipFacade>().getCurrentUser().first;
+
+    return (await getAll().first).where((friendship) {
+      return user!.id != currentUser.id &&
+          (friendship.userId == user.id || friendship.otherUserId == user.id);
+    }).firstOrNull;
+  }
 
   Stream<List<Friendship>> getAllByUserId(String userId) =>
       getAll().map((friendshipList) => friendshipList
