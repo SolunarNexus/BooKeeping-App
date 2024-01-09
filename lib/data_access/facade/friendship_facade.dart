@@ -4,12 +4,14 @@ import 'package:book_keeping/common/service/converter_service.dart';
 import 'package:book_keeping/data_access/facade/base_facade.dart';
 import 'package:book_keeping/data_access/model/friendship.dart';
 import 'package:book_keeping/data_access/service/friendship_service.dart';
+import 'package:book_keeping/data_access/service/user_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:rxdart/rxdart.dart';
 
 class FriendshipFacade extends BaseFacade {
   final _friendshipService = GetIt.instance.get<FriendshipService>();
   final _converterService = GetIt.instance.get<ConverterService>();
+  final _userService = GetIt.instance.get<UserService>();
 
   /// returns stream of friendships where current user equals to either userId or otherUserId fields, not filtered by state
   Stream<List<FriendshipComplete>> getFriendshipStream() =>
@@ -36,5 +38,14 @@ class FriendshipFacade extends BaseFacade {
   /// deletes friendship
   Future<void> deleteFriend(String friendshipId) async {
     await _friendshipService.delete(friendshipId);
+  }
+
+  Future<Friendship?> getByEmail(String email) async {
+    final user = await _userService.getByEmail(email);
+    final currentUser = await getCurrentUser().first;
+    return (await _friendshipService.getAll().first).where((friendship) {
+      return user!.id != currentUser.id &&
+          (friendship.userId == user.id || friendship.otherUserId == user.id);
+    }).firstOrNull;
   }
 }
