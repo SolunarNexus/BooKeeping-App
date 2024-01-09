@@ -14,6 +14,8 @@ import 'package:book_keeping/data_access/service/user_service.dart';
 import 'package:book_keeping/web_api/service/open_library_service.dart';
 import 'package:get_it/get_it.dart';
 
+import '../service/add_friend_state_service.dart';
+
 class IocContainer {
   static void setup() {
     var getIt = GetIt.instance;
@@ -25,6 +27,7 @@ class IocContainer {
     getIt.registerSingleton(RecommendationService());
 
     getIt.registerSingleton(ConverterService());
+    getIt.registerSingleton(AddFriendStateService());
 
     getIt.registerSingleton(OpenLibraryService());
 
