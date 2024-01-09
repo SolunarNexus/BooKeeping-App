@@ -56,7 +56,7 @@ class AppRoot extends StatelessWidget {
       GoRoute(
         path: "/notifications",
         name: "notifications",
-        builder: (context, state) => const NotificationsPage(),
+        builder: (context, state) => NotificationsPage(),
       ),
     ],
     initialLocation: FirebaseAuth.instance.currentUser == null ? "/auth" : "/",
