@@ -22,7 +22,7 @@ class FriendsPage extends StatelessWidget {
         child: Column(
           children: [
             GeneralSearchBar(
-              submit: (data) => {},
+              onSubmitted: (email) => {},
             ),
             StreamBuilder(
               stream: friendsFacade.getFriendshipStream(),
