@@ -7,8 +7,12 @@ import 'package:book_keeping/friends_page/widget/user_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../common/service/add_friend_state_service.dart';
+
 class AddFriendPage extends StatelessWidget {
-  const AddFriendPage({super.key});
+  final _addFriendStateService = GetIt.instance.get<AddFriendStateService>();
+
+  AddFriendPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,21 +26,28 @@ class AddFriendPage extends StatelessWidget {
         child: Column(
           children: [
             GeneralSearchBar(
-              submit: _onSubmit,
+              onSubmitted: (mail) => _addFriendStateService.searchUser(mail),
             ),
-            const GeneralListView(items: [
-              UserCard(
-                userName: "Bob Doe",
-                addFriend: true,
-              )
-            ])
+            StreamBuilder(
+              stream: _addFriendStateService.stream,
+              builder: (context, snapshot) {
+                final List<UserCard> items = snapshot.hasData
+                    ? [
+                        UserCard(
+                          userName: snapshot.data!.email,
+                          addFriend: true,
+                        )
+                      ]
+                    : [];
+
+                return GeneralListView(
+                  items: items,
+                );
+              },
+            ),
           ],
         ),
       ),
     );
-  }
-
-  void _onSubmit(String data) {
-    final friendshipFacade = GetIt.instance.get<FriendshipFacade>();
   }
 }

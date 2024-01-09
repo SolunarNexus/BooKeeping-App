@@ -10,9 +10,9 @@ class UserService extends BaseFirestoreService<User> {
             toJson: _toJson,
             equals: _equals);
 
-  Future<User> getByEmail(String email) async {
+  Future<User?> getByEmail(String email) async {
     final users = await getAll().first;
-    return users.where((user) => user.email == email).single;
+    return users.where((user) => user.email == email).singleOrNull;
   }
 
   static Map<String, dynamic> _toJson(User user) => user.toJson();
