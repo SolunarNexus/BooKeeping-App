@@ -1,5 +1,4 @@
 import 'package:book_keeping/common/model/friendship_complete.dart';
-import 'package:book_keeping/common/model/friendship_state.dart';
 import 'package:book_keeping/common/service/user_card_state_service.dart';
 import 'package:book_keeping/data_access/facade/friendship_facade.dart';
 import 'package:book_keeping/data_access/facade/user_facade.dart';
@@ -62,9 +61,7 @@ class _UserCardState extends State<UserCard> {
   }
 
   Widget _buildAddFriendControl(FriendshipComplete? friendship) {
-    widget._userCardStateService.changeState(
-        friendship?.state == FriendshipState.sent ||
-            friendship?.state == FriendshipState.accepted);
+    widget._userCardStateService.changeState(friendship != null);
     return StreamBuilder<bool>(
       stream: widget._userCardStateService.stream,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {

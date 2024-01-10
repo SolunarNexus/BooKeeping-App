@@ -34,14 +34,14 @@ class Friendship extends Entity {
 
   Friendship copyWith({
     String? id,
-    String? userId,
-    String? otherUserId,
+    String? senderId,
+    String? receiverId,
     FriendshipState? state,
   }) {
     return Friendship(
-      id: id ?? this.id,
-      senderId: userId ?? senderId,
-      receiverId: otherUserId ?? receiverId,
+      id: id ?? super.id,
+      senderId: senderId ?? this.senderId,
+      receiverId: receiverId ?? this.receiverId,
       state: state ?? this.state,
     );
   }
