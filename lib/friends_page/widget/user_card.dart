@@ -62,8 +62,9 @@ class _UserCardState extends State<UserCard> {
   }
 
   Widget _buildAddFriendControl(FriendshipComplete? friendship) {
-    widget._userCardStateService
-        .changeState(friendship?.state == FriendshipState.sent);
+    widget._userCardStateService.changeState(
+        friendship?.state == FriendshipState.sent ||
+            friendship?.state == FriendshipState.accepted);
     return StreamBuilder<bool>(
       stream: widget._userCardStateService.stream,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
@@ -72,19 +73,18 @@ class _UserCardState extends State<UserCard> {
         }
         return snapshot.data!
             ? IconButton(
+                icon: const Icon(Icons.done, size: 30),
                 onPressed: () => {
-                      //TODO: do something meaningful
                       print("Invitation already sent"),
-                    },
-                icon: const Icon(Icons.done, size: 30))
+                    })
             : IconButton(
+                icon: const Icon(Icons.add),
                 onPressed: () async {
                   final otherUser =
                       await widget._userFacade.getByEmail(widget.userName);
                   await widget._friendshipFacade.sendRequest(otherUser!.id!);
                   widget._userCardStateService.changeState(true);
-                },
-                icon: const Icon(Icons.add));
+                });
       },
     );
   }

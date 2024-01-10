@@ -1,4 +1,5 @@
 import 'package:book_keeping/common/widget/avatar.dart';
+import 'package:book_keeping/friends_page/widget/add_friend_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -63,9 +64,11 @@ class TopBar extends AppBar {
               ? [
                   IconButton(
                       // restrict notifications page nesting
-                      onPressed: () => context.canPop()
-                          ? {}
-                          : context.pushNamed("notifications"),
+                      onPressed: () =>
+                          context.widget.runtimeType == AddFriendPage ||
+                                  !context.canPop()
+                              ? context.pushNamed("notifications")
+                              : {},
                       icon: const Icon(Icons.notifications, size: 25)),
                 ]
               : null,

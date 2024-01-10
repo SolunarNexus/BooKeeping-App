@@ -33,13 +33,15 @@ class Friendship extends Entity {
   int get hashCode => senderId.hashCode ^ receiverId.hashCode;
 
   Friendship copyWith({
+    String? id,
     String? userId,
     String? otherUserId,
     FriendshipState? state,
   }) {
     return Friendship(
-      senderId: userId ?? this.senderId,
-      receiverId: otherUserId ?? this.receiverId,
+      id: id ?? this.id,
+      senderId: userId ?? senderId,
+      receiverId: otherUserId ?? receiverId,
       state: state ?? this.state,
     );
   }

@@ -31,11 +31,17 @@ class FriendsPage extends StatelessWidget {
               stream: _searchFriendStateService.stream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return const CircularProgressIndicator();
+                  return const Flexible(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
                 }
                 if (snapshot.data!.isEmpty) {
                   return const Flexible(
-                    child: Center(child: Text("No Friends yet")),
+                    child: Center(
+                      child: Text("Nothing to show"),
+                    ),
                   );
                 }
                 return GeneralListView(

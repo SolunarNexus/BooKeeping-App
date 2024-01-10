@@ -41,7 +41,8 @@ class NotificationsPage extends StatelessWidget {
                 return GeneralListView(
                     items: snapshot.data
                         ?.map((friendship) => NotificationCard(
-                            userName: friendship
+                            friendshipId: friendship.id!,
+                            friendEmail: friendship
                                 .getOtherUser(
                                     FirebaseAuth.instance.currentUser!.email!)
                                 .email,
