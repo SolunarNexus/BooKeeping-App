@@ -11,7 +11,6 @@ class GeneralSearchBar extends StatefulWidget {
 
 class _GeneralSearchBarState extends State<GeneralSearchBar> {
   final TextEditingController _searchController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Padding(

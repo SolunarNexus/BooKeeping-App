@@ -18,6 +18,7 @@ class AddFriendPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _addFriendStateService.searchUser("");
     return Scaffold(
       appBar: TopBar(
         titleText: "Add friend",
