@@ -4,12 +4,14 @@ import 'package:book_keeping/common/service/converter_service.dart';
 import 'package:book_keeping/data_access/facade/base_facade.dart';
 import 'package:book_keeping/data_access/model/friendship.dart';
 import 'package:book_keeping/data_access/service/friendship_service.dart';
+import 'package:book_keeping/data_access/service/user_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:rxdart/rxdart.dart';
 
 class FriendshipFacade extends BaseFacade {
   final _friendshipService = GetIt.instance.get<FriendshipService>();
   final _converterService = GetIt.instance.get<ConverterService>();
+  final _userService = GetIt.instance.get<UserService>();
 
   /// returns stream of friendships where current user equals to either userId or otherUserId fields, not filtered by state
   Stream<List<FriendshipComplete>> getFriendshipStream() =>
@@ -24,8 +26,8 @@ class FriendshipFacade extends BaseFacade {
   Future<void> sendRequest(String otherUserId) async {
     final currentUser = await getCurrentUser().first;
     _friendshipService.create(Friendship(
-        userId: currentUser.id!,
-        otherUserId: otherUserId,
+        senderId: currentUser.id!,
+        receiverId: otherUserId,
         state: FriendshipState.sent));
   }
 
@@ -36,5 +38,21 @@ class FriendshipFacade extends BaseFacade {
   /// deletes friendship
   Future<void> deleteFriend(String friendshipId) async {
     await _friendshipService.delete(friendshipId);
+  }
+
+  /// finds single friendship matching email of both users
+  Future<FriendshipComplete?> findByEmail(
+      String firstUserEmail, String secondUserEmail) async {
+    final friendships = await _friendshipService.getAll().first;
+    final completeFriendships = await Stream.fromIterable(friendships)
+        .asyncMap((friendship) => _converterService.fromFriendship(friendship))
+        .toList();
+    return completeFriendships
+        .where((friendship) =>
+            (friendship.sender.email == firstUserEmail &&
+                friendship.receiver.email == secondUserEmail) ||
+            (friendship.sender.email == secondUserEmail &&
+                friendship.receiver.email == firstUserEmail))
+        .singleOrNull;
   }
 }

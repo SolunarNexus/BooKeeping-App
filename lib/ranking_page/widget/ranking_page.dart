@@ -19,7 +19,7 @@ class RankingPage extends StatelessWidget {
           children: [
             ThreeButtonGroup(
                 labels: const ["By reviews", "By ranking", "Combined"]),
-            const GeneralSearchBar(),
+            GeneralSearchBar(onSubmitted: (bookTitle) {}),
             GeneralListView(
               items: List<Card>.generate(
                 7,

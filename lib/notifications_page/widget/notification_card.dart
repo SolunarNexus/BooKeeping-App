@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class NotificationCard extends Card {
-  NotificationCard(
-      {super.key,
-      required String userName,
-      required String prompt,
-      String? object,
-      required BuildContext context})
-      : super(
+  NotificationCard({
+    super.key,
+    required String friendEmail,
+    required String prompt,
+    String? object,
+    required BuildContext context,
+    required VoidCallback onPositive,
+    required VoidCallback onNegative,
+  }) : super(
           color: Theme.of(context).cardColor,
           child: Padding(
             padding:
@@ -19,7 +21,7 @@ class NotificationCard extends Card {
                   fit: FlexFit.tight,
                   child: Text.rich(
                     TextSpan(
-                      text: '$userName ',
+                      text: "$friendEmail ",
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 17),
                       children: <TextSpan>[
@@ -37,13 +39,11 @@ class NotificationCard extends Card {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.check),
-                      // TODO: update DB
-                      onPressed: () {},
+                      onPressed: onPositive,
                     ),
                     IconButton(
                       icon: const Icon(Icons.close),
-                      // TODO: update DB
-                      onPressed: () {},
+                      onPressed: onNegative,
                     )
                   ],
                 ),

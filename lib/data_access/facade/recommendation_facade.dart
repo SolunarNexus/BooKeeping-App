@@ -15,9 +15,9 @@ class RecommendationFacade extends BaseFacade {
     final friendUserIds = getCurrentUser().switchMap((user) =>
         _friendshipService.getAllByUserId(user.id!).map((friendships) =>
             friendships
-                .map((friend) => friend.userId != user.id
-                    ? friend.userId
-                    : friend.otherUserId)
+                .map((friend) => friend.senderId != user.id
+                    ? friend.senderId
+                    : friend.receiverId)
                 .toList()));
     return friendUserIds.switchMap(
         (friendIds) => _recommendationService.getAllByFriendIds(friendIds));

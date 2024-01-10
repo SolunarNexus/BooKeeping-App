@@ -19,7 +19,7 @@ class BooksPage extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            const GeneralSearchBar(),
+            GeneralSearchBar(onSubmitted: (bookTitle) {}),
             GeneralListView(
               items: List<BookCard>.generate(
                 7,

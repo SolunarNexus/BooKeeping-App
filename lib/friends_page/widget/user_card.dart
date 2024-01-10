@@ -1,10 +1,19 @@
+import 'package:book_keeping/common/model/friendship_complete.dart';
+import 'package:book_keeping/common/service/user_card_state_service.dart';
+import 'package:book_keeping/data_access/facade/friendship_facade.dart';
+import 'package:book_keeping/data_access/facade/user_facade.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 class UserCard extends StatefulWidget {
+  final _friendshipFacade = GetIt.instance.get<FriendshipFacade>();
+  final _userFacade = GetIt.instance.get<UserFacade>();
+  final _userCardStateService = GetIt.instance.get<UserCardStateService>();
   final String userName;
   final bool _addFriend;
+  final List<String> _choices = ["Revoke friendship"];
 
-  const UserCard({super.key, required this.userName, addFriend = false})
+  UserCard({super.key, required this.userName, addFriend = false})
       : _addFriend = addFriend;
 
   @override
@@ -12,9 +21,6 @@ class UserCard extends StatefulWidget {
 }
 
 class _UserCardState extends State<UserCard> {
-  final List<String> _choices = ["Revoke friendship"];
-  bool _invitationSent = false;
-
   @override
   Widget build(context) {
     return Card(
@@ -34,34 +40,53 @@ class _UserCardState extends State<UserCard> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: widget._addFriend
-                ? _buildAddFriendControl()
-                : _buildFriendMenu(),
-          )
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: FutureBuilder<FriendshipComplete?>(
+                future: widget._friendshipFacade.getCurrentUser().first.then(
+                    (user) => widget._friendshipFacade
+                        .findByEmail(user.email, widget.userName)),
+                builder: (BuildContext context,
+                    AsyncSnapshot<FriendshipComplete?> snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return const CircularProgressIndicator();
+                  }
+                  return widget._addFriend
+                      ? _buildAddFriendControl(snapshot.data)
+                      : _buildFriendMenu(snapshot.data);
+                },
+              ))
         ],
       ),
     );
   }
 
-  IconButton _buildAddFriendControl() {
-    // TODO: here we can check in DB for friendship status (invited) instead
-    return _invitationSent
-        ? IconButton(
-            onPressed: () => {
-                  print("Invitation already sent"),
-                },
-            icon: const Icon(Icons.done, size: 30))
-        : IconButton(
-            onPressed: () => setState(() => {
-                  // TODO: check if invitation was already sent, otherwise send invitation and update DB
-                  print("Invitation sent"),
-                  _invitationSent = true,
-                }),
-            icon: const Icon(Icons.add));
+  Widget _buildAddFriendControl(FriendshipComplete? friendship) {
+    widget._userCardStateService.changeState(friendship != null);
+    return StreamBuilder<bool>(
+      stream: widget._userCardStateService.stream,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        if (!snapshot.hasData) {
+          return const CircularProgressIndicator();
+        }
+        return snapshot.data!
+            ? IconButton(
+                icon: const Icon(Icons.done, size: 30),
+                onPressed: () => {
+                      print("Invitation already sent"),
+                    })
+            : IconButton(
+                icon: const Icon(Icons.add),
+                onPressed: () async {
+                  final otherUser =
+                      await widget._userFacade.getByEmail(widget.userName);
+                  await widget._friendshipFacade.sendRequest(otherUser!.id!);
+                  widget._userCardStateService.changeState(true);
+                });
+      },
+    );
   }
 
-  MenuAnchor _buildFriendMenu() {
+  Widget _buildFriendMenu(FriendshipComplete? friendship) {
     return MenuAnchor(
       builder:
           (BuildContext context, MenuController controller, Widget? child) {
@@ -77,11 +102,13 @@ class _UserCardState extends State<UserCard> {
         );
       },
       menuChildren: List<MenuItemButton>.generate(
-        _choices.length,
+        widget._choices.length,
         (int index) => MenuItemButton(
           // TODO: remove friend from DB for current user
-          onPressed: () => print("Friendship revoked"),
-          child: Text(_choices[index]),
+          onPressed: () async {
+            await widget._friendshipFacade.deleteFriend(friendship!.id!);
+          },
+          child: Text(widget._choices[index]),
         ),
       ),
     );

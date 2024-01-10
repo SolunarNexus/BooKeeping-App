@@ -27,12 +27,12 @@ class AppRoot extends StatelessWidget {
       GoRoute(
         path: "/my-friends",
         name: "friends",
-        builder: (context, state) => const FriendsPage(),
+        builder: (context, state) => FriendsPage(),
       ),
       GoRoute(
         path: "/add-friend",
         name: "addFriend",
-        builder: (context, state) => const AddFriendPage(),
+        builder: (context, state) => AddFriendPage(),
       ),
       GoRoute(
         path: "/ranking",
@@ -56,7 +56,7 @@ class AppRoot extends StatelessWidget {
       GoRoute(
         path: "/notifications",
         name: "notifications",
-        builder: (context, state) => const NotificationsPage(),
+        builder: (context, state) => NotificationsPage(),
       ),
     ],
     initialLocation: FirebaseAuth.instance.currentUser == null ? "/auth" : "/",

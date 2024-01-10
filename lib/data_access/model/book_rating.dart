@@ -34,12 +34,14 @@ class BookRating extends Entity {
   int get hashCode => userId.hashCode ^ bookId.hashCode;
 
   BookRating copyWith({
+    String? id,
     int? rating,
     String? userId,
     String? bookId,
     String? text,
   }) {
     return BookRating(
+      id: id ?? super.id,
       rating: rating ?? this.rating,
       userId: userId ?? this.userId,
       bookId: bookId ?? this.bookId,
