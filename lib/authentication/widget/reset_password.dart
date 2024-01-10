@@ -28,7 +28,8 @@ class _ResetPasswordState extends State<ResetPassword> {
               TextFormField(
                 controller: _emailController,
                 decoration: const InputDecoration(
-                  labelText: 'Email',
+                  border: OutlineInputBorder(),
+                  labelText: "Email",
                 ),
                 validator: (value) {
                   final validator = Validator(validators: [
@@ -38,12 +39,13 @@ class _ResetPasswordState extends State<ResetPassword> {
                   return validator.validate(label: "Email", value: value);
                 },
               ),
+              const SizedBox(height: 20),
               MaterialButton(
                 onPressed: () async {
                   await _resetPassword(context);
                 },
-                color: Theme.of(context).primaryColor,
-                textTheme: ButtonTextTheme.primary,
+                color: Theme.of(context).buttonTheme.colorScheme?.primary,
+                textColor: Theme.of(context).scaffoldBackgroundColor,
                 minWidth: double.infinity,
                 child: const Text("Reset Password"),
               )
