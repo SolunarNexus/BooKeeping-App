@@ -16,6 +16,7 @@ class FriendsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _searchFriendStateService.searchFriends("");
     return Scaffold(
       appBar:
           TopBar(titleText: "My friends", isFriendPage: true, context: context),
