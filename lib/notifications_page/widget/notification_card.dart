@@ -1,17 +1,15 @@
-import 'package:book_keeping/common/model/friendship_complete.dart';
-import 'package:book_keeping/data_access/facade/friendship_facade.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 
 class NotificationCard extends Card {
-  NotificationCard(
-      {super.key,
-      required String friendEmail,
-      required String friendshipId,
-      required String prompt,
-      String? object,
-      required BuildContext context})
-      : super(
+  NotificationCard({
+    super.key,
+    required String friendEmail,
+    required String prompt,
+    String? object,
+    required BuildContext context,
+    required VoidCallback onPositive,
+    required VoidCallback onNegative,
+  }) : super(
           color: Theme.of(context).cardColor,
           child: Padding(
             padding:
@@ -41,15 +39,11 @@ class NotificationCard extends Card {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.check),
-                      onPressed: () => GetIt.instance
-                          .get<FriendshipFacade>()
-                          .acceptRequest(friendshipId),
+                      onPressed: onPositive,
                     ),
                     IconButton(
                       icon: const Icon(Icons.close),
-                      onPressed: () => GetIt.instance
-                          .get<FriendshipFacade>()
-                          .deleteFriend(friendshipId),
+                      onPressed: onNegative,
                     )
                   ],
                 ),

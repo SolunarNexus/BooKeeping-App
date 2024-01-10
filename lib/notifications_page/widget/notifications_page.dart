@@ -41,13 +41,17 @@ class NotificationsPage extends StatelessWidget {
                 return GeneralListView(
                     items: snapshot.data
                         ?.map((friendship) => NotificationCard(
-                            friendshipId: friendship.id!,
-                            friendEmail: friendship
-                                .getOtherUser(
-                                    FirebaseAuth.instance.currentUser!.email!)
-                                .email,
-                            prompt: "wants to connect with you",
-                            context: context))
+                      friendEmail: friendship
+                                  .getOtherUser(
+                                      FirebaseAuth.instance.currentUser!.email!)
+                                  .email,
+                              prompt: "wants to connect with you",
+                              context: context,
+                              onPositive: () => _friendshipFacade
+                                  .acceptRequest(friendship.id!),
+                              onNegative: () => _friendshipFacade
+                                  .deleteFriend(friendship.id!),
+                            ))
                         .toList());
               },
             ),
