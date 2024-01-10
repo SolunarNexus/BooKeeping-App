@@ -53,7 +53,9 @@ abstract class BaseFirestoreService<T extends Entity> {
   }
 
   Future<void> update(T item) async {
-    return _getCollection().doc(item.id).update(toJson(item));
+    var json = toJson(item);
+    json.remove('id');
+    return _getCollection().doc(item.id).update(json);
   }
 
   Future<void> delete(String id) {
