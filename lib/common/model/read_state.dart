@@ -1,1 +1,5 @@
-enum ReadState { planToRead, reading, completed }
+enum ReadState {
+  reading,
+  completed,
+  planToRead,
+}

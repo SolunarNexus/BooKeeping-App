@@ -17,6 +17,7 @@ import 'package:book_keeping/web_api/service/open_library_service.dart';
 import 'package:get_it/get_it.dart';
 
 import '../service/add_friend_state_service.dart';
+import '../service/search_mybook_state_service.dart';
 
 class IocContainer {
   static void setup() {
@@ -41,6 +42,7 @@ class IocContainer {
 
     getIt.registerSingleton(AddFriendStateService());
     getIt.registerSingleton(SearchFriendStateService());
+    getIt.registerSingleton(SearchMyBookStateService());
     getIt.registerFactory(
       () => UserCardStateService(),
     );
