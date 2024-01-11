@@ -12,6 +12,12 @@ class BookFacade {
   Future<Book?> getById(String bookId) async =>
       await _bookService.getSingle(bookId).first;
 
+  /// gets book by title
+  Future<Book> getByTitle(String title) async {
+    final books = await _bookService.getAll().first;
+    return books.where((book) => book.title == title).single;
+  }
+
   /// deletes book
   Future<void> deleteById(String bookId) => _bookService.delete(bookId);
 }
