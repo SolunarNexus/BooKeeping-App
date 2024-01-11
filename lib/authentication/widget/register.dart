@@ -36,9 +36,12 @@ class _RegisterState extends State<Register> {
           key: _formKey,
           child: ListView(
             children: [
-              const FieldLabel(text: "Email"),
               TextFormField(
                 controller: _emailController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Email",
+                ),
                 validator: (value) {
                   final validator = Validator(validators: [
                     const RequiredValidator(),
@@ -48,9 +51,12 @@ class _RegisterState extends State<Register> {
                 },
               ),
               const SizedBox(height: 32),
-              const FieldLabel(text: "Password"),
               TextFormField(
                 controller: _passwordController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Password",
+                ),
                 obscureText: true,
                 validator: (value) {
                   final validator = Validator(validators: [
@@ -61,10 +67,13 @@ class _RegisterState extends State<Register> {
                 },
               ),
               const SizedBox(height: 32),
-              const FieldLabel(text: "Confirm password"),
               TextFormField(
                 controller: _confirmPasswordController,
                 obscureText: true,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Confirm Password",
+                ),
                 validator: (value) {
                   final validator = Validator(validators: [
                     const RequiredValidator(),
@@ -76,14 +85,15 @@ class _RegisterState extends State<Register> {
                   }
                   return validator.validate(label: "Password", value: value);
                 },
+                onEditingComplete: () => _registerUser(context),
               ),
               const SizedBox(height: 32),
               MaterialButton(
                 onPressed: () async {
                   await _registerUser(context);
                 },
-                color: Theme.of(context).primaryColor,
-                textTheme: ButtonTextTheme.primary,
+                color: Theme.of(context).buttonTheme.colorScheme?.primary,
+                textColor: Theme.of(context).scaffoldBackgroundColor,
                 minWidth: double.infinity,
                 child: const Text("Register"),
               )

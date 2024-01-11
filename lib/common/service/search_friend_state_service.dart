@@ -16,7 +16,8 @@ class SearchFriendStateService {
       return friends
           .where((friendship) => friendship.state == FriendshipState.accepted)
           .map((friendship) => friendship.getOtherUser(currentUser.email))
-          .where((user) => user.email.contains(filter))
+          .where(
+              (user) => user.email.toLowerCase().contains(filter.toLowerCase()))
           .toList();
     });
   }
