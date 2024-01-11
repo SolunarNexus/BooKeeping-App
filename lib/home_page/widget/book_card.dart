@@ -1,12 +1,11 @@
+import 'package:book_keeping/data_access/model/book.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class BookCard extends StatefulWidget {
-  bool _favourite;
-  final String bookTitle;
+  final Book book;
 
-  BookCard({super.key, required this.bookTitle, favourite = true})
-      : _favourite = favourite;
+  BookCard({super.key, required this.book});
 
   @override
   State<BookCard> createState() => _BookCardState();
@@ -20,7 +19,7 @@ class _BookCardState extends State<BookCard> {
       clipBehavior: Clip.hardEdge,
       child: InkWell(
         onTap: () => {
-          context.push('/books/${widget.bookTitle}'),
+          context.push('/books/detail', extra: widget.book),
         },
         child: Row(
           children: [
@@ -35,7 +34,7 @@ class _BookCardState extends State<BookCard> {
             Flexible(
               fit: FlexFit.tight,
               child: Text(
-                widget.bookTitle,
+                widget.book.title,
                 style: const TextStyle(fontSize: 19),
               ),
             ),

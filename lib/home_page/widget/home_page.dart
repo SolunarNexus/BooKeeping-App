@@ -52,9 +52,7 @@ class HomePage extends StatelessWidget {
                 return GeneralListView(
                   items: snapshot.data!
                       .map(
-                        (bookRecord) => BookCard(
-                          bookTitle: bookRecord.book.title,
-                        ),
+                        (bookRecord) => BookCard(book: bookRecord.book),
                       )
                       .toList(),
                 );

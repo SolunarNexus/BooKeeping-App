@@ -1,5 +1,6 @@
 import 'package:book_keeping/book_detail_page/widget/book_detail_page.dart';
 import 'package:book_keeping/books_page/widget/books_page.dart';
+import 'package:book_keeping/data_access/model/book.dart';
 import 'package:book_keeping/friends_page/widget/add_friend_page.dart';
 import 'package:book_keeping/friends_page/widget/friends_page.dart';
 import 'package:book_keeping/home_page/widget/home_page.dart';
@@ -45,10 +46,10 @@ class AppRoot extends StatelessWidget {
         builder: (context, state) => const BooksPage(),
         routes: [
           GoRoute(
-            path: ":title",
+            path: "detail",
             builder: (context, state) {
-              final bookTitle = state.pathParameters["title"];
-              return BookDetailPage(title: bookTitle!);
+              final book = state.extra as Book;
+              return BookDetailPage(book: book);
             },
           ),
         ],

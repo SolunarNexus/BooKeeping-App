@@ -2,107 +2,95 @@ import 'package:book_keeping/common/model/my_book_complete.dart';
 import 'package:book_keeping/common/model/read_state.dart';
 import 'package:book_keeping/common/widget/bottom_menu.dart';
 import 'package:book_keeping/common/widget/top_bar.dart';
-import 'package:book_keeping/data_access/facade/book_facade.dart';
 import 'package:book_keeping/data_access/facade/my_book_facade.dart';
 import 'package:book_keeping/data_access/model/book.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get_it/get_it.dart';
 
 class BookDetailPage extends StatelessWidget {
-  final _bookFacade = GetIt.instance.get<BookFacade>();
   final _myBookFacade = GetIt.instance.get<MyBookFacade>();
-  final String title;
+  final Book book;
 
-  BookDetailPage({super.key, required this.title});
+  BookDetailPage({super.key, required this.book});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopBar(titleText: title, context: context),
+      appBar: TopBar(titleText: book.title, context: context),
       bottomNavigationBar: BottomMenu(),
       body: SingleChildScrollView(
-        child: FutureBuilder<Book>(
-          future: _bookFacade.getByTitle(title),
-          builder: (context, bookSnapshot) {
-            if (!bookSnapshot.hasData) {
-              return const CircularProgressIndicator();
-            }
-            final book = bookSnapshot.data!;
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    StreamBuilder<MyBookComplete?>(
-                      stream: _myBookFacade.getBookStreamByISBN(book.isbn),
-                      builder: (context, myBookSnapshot) {
-                        return Column(
-                          children: [
-                            const Icon(Icons.image, size: 150),
-                            _buildFavouriteButton(myBookSnapshot.hasData, () {
-                              if (!myBookSnapshot.hasData) {
-                                _myBookFacade.create(book);
-                              } else {
-                                _myBookFacade
-                                    .deleteById(myBookSnapshot.data!.id!);
-                              }
-                            }),
-                            _buildDoneButton(myBookSnapshot.data, book),
-                            _buildReadingButton(myBookSnapshot.data, book),
-                          ],
-                        );
-                      },
-                    ),
-                    Flexible(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 10.0, bottom: 10.0, right: 10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 10.0, bottom: 10.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(
-                                    height: 25,
-                                    width: 80,
-                                    child: ElevatedButton(
-                                      onPressed: () {},
-                                      child: const Text("Rate"),
-                                    ),
-                                  ),
-                                  RatingBar.builder(
-                                    initialRating: 0,
-                                    itemCount: 5,
-                                    // TODO: set to TRUE before production
-                                    // ignoreGestures: true,
-                                    allowHalfRating: true,
-                                    itemSize: 30,
-                                    updateOnDrag: true,
-                                    itemBuilder: (context, index) =>
-                                        const Icon(Icons.star),
-                                    onRatingUpdate: (rating) {},
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Text(book.description ?? "No description provided"),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                StreamBuilder<MyBookComplete?>(
+                  stream: _myBookFacade.getBookStreamByISBN(book.isbn),
+                  builder: (context, myBookSnapshot) {
+                    return Column(
+                      children: [
+                        _buildCover(book.imgUrl),
+                        _buildFavouriteButton(myBookSnapshot.hasData, () {
+                          if (!myBookSnapshot.hasData) {
+                            _myBookFacade.create(book);
+                          } else {
+                            _myBookFacade.deleteById(myBookSnapshot.data!.id!);
+                          }
+                        }),
+                        _buildDoneButton(myBookSnapshot.data, book),
+                        _buildReadingButton(myBookSnapshot.data, book),
+                      ],
+                    );
+                  },
                 ),
-                buildBookDetails(book),
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10.0, bottom: 10.0, right: 10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                height: 25,
+                                width: 80,
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  child: const Text("Rate"),
+                                ),
+                              ),
+                              RatingBar.builder(
+                                initialRating: 0,
+                                itemCount: 5,
+                                // TODO: set to TRUE before production
+                                // ignoreGestures: true,
+                                allowHalfRating: true,
+                                itemSize: 30,
+                                updateOnDrag: true,
+                                itemBuilder: (context, index) =>
+                                    const Icon(Icons.star),
+                                onRatingUpdate: (rating) {},
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text(book.description ?? "No description provided"),
+                      ],
+                    ),
+                  ),
+                ),
               ],
-            );
-          },
+            ),
+            buildBookDetails(book),
+          ],
         ),
       ),
     );
@@ -218,5 +206,19 @@ class BookDetailPage extends StatelessWidget {
             myBookId, isOn ? ReadState.planToRead : ReadState.reading);
       },
     );
+  }
+
+  Widget _buildCover(String imgUrl) {
+    return imgUrl.isNotEmpty
+        ? Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: CachedNetworkImage(
+              width: 100,
+              imageUrl: imgUrl,
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
+          )
+        : const Icon(Icons.image, size: 150);
   }
 }
