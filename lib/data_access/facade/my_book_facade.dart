@@ -22,6 +22,11 @@ class MyBookFacade extends BaseFacade {
               .asyncMap((book) => _converterService.fromMyBook(book))
               .toList()));
 
+  /// returns stream of my_book specified by isbn and in current user's library
+  Stream<MyBookComplete?> getBookStreamByISBN(String isbn) =>
+      getStream().map((bookList) =>
+          bookList.where((book) => book.book.isbn == isbn).singleOrNull);
+
   /// adds book by id to current users library
   Future<void> createById(String bookId) async {
     final currentUser = await getCurrentUser().first;
