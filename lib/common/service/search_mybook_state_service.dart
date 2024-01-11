@@ -14,7 +14,8 @@ class SearchMyBookStateService {
         _myBookFacade.getStream(), _searchStream, _filterStream,
         (myBooks, search, filter) {
       return myBooks
-          .where((myBook) => myBook.book.title.contains(search))
+          .where((myBook) =>
+              myBook.book.title.toLowerCase().contains(search.toLowerCase()))
           .where((myBook) => filter == null || myBook.readState == filter)
           .toList();
     });

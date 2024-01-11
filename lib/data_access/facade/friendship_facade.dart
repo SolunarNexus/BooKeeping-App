@@ -49,10 +49,14 @@ class FriendshipFacade extends BaseFacade {
         .toList();
     return completeFriendships
         .where((friendship) =>
-            (friendship.sender.email == firstUserEmail &&
-                friendship.receiver.email == secondUserEmail) ||
-            (friendship.sender.email == secondUserEmail &&
-                friendship.receiver.email == firstUserEmail))
+            (friendship.sender.email.toLowerCase() ==
+                    firstUserEmail.toLowerCase() &&
+                friendship.receiver.email.toLowerCase() ==
+                    secondUserEmail.toLowerCase()) ||
+            (friendship.sender.email.toLowerCase() ==
+                    secondUserEmail.toLowerCase() &&
+                friendship.receiver.email.toLowerCase() ==
+                    firstUserEmail.toLowerCase()))
         .singleOrNull;
   }
 }
