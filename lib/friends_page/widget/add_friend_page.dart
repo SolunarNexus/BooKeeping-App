@@ -29,7 +29,7 @@ class AddFriendPage extends StatelessWidget {
         child: Column(
           children: [
             GeneralSearchBar(
-              onSubmitted: (value) {
+              submit: (value) {
                 _addFriendStateService.searchUser(value);
               },
             ),
