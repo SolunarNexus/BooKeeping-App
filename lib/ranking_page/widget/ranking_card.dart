@@ -1,15 +1,18 @@
+import 'package:book_keeping/data_access/facade/book_facade.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
 class RankingCard extends Card {
+  final _bookFacade = GetIt.instance.get<BookFacade>();
   final int rank;
   final double rating;
   final int count;
   final String bookTitle;
   final String bookId;
 
-  const RankingCard(
+  RankingCard(
       {super.key,
       required this.bookId,
       required this.bookTitle,
@@ -22,8 +25,11 @@ class RankingCard extends Card {
     return Card(
       color: Theme.of(context).cardColor,
       child: InkWell(
-        onTap: () => {
-          context.push('/books/$bookId'),
+        onTap: () async {
+          final book = await _bookFacade.getById(bookId);
+          if (context.mounted) {
+            context.push('/books/detail', extra: book);
+          }
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
