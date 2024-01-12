@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class GeneralSearchBar extends StatefulWidget {
-  final ValueSetter<String>? onSubmitted;
+  final ValueSetter<String>? submit;
 
-  const GeneralSearchBar({super.key, this.onSubmitted});
+  const GeneralSearchBar({super.key, this.submit});
 
   @override
   State<GeneralSearchBar> createState() => _GeneralSearchBarState();
@@ -27,11 +27,17 @@ class _GeneralSearchBarState extends State<GeneralSearchBar> {
                 OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
             prefixIcon: const Icon(Icons.search),
             suffixIcon: IconButton(
-              onPressed: () => _searchController.clear(),
+              onPressed: () {
+                _searchController.clear();
+                widget.submit!("");
+              },
               icon: const Icon(Icons.clear),
             ),
           ),
-          onSubmitted: widget.onSubmitted,
+          // onSubmitted: widget.onSubmitted,
+          onChanged: widget.submit,
+          onTapOutside: (event) =>
+              FocusManager.instance.primaryFocus?.unfocus(),
         ),
       ),
     );

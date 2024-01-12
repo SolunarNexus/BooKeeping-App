@@ -1,12 +1,12 @@
+import 'package:book_keeping/data_access/model/book.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class BookCard extends StatefulWidget {
-  bool _favourite;
-  final String bookTitle;
+  final Book book;
 
-  BookCard({super.key, required this.bookTitle, favourite = true})
-      : _favourite = favourite;
+  BookCard({super.key, required this.book});
 
   @override
   State<BookCard> createState() => _BookCardState();
@@ -20,22 +20,16 @@ class _BookCardState extends State<BookCard> {
       clipBehavior: Clip.hardEdge,
       child: InkWell(
         onTap: () => {
-          context.push('/books/${widget.bookTitle}'),
+          context.push('/books/detail', extra: widget.book),
         },
         child: Row(
           children: [
-            // Will be replaced by real book cover image
-            const Padding(
-              padding: EdgeInsets.all(5.0),
-              child: Icon(
-                Icons.image,
-                size: 100,
-              ),
-            ),
+            // TODO: Will be replaced by real book cover image
+            _buildCover(widget.book.imgUrl),
             Flexible(
               fit: FlexFit.tight,
               child: Text(
-                widget.bookTitle,
+                widget.book.title,
                 style: const TextStyle(fontSize: 19),
               ),
             ),
@@ -43,5 +37,31 @@ class _BookCardState extends State<BookCard> {
         ),
       ),
     );
+  }
+
+  Widget _buildCover(String imgUrl) {
+    return imgUrl.isNotEmpty
+        ? Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: CachedNetworkImage(
+              // alignment: Alignment.center,
+              imageUrl: imgUrl,
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+              imageBuilder: (context, imageProvider) => Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  image:
+                      DecorationImage(image: imageProvider, fit: BoxFit.fill),
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                ),
+              ),
+            ),
+          )
+        : const Icon(
+            Icons.image,
+            size: 100,
+          );
   }
 }
