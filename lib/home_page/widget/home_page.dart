@@ -18,7 +18,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(
-        titleText: "My library",
+        titleText: "Favourites",
         context: context,
         isHomePage: true,
       ),
@@ -32,7 +32,7 @@ class HomePage extends StatelessWidget {
                   labels: const ["Reading", "Completed", "Plan to read"]),
             ),
             GeneralSearchBar(
-                onSubmitted: (value) =>
+                submit: (value) =>
                     _searchMyBookStateService.searchMyBook(value)),
             StreamBuilder(
               stream: _searchMyBookStateService.stream,
