@@ -2,6 +2,7 @@ import 'package:book_keeping/common/model/my_book_complete.dart';
 import 'package:book_keeping/common/model/read_state.dart';
 import 'package:book_keeping/common/widget/bottom_menu.dart';
 import 'package:book_keeping/common/widget/top_bar.dart';
+import 'package:book_keeping/data_access/facade/book_rating_facade.dart';
 import 'package:book_keeping/data_access/facade/my_book_facade.dart';
 import 'package:book_keeping/data_access/model/book.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -11,6 +12,7 @@ import 'package:get_it/get_it.dart';
 
 class BookDetailPage extends StatelessWidget {
   final _myBookFacade = GetIt.instance.get<MyBookFacade>();
+  final _ratingFacade = GetIt.instance.get<BookRatingFacade>();
   final Book book;
 
   BookDetailPage({super.key, required this.book});
@@ -64,15 +66,15 @@ class BookDetailPage extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SizedBox(
-                                height: 25,
-                                width: 80,
-                                child: ElevatedButton(
-                                  // TODO
-                                  onPressed: () {},
-                                  child: const Text("Rate"),
-                                ),
-                              ),
+                              // SizedBox(
+                              //   height: 25,
+                              //   width: 80,
+                              //   child: ElevatedButton(
+                              //     // TODO
+                              //     onPressed: () {},
+                              //     child: const Text("Rate"),
+                              //   ),
+                              // ),
                               RatingBar.builder(
                                 initialRating: 0,
                                 itemCount: 5,
@@ -83,7 +85,10 @@ class BookDetailPage extends StatelessWidget {
                                 updateOnDrag: true,
                                 itemBuilder: (context, index) =>
                                     const Icon(Icons.star),
-                                onRatingUpdate: (rating) {},
+                                onRatingUpdate: (rating) {
+                                  _ratingFacade.createOrUpdate(
+                                      book.id!, rating, "");
+                                },
                               ),
                             ],
                           ),
