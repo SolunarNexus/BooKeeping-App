@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 class BookCard extends StatefulWidget {
   final Book book;
 
-  const BookCard({super.key, required this.book});
+  BookCard({super.key, required this.book});
 
   @override
   State<BookCard> createState() => _BookCardState();

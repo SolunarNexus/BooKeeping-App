@@ -8,7 +8,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get_it/get_it.dart';
-import 'package:go_router/go_router.dart';
 
 class BookDetailPage extends StatelessWidget {
   final _myBookFacade = GetIt.instance.get<MyBookFacade>();
@@ -18,88 +17,80 @@ class BookDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (bool didPop) {
-        if (didPop) {
-          return;
-        }
-        _myBookFacade.getBookStreamByISBN(book.isbn).first.then((myBook) {
-          if (myBook != null && myBook.readState == ReadState.none) {
-            _myBookFacade.deleteById(myBook.id!).then((value) => null);
-          }
-        });
-        Navigator.pop(context);
-      },
-      child: Scaffold(
-        appBar: TopBar(titleText: book.title, context: context),
-        bottomNavigationBar: BottomMenu(),
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  StreamBuilder<MyBookComplete?>(
-                    stream: _myBookFacade.getBookStreamByISBN(book.isbn),
-                    builder: (context, myBookSnapshot) {
-                      return Column(
-                        children: [
-                          _buildCover(book.imgUrl),
-                          _buildFavouriteButton(myBookSnapshot.data, book),
-                          _buildCompletedButton(myBookSnapshot.data, book),
-                          _buildPlanToReadButton(myBookSnapshot.data, book),
-                        ],
-                      );
-                    },
-                  ),
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 10.0, bottom: 10.0, right: 10.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  height: 25,
-                                  width: 80,
-                                  child: ElevatedButton(
-                                    onPressed: () {},
-                                    child: const Text("Rate"),
-                                  ),
+    return Scaffold(
+      appBar: TopBar(titleText: book.title, context: context),
+      bottomNavigationBar: BottomMenu(),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                StreamBuilder<MyBookComplete?>(
+                  stream: _myBookFacade.getBookStreamByISBN(book.isbn),
+                  builder: (context, myBookSnapshot) {
+                    return Column(
+                      children: [
+                        _buildCover(book.imgUrl),
+                        _buildFavouriteButton(myBookSnapshot.hasData, () {
+                          if (!myBookSnapshot.hasData) {
+                            _myBookFacade.create(book);
+                          } else {
+                            _myBookFacade.deleteById(myBookSnapshot.data!.id!);
+                          }
+                        }),
+                        _buildDoneButton(myBookSnapshot.data, book),
+                        _buildReadingButton(myBookSnapshot.data, book),
+                      ],
+                    );
+                  },
+                ),
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10.0, bottom: 10.0, right: 10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                height: 25,
+                                width: 80,
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  child: const Text("Rate"),
                                 ),
-                                RatingBar.builder(
-                                  initialRating: 0,
-                                  itemCount: 5,
-                                  // TODO: set to TRUE before production
-                                  // ignoreGestures: true,
-                                  allowHalfRating: true,
-                                  itemSize: 30,
-                                  updateOnDrag: true,
-                                  itemBuilder: (context, index) =>
-                                      const Icon(Icons.star),
-                                  onRatingUpdate: (rating) {},
-                                ),
-                              ],
-                            ),
+                              ),
+                              RatingBar.builder(
+                                initialRating: 0,
+                                itemCount: 5,
+                                // TODO: set to TRUE before production
+                                // ignoreGestures: true,
+                                allowHalfRating: true,
+                                itemSize: 30,
+                                updateOnDrag: true,
+                                itemBuilder: (context, index) =>
+                                    const Icon(Icons.star),
+                                onRatingUpdate: (rating) {},
+                              ),
+                            ],
                           ),
-                          Text(book.description ?? "No description provided"),
-                        ],
-                      ),
+                        ),
+                        Text(book.description ?? "No description provided"),
+                      ],
                     ),
                   ),
-                ],
-              ),
-              buildBookDetails(book),
-            ],
-          ),
+                ),
+              ],
+            ),
+            buildBookDetails(book),
+          ],
         ),
       ),
     );
@@ -167,28 +158,16 @@ class BookDetailPage extends StatelessWidget {
           );
   }
 
-  IconButton _buildFavouriteButton(MyBookComplete? myBook, Book book) {
-    final isOn = myBook != null && myBook.readState == ReadState.reading;
-
+  IconButton _buildFavouriteButton(
+      bool isFavourite, VoidCallback addToMyBooks) {
     return _buildSwitchButton(
-        isOn: isOn,
+        isOn: isFavourite,
         onIcon: const Icon(Icons.favorite, size: 40.0),
         offIcon: const Icon(Icons.favorite_border, size: 40.0),
-        update: () async {
-          String myBookId;
-          if (myBook == null) {
-            await _myBookFacade.create(book);
-            myBookId =
-                (await _myBookFacade.getBookStreamByISBN(book.isbn).first)!.id!;
-          } else {
-            myBookId = myBook.id!;
-          }
-          await _myBookFacade.updateState(
-              myBookId, isOn ? ReadState.none : ReadState.reading);
-        });
+        update: addToMyBooks);
   }
 
-  IconButton _buildCompletedButton(MyBookComplete? myBook, Book book) {
+  IconButton _buildDoneButton(MyBookComplete? myBook, Book book) {
     final isOn = myBook != null && myBook.readState == ReadState.completed;
     return _buildSwitchButton(
         isOn: isOn,
@@ -204,12 +183,12 @@ class BookDetailPage extends StatelessWidget {
             myBookId = myBook.id!;
           }
           await _myBookFacade.updateState(
-              myBookId, isOn ? ReadState.none : ReadState.completed);
+              myBookId, isOn ? ReadState.planToRead : ReadState.completed);
         });
   }
 
-  IconButton _buildPlanToReadButton(MyBookComplete? myBook, Book book) {
-    final isOn = myBook != null && myBook.readState == ReadState.planToRead;
+  IconButton _buildReadingButton(MyBookComplete? myBook, Book book) {
+    final isOn = myBook != null && myBook.readState == ReadState.reading;
     return _buildSwitchButton(
       isOn: isOn,
       onIcon: const Icon(Icons.bookmark, size: 40.0),
@@ -224,7 +203,7 @@ class BookDetailPage extends StatelessWidget {
           myBookId = myBook.id!;
         }
         await _myBookFacade.updateState(
-            myBookId, isOn ? ReadState.none : ReadState.planToRead);
+            myBookId, isOn ? ReadState.planToRead : ReadState.reading);
       },
     );
   }
