@@ -26,8 +26,8 @@ class _SortButtonGroupState extends State<SortButtonGroup> {
             for (int i = 0; i < 2; ++i) {
               widget._sortSelection[i] = index == i;
             }
-            widget._searchRatingStateService
-                .sortRatings(SortState.values[index]);
+            widget._searchRatingStateService.sortRatings(
+                index == 0 ? SortState.byRating : SortState.byReviews);
           }
         },
       ),

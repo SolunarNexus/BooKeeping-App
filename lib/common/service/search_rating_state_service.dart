@@ -20,7 +20,7 @@ class SearchRatingStateService {
             .where((aggregationRating) => aggregationRating.title
                 .toLowerCase()
                 .contains(search.toLowerCase()))
-            .sorted((a, b) => _compare(a, b, sort));
+            .sorted((a, b) => _compare(b, a, sort));
       },
     );
   }
