@@ -18,6 +18,7 @@ import 'package:get_it/get_it.dart';
 
 import '../service/add_friend_state_service.dart';
 import '../service/search_mybook_state_service.dart';
+import '../service/search_rating_state_service.dart';
 
 class IocContainer {
   static void setup() {
@@ -46,5 +47,6 @@ class IocContainer {
     getIt.registerFactory(
       () => UserCardStateService(),
     );
+    getIt.registerSingleton(SearchRatingStateService());
   }
 }
