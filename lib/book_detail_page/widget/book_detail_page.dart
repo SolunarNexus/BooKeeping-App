@@ -33,15 +33,20 @@ class BookDetailPage extends StatelessWidget {
                     return Column(
                       children: [
                         _buildCover(book.imgUrl),
-                        _buildFavouriteButton(myBookSnapshot.hasData, () {
-                          if (!myBookSnapshot.hasData) {
-                            _myBookFacade.create(book);
-                          } else {
-                            _myBookFacade.deleteById(myBookSnapshot.data!.id!);
-                          }
-                        }),
-                        _buildDoneButton(myBookSnapshot.data, book),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child:
+                              _buildFavouriteButton(myBookSnapshot.hasData, () {
+                            if (!myBookSnapshot.hasData) {
+                              _myBookFacade.create(book);
+                            } else {
+                              _myBookFacade
+                                  .deleteById(myBookSnapshot.data!.id!);
+                            }
+                          }),
+                        ),
                         _buildReadingButton(myBookSnapshot.data, book),
+                        _buildDoneButton(myBookSnapshot.data, book),
                       ],
                     );
                   },
@@ -63,6 +68,7 @@ class BookDetailPage extends StatelessWidget {
                                 height: 25,
                                 width: 80,
                                 child: ElevatedButton(
+                                  // TODO
                                   onPressed: () {},
                                   child: const Text("Rate"),
                                 ),
@@ -107,33 +113,51 @@ class BookDetailPage extends StatelessWidget {
           children: [
             Flexible(
               child: Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(5.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Authors: ${book.authors.join(", ")}"),
-                    Text("Publishers: ${book.publishers.join(", ")}"),
-                    Text("Publication date: ${book.publishDate}"),
-                    Text("ISBN: ${book.isbn}"),
+                    _buildDetailPart("Authors: ", book.authors.join(", ")),
+                    _buildDetailPart(
+                        "Publishers: ", book.publishers.join(", ")),
+                    _buildDetailPart("Publication date: ", book.publishDate),
+                    _buildDetailPart("ISBN: ", book.isbn),
                   ],
                 ),
               ),
             ),
             Flexible(
               child: Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(5.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Categories: ${book.categories.join(", ")}"),
-                    Text("Languages: ${book.languages.join(", ")}"),
-                    Text("Pages: ${book.pages ?? "Unspecified"}")
+                    _buildDetailPart(
+                        "Categories: ", book.categories.join(", ")),
+                    _buildDetailPart("Languages: ", book.languages.join(", ")),
+                    _buildDetailPart(
+                        "Pages: ", (book.pages ?? "N/A").toString()),
                   ],
                 ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Padding _buildDetailPart(String header, String body) {
+    return Padding(
+      padding: const EdgeInsets.all(5),
+      child: RichText(
+        text: TextSpan(children: [
+          TextSpan(
+              text: header,
+              style:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+          TextSpan(text: body)
+        ]),
       ),
     );
   }
@@ -191,8 +215,8 @@ class BookDetailPage extends StatelessWidget {
     final isOn = myBook != null && myBook.readState == ReadState.reading;
     return _buildSwitchButton(
       isOn: isOn,
-      onIcon: const Icon(Icons.bookmark, size: 40.0),
-      offIcon: const Icon(Icons.bookmark_border, size: 40.0),
+      onIcon: const Icon(Icons.bookmark, size: 45.0),
+      offIcon: const Icon(Icons.bookmark_border, size: 45.0),
       update: () async {
         String myBookId;
         if (myBook == null) {
