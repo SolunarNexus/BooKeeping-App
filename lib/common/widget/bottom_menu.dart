@@ -19,11 +19,11 @@ class BottomMenu extends StatelessWidget {
         ),
         NavigationDestination(
           icon: Icon(Icons.favorite),
-          label: 'My library',
+          label: 'Favourites',
         ),
         NavigationDestination(
           icon: Icon(Icons.menu_book),
-          label: 'Books',
+          label: 'Library',
         ),
         NavigationDestination(
           icon: Icon(Icons.leaderboard),
