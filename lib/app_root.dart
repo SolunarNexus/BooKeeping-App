@@ -1,9 +1,9 @@
 import 'package:book_keeping/book_detail_page/widget/book_detail_page.dart';
-import 'package:book_keeping/library_page/widget/library_page.dart';
 import 'package:book_keeping/data_access/model/book.dart';
 import 'package:book_keeping/friends_page/widget/add_friend_page.dart';
 import 'package:book_keeping/friends_page/widget/friends_page.dart';
 import 'package:book_keeping/home_page/widget/home_page.dart';
+import 'package:book_keeping/library_page/widget/library_page.dart';
 import 'package:book_keeping/notifications_page/widget/notifications_page.dart';
 import 'package:book_keeping/ranking_page/widget/ranking_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -43,7 +43,7 @@ class AppRoot extends StatelessWidget {
       GoRoute(
         path: "/books",
         name: "books",
-        builder: (context, state) => const LibraryPage(),
+        builder: (context, state) => LibraryPage(),
         routes: [
           GoRoute(
             path: "detail",

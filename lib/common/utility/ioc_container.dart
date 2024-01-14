@@ -1,4 +1,5 @@
 import 'package:book_keeping/common/service/converter_service.dart';
+import 'package:book_keeping/common/service/library_search_state_service.dart';
 import 'package:book_keeping/common/service/search_friend_state_service.dart';
 import 'package:book_keeping/common/service/user_card_state_service.dart';
 import 'package:book_keeping/data_access/facade/book_facade.dart';
@@ -46,5 +47,6 @@ class IocContainer {
     getIt.registerFactory(
       () => UserCardStateService(),
     );
+    getIt.registerSingleton(LibrarySearchStateService());
   }
 }
