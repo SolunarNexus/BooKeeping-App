@@ -24,7 +24,7 @@ class RankingPage extends StatelessWidget {
         child: Column(
           children: [
             SortButtonGroup(),
-            GeneralSearchBar(submit: (bookTitle) {}),
+            GeneralSearchBar(onChange: (bookTitle) {}),
             StreamBuilder(
               stream: _searchRatingStateService.stream,
               builder: (context, snapshot) {

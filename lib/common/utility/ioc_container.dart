@@ -1,5 +1,7 @@
 import 'package:book_keeping/common/service/converter_service.dart';
+import 'package:book_keeping/common/service/library_search_state_service.dart';
 import 'package:book_keeping/common/service/search_friend_state_service.dart';
+import 'package:book_keeping/common/service/search_rating_state_service.dart';
 import 'package:book_keeping/common/service/user_card_state_service.dart';
 import 'package:book_keeping/data_access/facade/book_facade.dart';
 import 'package:book_keeping/data_access/facade/book_rating_facade.dart';
@@ -18,7 +20,6 @@ import 'package:get_it/get_it.dart';
 
 import '../service/add_friend_state_service.dart';
 import '../service/search_mybook_state_service.dart';
-import '../service/search_rating_state_service.dart';
 
 class IocContainer {
   static void setup() {
@@ -48,5 +49,6 @@ class IocContainer {
       () => UserCardStateService(),
     );
     getIt.registerSingleton(SearchRatingStateService());
+    getIt.registerSingleton(LibrarySearchStateService());
   }
 }

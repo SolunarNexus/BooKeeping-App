@@ -34,7 +34,8 @@ class OpenLibraryService {
       final bookResult = BookResult.fromJson(
           jsonDecode(response.body) as Map<String, dynamic>);
       final authorResultList =
-          await Stream.fromIterable(bookResult.authors).asyncMap((author) {
+          await Stream.fromIterable(bookResult.authors ?? [])
+              .asyncMap((author) {
         final authorOLID = author.key.replaceAll(RegExp(r'/authors/'), "");
         return _fetchAuthor(authorOLID);
       }).toList();
@@ -77,15 +78,17 @@ class OpenLibraryService {
     return Book(
         description: bookResult.description,
         imgUrl: foundBook.coverUrl,
-        publishDate: bookResult.publishDate,
-        publishers: bookResult.publishers,
+        publishDate: bookResult.publishDate ?? "No date provided",
+        publishers: bookResult.publishers ?? [],
         pages: bookResult.numberOfPages,
         languages: bookResult.languages
-            .map((language) =>
-                language.key.replaceAll(RegExp(r'/languages/'), ""))
-            .toList(),
-        categories: bookResult.subjects,
-        isbn: bookResult.isbn.first,
+                ?.map((language) =>
+                    language.key.replaceAll(RegExp(r'/languages/'), ""))
+                .toList() ??
+            [],
+        categories: bookResult.subjects ?? [],
+        isbn: bookResult.isbn?.first ??
+            "No isbn provided, OLID: ${foundBook.editionOLID}",
         title: foundBook.title,
         authors: authorResultList.map((author) => author.name).toList());
   }
