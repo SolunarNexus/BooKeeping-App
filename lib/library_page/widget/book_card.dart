@@ -29,12 +29,7 @@ class BookCard extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 10.0),
-              child: Column(
-                children: [
-                  _buildCover(foundBook.coverUrl),
-                  _buildFavouriteButton(),
-                ],
-              ),
+              child: _buildCover(foundBook.coverUrl),
             ),
             Flexible(
               child: Padding(
@@ -69,15 +64,6 @@ class BookCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  IconButton _buildFavouriteButton() {
-    return false
-        ? IconButton(
-            onPressed: () => {}, icon: const Icon(Icons.favorite, size: 30.0))
-        : IconButton(
-            onPressed: () => {},
-            icon: const Icon(Icons.favorite_border, size: 30.0));
   }
 
   Widget _buildCover(String imgUrl) {
