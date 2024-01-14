@@ -150,8 +150,8 @@ class BookDetailPage extends StatelessWidget {
   Padding _buildDetailPart(String header, String body) {
     return Padding(
       padding: const EdgeInsets.all(5),
-      child: RichText(
-        text: TextSpan(children: [
+      child: Text.rich(
+        TextSpan(children: [
           TextSpan(
               text: header,
               style:
