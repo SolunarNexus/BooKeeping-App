@@ -1,0 +1,4 @@
+enum SortState {
+  byReviews,
+  byRating,
+}

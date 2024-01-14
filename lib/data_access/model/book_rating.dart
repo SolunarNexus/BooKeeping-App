@@ -5,7 +5,7 @@ part 'book_rating.g.dart';
 
 @JsonSerializable()
 class BookRating extends Entity {
-  final int rating;
+  final double rating;
   final String userId;
   final String bookId;
   final String text;
@@ -35,7 +35,7 @@ class BookRating extends Entity {
 
   BookRating copyWith({
     String? id,
-    int? rating,
+    double? rating,
     String? userId,
     String? bookId,
     String? text,

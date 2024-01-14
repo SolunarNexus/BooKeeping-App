@@ -35,7 +35,7 @@ class BookRatingFacade extends BaseFacade {
       _bookRatingService.getAllByBookId(bookId);
 
   /// creates new rating
-  Future<void> create(String bookId, int rating, String text) async {
+  Future<void> create(String bookId, double rating, String text) async {
     final currentUser = await getCurrentUser().first;
     final newRating = BookRating(
         rating: rating, userId: currentUser.id!, bookId: bookId, text: text);
@@ -43,12 +43,29 @@ class BookRatingFacade extends BaseFacade {
   }
 
   /// updates existing rating, verifies ownership of rating
-  Future<void> update(String ratingId, int newValue) async {
+  Future<void> update(String ratingId, double newValue, String text) async {
     final currentUser = await getCurrentUser().first;
     final rating = await _bookRatingService.getSingle(ratingId).first;
     if (rating == null || rating.userId != currentUser.id) {
       throw Exception("Unable to modify rating");
     }
-    await _bookRatingService.updateRating(ratingId, newValue);
+    await _bookRatingService.updateRating(ratingId, newValue, text);
+  }
+
+  /// creates or updates a rating
+  Future<void> createOrUpdate(
+      String bookId, double ratingValue, String text) async {
+    final currentUser = await getCurrentUser().first;
+    var rating = BookRating(
+        rating: ratingValue,
+        userId: currentUser.id!,
+        bookId: bookId,
+        text: text);
+    if (await _bookRatingService.exists(rating)) {
+      final rating = await _bookRatingService.getByIds(currentUser.id!, bookId);
+      await update(rating!.id!, ratingValue, text);
+    } else {
+      await create(bookId, ratingValue, text);
+    }
   }
 }

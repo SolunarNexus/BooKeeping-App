@@ -8,7 +8,7 @@ part of 'book_rating.dart';
 
 BookRating _$BookRatingFromJson(Map<String, dynamic> json) => BookRating(
       id: json['id'] as String?,
-      rating: json['rating'] as int,
+      rating: (json['rating'] as num).toDouble(),
       userId: json['userId'] as String,
       bookId: json['bookId'] as String,
       text: json['text'] as String,

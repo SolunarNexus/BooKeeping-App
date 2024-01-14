@@ -38,7 +38,7 @@ class AppRoot extends StatelessWidget {
       GoRoute(
         path: "/ranking",
         name: "rankings",
-        builder: (context, state) => const RankingPage(),
+        builder: (context, state) => RankingPage(),
       ),
       GoRoute(
         path: "/books",
