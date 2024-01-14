@@ -7,7 +7,7 @@ class GeneralListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Flexible(
       child: ListView.builder(
         padding: const EdgeInsets.all(12.0),
         itemCount: _items.length,

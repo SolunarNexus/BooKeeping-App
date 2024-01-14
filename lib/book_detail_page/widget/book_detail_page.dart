@@ -1,3 +1,4 @@
+import 'package:book_keeping/book_detail_page/widget/recommendation_card.dart';
 import 'package:book_keeping/common/model/my_book_complete.dart';
 import 'package:book_keeping/common/model/read_state.dart';
 import 'package:book_keeping/common/widget/bottom_menu.dart';
@@ -10,9 +11,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../common/service/search_friend_state_service.dart';
+import '../../common/widget/general_listview.dart';
+import '../../data_access/model/user.dart';
+
 class BookDetailPage extends StatelessWidget {
   final _myBookFacade = GetIt.instance.get<MyBookFacade>();
   final _ratingFacade = GetIt.instance.get<BookRatingFacade>();
+  final _searchFriendStateService =
+      GetIt.instance.get<SearchFriendStateService>();
   final Book book;
 
   BookDetailPage({super.key, required this.book});
@@ -64,25 +71,13 @@ class BookDetailPage extends StatelessWidget {
                           padding:
                               const EdgeInsets.only(top: 10.0, bottom: 10.0),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              // SizedBox(
-                              //   height: 25,
-                              //   width: 80,
-                              //   child: ElevatedButton(
-                              //     // TODO
-                              //     onPressed: () {},
-                              //     child: const Text("Rate"),
-                              //   ),
-                              // ),
                               RatingBar.builder(
                                 initialRating: 0,
                                 itemCount: 5,
-                                // TODO: set to TRUE before production
-                                // ignoreGestures: true,
                                 allowHalfRating: true,
                                 itemSize: 30,
-                                updateOnDrag: true,
                                 itemBuilder: (context, index) =>
                                     const Icon(Icons.star),
                                 onRatingUpdate: (rating) {
@@ -90,6 +85,61 @@ class BookDetailPage extends StatelessWidget {
                                       book.id!, rating, "");
                                 },
                               ),
+                              IconButton(
+                                icon: const Icon(Icons.ios_share),
+                                onPressed: () => showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text("Send recommendation"),
+                                    content: StreamBuilder<List<User>>(
+                                      stream: _searchFriendStateService.stream,
+                                      builder: (context, snapshot) {
+                                        if (!snapshot.hasData) {
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        }
+                                        if (snapshot.data!.isEmpty) {
+                                          return const Center(
+                                            child: Text("Nothing to show"),
+                                          );
+                                        }
+                                        return SizedBox(
+                                          width: double.maxFinite,
+                                          height: 300,
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              GeneralListView(
+                                                  items: snapshot.data!
+                                                      .map((user) =>
+                                                          RecommendationCard(
+                                                            userName:
+                                                                user.email,
+                                                            book: book,
+                                                          ))
+                                                      .toList()),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'Cancel'),
+                                        child: const Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context, 'OK');
+                                        },
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                         ),
