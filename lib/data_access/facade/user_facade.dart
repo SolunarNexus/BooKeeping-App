@@ -11,4 +11,6 @@ class UserFacade extends BaseFacade {
 
   /// gets user by email
   Future<User?> getByEmail(String email) => _userService.getByEmail(email);
+
+  Future<User?> getById(String id) => _userService.getById(id);
 }

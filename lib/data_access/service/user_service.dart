@@ -17,6 +17,11 @@ class UserService extends BaseFirestoreService<User> {
         .singleOrNull;
   }
 
+  Future<User?> getById(String id) async {
+    final users = await getAll().first;
+    return users.where((user) => user.id == id).singleOrNull;
+  }
+
   static Map<String, dynamic> _toJson(User user) => user.toJson();
 
   static bool _equals(User first, User second) => first == second;

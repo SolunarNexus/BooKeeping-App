@@ -1,7 +1,10 @@
 import 'package:book_keeping/common/model/friendship_state.dart';
 import 'package:book_keeping/data_access/facade/base_facade.dart';
+import 'package:book_keeping/data_access/facade/my_book_facade.dart';
 import 'package:book_keeping/data_access/model/recommendation.dart';
+import 'package:book_keeping/data_access/service/book_service.dart';
 import 'package:book_keeping/data_access/service/friendship_service.dart';
+import 'package:book_keeping/data_access/service/my_book_service.dart';
 import 'package:book_keeping/data_access/service/recommendation_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:rxdart/rxdart.dart';
@@ -9,6 +12,7 @@ import 'package:rxdart/rxdart.dart';
 class RecommendationFacade extends BaseFacade {
   final _recommendationService = GetIt.instance.get<RecommendationService>();
   final _friendshipService = GetIt.instance.get<FriendshipService>();
+  final _myBookFacade = GetIt.instance.get<MyBookFacade>();
 
   /// returns stream of recommendations where current user has friendship with sender
   Stream<List<Recommendation>> getStream() {
@@ -35,6 +39,10 @@ class RecommendationFacade extends BaseFacade {
         senderUserId: currentUser.id!,
         receiverUserId: friendUserId,
         bookId: bookId));
+  }
+
+  Future<void> accept(String bookId) async {
+    _myBookFacade.createById(bookId);
   }
 
   /// removes recommendation
