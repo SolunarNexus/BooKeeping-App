@@ -21,7 +21,7 @@ Map<String, dynamic> _$MyBookToJson(MyBook instance) => <String, dynamic>{
     };
 
 const _$ReadStateEnumMap = {
-  ReadState.planToRead: 'planToRead',
   ReadState.reading: 'reading',
   ReadState.completed: 'completed',
+  ReadState.planToRead: 'planToRead',
 };
