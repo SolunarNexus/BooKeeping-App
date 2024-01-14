@@ -32,7 +32,7 @@ class HomePage extends StatelessWidget {
                   labels: const ["Reading", "Completed", "Plan to read"]),
             ),
             GeneralSearchBar(
-                submit: (value) =>
+                onChange: (value) =>
                     _searchMyBookStateService.searchMyBook(value)),
             StreamBuilder(
               stream: _searchMyBookStateService.stream,

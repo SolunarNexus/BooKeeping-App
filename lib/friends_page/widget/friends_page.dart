@@ -25,7 +25,8 @@ class FriendsPage extends StatelessWidget {
         child: Column(
           children: [
             GeneralSearchBar(
-              submit: (email) => _searchFriendStateService.searchFriends(email),
+              onChange: (email) =>
+                  _searchFriendStateService.searchFriends(email),
             ),
             StreamBuilder<List<User>>(
               stream: _searchFriendStateService.stream,
