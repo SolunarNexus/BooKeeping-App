@@ -7,21 +7,23 @@ part of 'book_result.dart';
 // **************************************************************************
 
 BookResult _$BookResultFromJson(Map<String, dynamic> json) => BookResult(
-      publishers: (json['publishers'] as List<dynamic>)
-          .map((e) => e as String)
+      publishers: (json['publishers'] as List<dynamic>?)
+          ?.map((e) => e as String)
           .toList(),
-      description: json['description'] as String?,
-      authors: (json['authors'] as List<dynamic>)
-          .map((e) => KeyResult.fromJson(e as Map<String, dynamic>))
+      description: BookResult._deserializeDesc(json['description']),
+      authors: (json['authors'] as List<dynamic>?)
+          ?.map((e) => KeyResult.fromJson(e as Map<String, dynamic>))
           .toList(),
-      publishDate: json['publish_date'] as String,
+      publishDate: json['publish_date'] as String?,
       numberOfPages: json['number_of_pages'] as int?,
-      languages: (json['languages'] as List<dynamic>)
-          .map((e) => KeyResult.fromJson(e as Map<String, dynamic>))
+      languages: (json['languages'] as List<dynamic>?)
+          ?.map((e) => KeyResult.fromJson(e as Map<String, dynamic>))
           .toList(),
-      subjects:
-          (json['subjects'] as List<dynamic>).map((e) => e as String).toList(),
-      isbn: (json['isbn_10'] as List<dynamic>).map((e) => e as String).toList(),
+      subjects: (json['subjects'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      isbn:
+          (json['isbn_10'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$BookResultToJson(BookResult instance) =>
