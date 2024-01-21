@@ -217,36 +217,42 @@ class BookDetailPage extends StatelessWidget {
     );
   }
 
-  IconButton _buildSwitchButton(
+  Widget _buildSwitchButton(
       {required bool isOn,
       required Icon onIcon,
       required Icon offIcon,
+      required String text,
       required void Function() update}) {
-    return isOn
-        ? IconButton(
-            onPressed: () => update(),
-            icon: onIcon,
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-          )
-        : IconButton(
-            onPressed: () => update(),
-            icon: offIcon,
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-          );
+    return Column(
+      children: [
+        isOn
+            ? IconButton(
+                onPressed: () => update(),
+                icon: onIcon,
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+              )
+            : IconButton(
+                onPressed: () => update(),
+                icon: offIcon,
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+              ),
+        Text(text)
+      ],
+    );
   }
 
-  IconButton _buildFavouriteButton(
-      bool isFavourite, VoidCallback addToMyBooks) {
+  Widget _buildFavouriteButton(bool isFavourite, VoidCallback addToMyBooks) {
     return _buildSwitchButton(
         isOn: isFavourite,
         onIcon: const Icon(Icons.favorite, size: 40.0),
         offIcon: const Icon(Icons.favorite_border, size: 40.0),
-        update: addToMyBooks);
+        update: addToMyBooks,
+        text: 'Favourite');
   }
 
-  IconButton _buildDoneButton(MyBookComplete? myBook, Book book) {
+  Widget _buildDoneButton(MyBookComplete? myBook, Book book) {
     final isOn = myBook != null && myBook.readState == ReadState.completed;
     return _buildSwitchButton(
         isOn: isOn,
@@ -263,10 +269,11 @@ class BookDetailPage extends StatelessWidget {
           }
           await _myBookFacade.updateState(
               myBookId, isOn ? ReadState.planToRead : ReadState.completed);
-        });
+        },
+        text: 'Done');
   }
 
-  IconButton _buildReadingButton(MyBookComplete? myBook, Book book) {
+  Widget _buildReadingButton(MyBookComplete? myBook, Book book) {
     final isOn = myBook != null && myBook.readState == ReadState.reading;
     return _buildSwitchButton(
       isOn: isOn,
@@ -284,6 +291,7 @@ class BookDetailPage extends StatelessWidget {
         await _myBookFacade.updateState(
             myBookId, isOn ? ReadState.planToRead : ReadState.reading);
       },
+      text: 'Reading',
     );
   }
 
